@@ -10,9 +10,10 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
+
 @CrossOrigin
 @RestController
-@RequestMapping("geral/clientes")
+@RequestMapping("gestao/clientes")
 @Tag(name = "Clientes", description = "Endpoint responsavel pelo gerenciamento de clientes")
 public class ClienteController {
 
