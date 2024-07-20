@@ -1,6 +1,6 @@
-package com.mintgestao.Domain.Entities;
+package com.mintgestao.Domain.Entity;
 
-import com.mintgestao.Domain.Enums.EnumStatusLocal;
+import com.mintgestao.Domain.Enum.EnumStatusLocal;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.TenantId;
@@ -8,6 +8,7 @@ import org.hibernate.annotations.TenantId;
 import java.util.Date;
 import java.util.UUID;
 
+@Entity
 @Getter
 @Setter
 @NoArgsConstructor
@@ -26,6 +27,6 @@ public class Local {
     private Date horaFechamento;
     private String diasFuncionamento;
 
-    @TenantId
-    private Integer idtenant;
+//    @TenantId
+//    private Integer idtenant;
 }

@@ -1,7 +1,7 @@
-package com.mintgestao.Domain.Entities;
+package com.mintgestao.Domain.Entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.mintgestao.Domain.Enums.EnumStatusFilial;
+import com.mintgestao.Domain.Enum.EnumStatusFilial;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.TenantId;
@@ -11,6 +11,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
+@Entity
 @Getter
 @Setter
 @NoArgsConstructor
@@ -43,6 +44,6 @@ public class Filial {
     @ManyToMany(mappedBy = "filiais")
     private List<Usuario> usuarios = new ArrayList<>();
 
-    @TenantId
-    private Integer idtenant;
+//    @TenantId
+//    private Integer idtenant;
 }

@@ -1,12 +1,13 @@
-package com.mintgestao.Domain.Entities;
+package com.mintgestao.Domain.Entity;
 
-import com.mintgestao.Domain.Enums.EnumStatusCliente;
+import com.mintgestao.Domain.Enum.EnumStatusCliente;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.TenantId;
 
 import java.util.UUID;
 
+@Entity
 @Getter
 @Setter
 @NoArgsConstructor
@@ -22,6 +23,6 @@ public class Cliente {
     private String email;
     private String telefone;
 
-    @TenantId
-    private Integer idtenant;
+//    @TenantId
+//    private Integer idtenant;
 }

@@ -1,4 +1,4 @@
-package com.mintgestao.Domain.Enums;
+package com.mintgestao.Domain.Enum;
 
 public enum EnumStatusCliente {
     Inativo(0),

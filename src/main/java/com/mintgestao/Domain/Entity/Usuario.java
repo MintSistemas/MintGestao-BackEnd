@@ -1,7 +1,7 @@
-package com.mintgestao.Domain.Entities;
+package com.mintgestao.Domain.Entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.mintgestao.Domain.Enums.EnumPermissao;
+import com.mintgestao.Domain.Enum.EnumPermissao;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.TenantId;
@@ -14,6 +14,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 
+@Entity
 @Getter
 @Setter
 @NoArgsConstructor
@@ -36,15 +37,14 @@ public class Usuario implements UserDetails {
     )
     private List<Filial> filiais = new ArrayList<>();
 
-    @TenantId
-    private Integer idtenant;
+//    @TenantId
+//    private Integer idtenant;
 
     @JsonIgnore
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        if (this.role == EnumPermissao.ADMIN) return List.of(new SimpleGrantedAuthority("ROLE_ADMIN"), new SimpleGrantedAuthority("ROLE_USER"), new SimpleGrantedAuthority("ROLE_GUEST"));
-        else if (this.role == EnumPermissao.USER) return List.of(new SimpleGrantedAuthority("ROLE_USER"), new SimpleGrantedAuthority("ROLE_GUEST"));
-        else if (this.role == EnumPermissao.GUEST) return List.of(new SimpleGrantedAuthority("ROLE_GUEST"));
+        if (this.role == EnumPermissao.Administrador) return List.of(new SimpleGrantedAuthority("ROLE_ADMIN"), new SimpleGrantedAuthority("ROLE_USER"), new SimpleGrantedAuthority("ROLE_GUEST"));
+        else if (this.role == EnumPermissao.Usuario) return List.of(new SimpleGrantedAuthority("ROLE_USER"), new SimpleGrantedAuthority("ROLE_GUEST"));
         else return List.of(new SimpleGrantedAuthority("ROLE_APP"));
     }
 
