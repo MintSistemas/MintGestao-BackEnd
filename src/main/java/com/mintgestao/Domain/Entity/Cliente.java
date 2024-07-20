@@ -1,0 +1,27 @@
+package com.mintgestao.Domain.Entities;
+
+import com.mintgestao.Domain.Enums.EnumStatusCliente;
+import jakarta.persistence.*;
+import lombok.*;
+import org.hibernate.annotations.TenantId;
+
+import java.util.UUID;
+
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@EqualsAndHashCode(of = "id")
+public class Cliente {
+    @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private UUID id;
+    private String nome;
+    private EnumStatusCliente status;
+    private String cpf;
+    private String email;
+    private String telefone;
+
+    @TenantId
+    private Integer idtenant;
+}
