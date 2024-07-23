@@ -23,21 +23,21 @@ import org.springframework.web.bind.annotation.*;
 public class AutenticacaoController {
 
     @Autowired
-    private AuthenticationManager authenticationManager;
-
-    @Autowired
     private UsuarioRepository repository;
 
     @Autowired
     private TokenService tokenService;
 
+    @Autowired
+    private AuthenticationManager authenticationManager;
+
     @PostMapping("/entrar")
     public ResponseEntity login(@RequestBody @Valid LoginRequestDTO data) {
         try {
             var usernamePassword = new UsernamePasswordAuthenticationToken(data.email(), data.senha());
-            var auth = this.authenticationManager.authenticate(usernamePassword);
-            var token = tokenService.generateToken((Usuario) auth.getPrincipal());
-            var refreshToken = tokenService.generateRefreshToken((Usuario) auth.getPrincipal());
+            var auth = authenticationManager.authenticate(usernamePassword);
+            var token = tokenService.gerarToken((Usuario) auth.getPrincipal());
+            var refreshToken = tokenService.gerarRefreshToken((Usuario) auth.getPrincipal());
 
             Usuario usuario = (Usuario) repository.findByEmail(data.email());
             return ResponseEntity.ok(new LoginResponseDTO(usuario, token, refreshToken));
@@ -58,9 +58,9 @@ public class AutenticacaoController {
     @PostMapping("/atualizartoken")
     public ResponseEntity refresh(@RequestBody @Valid String refreshToken) {
         try {
-            Usuario usuario = tokenService.validateRefreshToken(refreshToken);
+            Usuario usuario = tokenService.validarRefreshToken(refreshToken);
             UserDetails user = repository.findByEmail(usuario.getEmail());
-            return ResponseEntity.ok(tokenService.generateToken((Usuario) user));
+            return ResponseEntity.ok(tokenService.gerarToken((Usuario) user));
         } catch (Exception e) {
             return ResponseEntity.status(401).body(e.getMessage());
         }

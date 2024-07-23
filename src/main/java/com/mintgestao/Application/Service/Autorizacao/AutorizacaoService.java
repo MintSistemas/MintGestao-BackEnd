@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class AutorizacaoService implements UserDetailsService {
-
     @Autowired
     private UsuarioRepository usuariosRepository;
 

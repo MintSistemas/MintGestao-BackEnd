@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 import java.util.Map;
 
 @Component
-public class TenantIdentifierResolver implements CurrentTenantIdentifierResolver, HibernatePropertiesCustomizer {
+public class TenantResolver implements CurrentTenantIdentifierResolver, HibernatePropertiesCustomizer {
 
     private Integer currentTenant = -1;
 

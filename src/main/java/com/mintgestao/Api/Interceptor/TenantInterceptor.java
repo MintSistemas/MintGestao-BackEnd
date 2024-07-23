@@ -1,7 +1,8 @@
-package com.mintgestao.Infrastructure.Tenant;
+package com.mintgestao.Api.Interceptor;
 
 import com.mintgestao.Domain.Entity.Usuario;
 import com.mintgestao.Application.Service.Token.TokenService;
+import com.mintgestao.Infrastructure.Tenant.TenantResolver;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,31 +13,30 @@ import org.springframework.web.servlet.HandlerInterceptor;
 public class TenantInterceptor implements HandlerInterceptor {
 
     @Autowired
-    private com.mintgestao.Infrastructure.Tenant.TenantIdentifierResolver TenantIdentifierResolver;
+    private TenantResolver tenantResolver;
 
     @Autowired
     private TokenService TokenService;
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
-        String token = retrieveToken(request);
+        String token = recuperarToken(request);
         if (token == null) return true;
-        Usuario usuario = TokenService.validateToken(token);
-
+        Usuario usuario = TokenService.validarToken(token);
         if (usuario.getIdtenant() != null) {
-            TenantIdentifierResolver.setCurrentTenant(usuario.getIdtenant());
+            tenantResolver.setCurrentTenant(usuario.getIdtenant());
         }
         return true;
     }
 
     @Override
     public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) {
-        TenantIdentifierResolver.clear();
+        tenantResolver.clear();
     }
 
-    private String retrieveToken(HttpServletRequest request) {
-        String authHeader = request.getHeader("token");
-        if (authHeader == null || authHeader.isEmpty() || !authHeader.startsWith("Bearer ")) return null;
-        return authHeader.replace("Bearer ", "");
+    private String recuperarToken(HttpServletRequest request) {
+        String token = request.getHeader("token");
+        if (token == null || token.isEmpty() || !token.startsWith("Bearer ")) return null;
+        return token.replace("Bearer ", "");
     }
 }

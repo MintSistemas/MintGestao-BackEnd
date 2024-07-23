@@ -3,7 +3,7 @@ package com.mintgestao.Infrastructure.Security;
 import com.mintgestao.Application.Service.Token.TokenService;
 import com.mintgestao.Domain.Entity.Usuario;
 import com.mintgestao.Infrastructure.Repository.UsuarioRepository;
-import com.mintgestao.Infrastructure.Tenant.TenantIdentifierResolver;
+import com.mintgestao.Infrastructure.Tenant.TenantResolver;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -27,23 +27,23 @@ public class Filtro extends OncePerRequestFilter {
     private UsuarioRepository userReposirory;
 
     @Autowired
-    private TenantIdentifierResolver TenantIdentifierResolver;
+    private TenantResolver TenantResolver;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        var token = retrieveToken(request);
+        var token = recuperarToken(request);
         if (token != null) {
-            Usuario usuario = tokenService.validateToken(token);
+            Usuario usuario = tokenService.validarToken(token);
             UserDetails usuarioValidado = userReposirory.findByEmail(usuario.getEmail());
 
             var authentication = new UsernamePasswordAuthenticationToken(usuarioValidado, null, usuarioValidado.getAuthorities());
             SecurityContextHolder.getContext().setAuthentication(authentication);
-            TenantIdentifierResolver.setCurrentTenant(usuario.getIdtenant());
+            TenantResolver.setCurrentTenant(usuario.getIdtenant());
         }
         filterChain.doFilter(request, response);
     }
 
-    private String retrieveToken(HttpServletRequest request) {
+    private String recuperarToken(HttpServletRequest request) {
         String authHeader = request.getHeader("token");
         if (authHeader == null || authHeader.isEmpty() || !authHeader.startsWith("Bearer ")) return null;
         return authHeader.replace("Bearer ", "");

@@ -16,20 +16,21 @@ import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 
 @Service
-public class TokenService {
+public class TokenService implements ITokenService {
 
     @Value("${api.security.token.secret}")
+
     private String secret;
 
-    public String generateToken(Usuario usuario) {
+    public String gerarToken(Usuario usuario) {
         try {
-            Algorithm algorithm = Algorithm.HMAC256(secret);
+            Algorithm Algoritimo = Algorithm.HMAC256(secret);
             String usuarioJson = new ObjectMapper().writeValueAsString(usuario);
             String token = JWT.create()
                     .withIssuer("MintSoftware")
                     .withClaim("Usuario", usuarioJson)
-                    .withExpiresAt(getExpirationDateToken())
-                    .sign(algorithm);
+                    .withExpiresAt(getDataValidadeToken())
+                    .sign(Algoritimo);
 
             return token;
         } catch (JWTCreationException | JsonProcessingException e) {
@@ -37,10 +38,10 @@ public class TokenService {
         }
     }
 
-    public  Usuario validateToken(String token) {
+    public Usuario validarToken(String token) {
         try {
-            Algorithm algorithm = Algorithm.HMAC256(secret);
-            DecodedJWT jwt = JWT.require(algorithm)
+            Algorithm Algoritimo = Algorithm.HMAC256(secret);
+            DecodedJWT jwt = JWT.require(Algoritimo)
                     .withIssuer("MintSoftware")
                     .build()
                     .verify(token);
@@ -54,15 +55,15 @@ public class TokenService {
         }
     }
 
-    public String generateRefreshToken(Usuario usuario) {
+    public String gerarRefreshToken(Usuario usuario) {
         try {
-            Algorithm algorithm = Algorithm.HMAC256(secret);
+            Algorithm algoritimo = Algorithm.HMAC256(secret);
             String usuarioJson = new ObjectMapper().writeValueAsString(usuario);
             String refreshToken = JWT.create()
                     .withIssuer("MintSoftware")
                     .withClaim("Usuario", usuarioJson)
-                    .withExpiresAt(getExpirationDateRefreshToken())
-                    .sign(algorithm);
+                    .withExpiresAt(getDataValidadeRefreshToken())
+                    .sign(algoritimo);
 
             return refreshToken;
         } catch (JWTCreationException | JsonProcessingException e) {
@@ -70,15 +71,15 @@ public class TokenService {
         }
     }
 
-    public Usuario validateRefreshToken(String refreshToken) {
+    public Usuario validarRefreshToken(String refreshToken) {
         try {
-            Algorithm algorithm = Algorithm.HMAC256(secret);
-            DecodedJWT jwt = JWT.require(algorithm)
+            Algorithm algoritimo = Algorithm.HMAC256(secret);
+            DecodedJWT TokenDescriptografado = JWT.require(algoritimo)
                     .withIssuer("MintSoftware")
                     .build()
                     .verify(refreshToken);
 
-            String usuarioJson = jwt.getClaim("Usuario").asString();
+            String usuarioJson = TokenDescriptografado.getClaim("Usuario").asString();
             Usuario usuario = new ObjectMapper().readValue(usuarioJson, Usuario.class);
 
             return usuario;
@@ -87,11 +88,11 @@ public class TokenService {
         }
     }
 
-    private Instant getExpirationDateToken() {
+    public Instant getDataValidadeToken() {
         return LocalDateTime.now().plusMinutes(15).toInstant(ZoneOffset.of("-03:00"));
     }
 
-    private Instant getExpirationDateRefreshToken() {
+    public Instant getDataValidadeRefreshToken() {
         return LocalDateTime.now().plusDays(2).toInstant(ZoneOffset.of("-03:00"));
     }
 }
