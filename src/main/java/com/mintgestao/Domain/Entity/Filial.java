@@ -42,6 +42,6 @@ public class Filial {
     @ManyToMany(mappedBy = "filiais")
     private List<Usuario> usuarios = new ArrayList<>();
 
-//    @TenantId
-//    private Integer idtenant;
+    @TenantId
+    private Integer idtenant;
 }

@@ -21,6 +21,6 @@ public class Cliente {
     private String email;
     private String telefone;
 
-//    @TenantId
-//    private Integer idtenant;
+    @TenantId
+    private Integer idtenant;
 }

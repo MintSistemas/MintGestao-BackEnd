@@ -25,6 +25,6 @@ public class Local {
     private Date horaFechamento;
     private String diasFuncionamento;
 
-//    @TenantId
-//    private Integer idtenant;
+    @TenantId
+    private Integer idtenant;
 }

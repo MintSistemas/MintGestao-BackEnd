@@ -35,8 +35,8 @@ public class Usuario implements UserDetails {
     )
     private List<Filial> filiais = new ArrayList<>();
 
-//    @TenantId
-//    private Integer idtenant;
+    @TenantId
+    private Integer idtenant;
 
     @JsonIgnore
     @Override
