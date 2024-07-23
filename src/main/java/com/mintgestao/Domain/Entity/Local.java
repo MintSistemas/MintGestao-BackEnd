@@ -9,11 +9,9 @@ import java.util.Date;
 import java.util.UUID;
 
 @Entity
-@Getter
-@Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode(of = "id")
+@Data
 public class Local {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)

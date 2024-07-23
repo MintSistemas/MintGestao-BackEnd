@@ -13,8 +13,8 @@ import java.util.concurrent.CompletableFuture;
 
 @CrossOrigin
 @RestController
-@RequestMapping("gestao/clientes")
-@Tag(name = "Clientes", description = "Endpoint responsavel pelo gerenciamento de clientes")
+@RequestMapping("gestao/cliente")
+@Tag(name = "Cliente", description = "Endpoint responsavel pelo gerenciamento de clientes")
 public class ClienteController {
 
     @Autowired

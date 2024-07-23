@@ -8,11 +8,9 @@ import org.hibernate.annotations.TenantId;
 import java.util.UUID;
 
 @Entity
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode(of = "id")
 public class Cliente {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
