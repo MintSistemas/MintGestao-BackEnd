@@ -26,7 +26,7 @@ public class FiltroConfig {
                 .csrf(csrf -> csrf.disable())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers(HttpMethod.POST, "/autenticacao/entrar").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/autenticacao/*").permitAll()
                         .requestMatchers(HttpMethod.GET, "/swagger-ui/*").permitAll()
                         .requestMatchers(HttpMethod.GET, "/v3/*").permitAll()
                         .requestMatchers(HttpMethod.GET, "/v3/api-docs/*").permitAll()

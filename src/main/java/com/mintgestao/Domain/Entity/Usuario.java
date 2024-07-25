@@ -27,7 +27,6 @@ public class Usuario implements UserDetails {
     private String senha;
     private EnumPermissao role;
 
-    @TenantId
     private Integer idtenant;
 
     @JsonIgnore
