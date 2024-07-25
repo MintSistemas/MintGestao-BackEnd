@@ -38,10 +38,6 @@ public class Filial {
     private Boolean padrao;
     private Date datahoracad;
 
-    @JsonIgnore
-    @ManyToMany(mappedBy = "filiais")
-    private List<Usuario> usuarios = new ArrayList<>();
-
     @TenantId
     private Integer idtenant;
 }

@@ -9,12 +9,11 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.UUID;
-import java.util.concurrent.CompletableFuture;
 
 @CrossOrigin
 @RestController
 @RequestMapping("gestao/local")
-@Tag(name = "Local", description = "Endpoint responsavel pelo gerenciamento de locais/quadras")
+@Tag(name = "Local", description = "Endpoint responsável pelo gerenciamento de locais/quadras")
 public class LocalController {
 
     @Autowired
@@ -25,32 +24,32 @@ public class LocalController {
     }
 
     @GetMapping
-    public CompletableFuture<ResponseEntity<List<Local>>> obterTodosLocals() {
-        return localUseCase.obterTodosLocais()
-                .thenApply(ResponseEntity::ok);
+    public ResponseEntity<List<Local>> obterTodosLocals() {
+        List<Local> locais = localUseCase.obterTodosLocais();
+        return ResponseEntity.ok(locais);
     }
 
     @GetMapping("/{id}")
-    public CompletableFuture<ResponseEntity<Local>> obterLocalPorId(@PathVariable UUID id) {
-        return localUseCase.obterLocalPorId(id)
-                .thenApply(local -> local != null ? ResponseEntity.ok(local) : ResponseEntity.notFound().build());
+    public ResponseEntity<Local> obterLocalPorId(@PathVariable UUID id) {
+        Local local = localUseCase.obterLocalPorId(id);
+        return local != null ? ResponseEntity.ok(local) : ResponseEntity.notFound().build();
     }
 
     @PostMapping
-    public CompletableFuture<ResponseEntity<Local>> criarLocal(@RequestBody Local local) {
-        return localUseCase.criarLocal(local)
-                .thenApply(novoLocal -> ResponseEntity.created(null).body(novoLocal));
+    public ResponseEntity<Local> criarLocal(@RequestBody Local local) {
+        Local novoLocal = localUseCase.criarLocal(local);
+        return ResponseEntity.created(null).body(novoLocal);
     }
 
     @PutMapping("/{id}")
-    public CompletableFuture<ResponseEntity<Void>> atualizarLocal(@PathVariable UUID id, @RequestBody Local local) {
-        return localUseCase.atualizarLocal(id, local)
-                .thenApply(result -> result ? ResponseEntity.noContent().build() : ResponseEntity.notFound().build());
+    public ResponseEntity<Void> atualizarLocal(@PathVariable UUID id, @RequestBody Local local) {
+        Boolean result = localUseCase.atualizarLocal(id, local);
+        return result ? ResponseEntity.noContent().build() : ResponseEntity.notFound().build();
     }
 
     @DeleteMapping("/{id}")
-    public CompletableFuture<ResponseEntity<Void>> excluirLocal(@PathVariable UUID id) {
-        return localUseCase.excluirLocal(id)
-                .thenApply(result -> result ? ResponseEntity.noContent().build() : ResponseEntity.notFound().build());
+    public ResponseEntity<Void> excluirLocal(@PathVariable UUID id) {
+        Boolean result = localUseCase.excluirLocal(id);
+        return result ? ResponseEntity.noContent().build() : ResponseEntity.notFound().build();
     }
 }

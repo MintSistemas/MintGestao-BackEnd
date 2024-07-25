@@ -25,32 +25,32 @@ public class ClienteController {
     }
 
     @GetMapping
-    public CompletableFuture<ResponseEntity<List<Cliente>>> obterTodosClientes() {
-        return clienteUseCase.obterTodosClientes()
-                .thenApply(ResponseEntity::ok);
+    public ResponseEntity<List<Cliente>> obterTodosClientes() {
+        List<Cliente> clientes = clienteUseCase.obterTodosClientes();
+        return ResponseEntity.ok(clientes);
     }
 
     @GetMapping("/{id}")
-    public CompletableFuture<ResponseEntity<Cliente>> obterClientePorId(@PathVariable UUID id) {
-        return clienteUseCase.obterClientePorId(id)
-                .thenApply(cliente -> cliente != null ? ResponseEntity.ok(cliente) : ResponseEntity.notFound().build());
+    public ResponseEntity<Cliente> obterClientePorId(@PathVariable UUID id) {
+        Cliente cliente = clienteUseCase.obterClientePorId(id);
+        return cliente != null ? ResponseEntity.ok(cliente) : ResponseEntity.notFound().build();
     }
 
     @PostMapping
-    public CompletableFuture<ResponseEntity<Cliente>> criarCliente(@RequestBody Cliente cliente) {
-        return clienteUseCase.criarCliente(cliente)
-                .thenApply(novoCliente -> ResponseEntity.created(null).body(novoCliente));
+    public ResponseEntity<Cliente> criarCliente(@RequestBody Cliente cliente) {
+        Cliente novoCliente = clienteUseCase.criarCliente(cliente);
+        return ResponseEntity.created(null).body(novoCliente);
     }
 
     @PutMapping("/{id}")
-    public CompletableFuture<ResponseEntity<Void>> atualizarCliente(@PathVariable UUID id, @RequestBody Cliente cliente) {
-        return clienteUseCase.atualizarCliente(id, cliente)
-                .thenApply(result -> result ? ResponseEntity.noContent().build() : ResponseEntity.notFound().build());
+    public ResponseEntity<Void> atualizarCliente(@PathVariable UUID id, @RequestBody Cliente cliente) {
+        Boolean sucesso = clienteUseCase.atualizarCliente(id, cliente);
+        return sucesso ? ResponseEntity.noContent().build() : ResponseEntity.notFound().build();
     }
 
     @DeleteMapping("/{id}")
-    public CompletableFuture<ResponseEntity<Void>> excluirCliente(@PathVariable UUID id) {
-        return clienteUseCase.excluirCliente(id)
-                .thenApply(result -> result ? ResponseEntity.noContent().build() : ResponseEntity.notFound().build());
+    public ResponseEntity<Void> excluirCliente(@PathVariable UUID id) {
+        Boolean sucesso = clienteUseCase.excluirCliente(id);
+        return sucesso ? ResponseEntity.noContent().build() : ResponseEntity.notFound().build();
     }
 }

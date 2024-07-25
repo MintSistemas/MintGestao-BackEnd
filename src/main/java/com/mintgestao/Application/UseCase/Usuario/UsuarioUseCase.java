@@ -7,7 +7,6 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.UUID;
-import java.util.concurrent.CompletableFuture;
 
 @Component
 public class UsuarioUseCase implements IUsuarioUseCase {
@@ -20,27 +19,27 @@ public class UsuarioUseCase implements IUsuarioUseCase {
     }
 
     @Override
-    public CompletableFuture<List<Usuario>> obterTodosUsuarios() {
+    public List<Usuario> obterTodosUsuarios() {
         return usuarioService.obterTodosUsuarios();
     }
 
     @Override
-    public CompletableFuture<Usuario> obterUsuarioPorId(UUID id) {
+    public Usuario obterUsuarioPorId(UUID id) {
         return usuarioService.obterUsuarioPorId(id);
     }
 
     @Override
-    public CompletableFuture<Usuario> criarUsuario(Usuario usuario) {
+    public Usuario criarUsuario(Usuario usuario) {
         return usuarioService.criarUsuario(usuario);
     }
 
     @Override
-    public CompletableFuture<Boolean> atualizarUsuario(UUID id, Usuario usuario) {
+    public Boolean atualizarUsuario(UUID id, Usuario usuario) {
         return usuarioService.atualizarUsuario(id, usuario);
     }
 
     @Override
-    public CompletableFuture<Boolean> excluirUsuario(UUID id) {
+    public Boolean excluirUsuario(UUID id) {
         return usuarioService.excluirUsuario(id);
     }
 }

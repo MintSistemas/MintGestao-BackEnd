@@ -9,12 +9,11 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.UUID;
-import java.util.concurrent.CompletableFuture;
 
 @CrossOrigin
 @RestController
 @RequestMapping("gestao/filial")
-@Tag(name = "Filial", description = "Endpoint responsavel pelo gerenciamento de filiais")
+@Tag(name = "Filial", description = "Endpoint responsável pelo gerenciamento de filiais")
 public class FilialController {
 
     @Autowired
@@ -25,32 +24,32 @@ public class FilialController {
     }
 
     @GetMapping
-    public CompletableFuture<ResponseEntity<List<Filial>>> obterTodosFilials() {
-        return filialUseCase.obterTodosLocais()
-                .thenApply(ResponseEntity::ok);
+    public ResponseEntity<List<Filial>> obterTodosFiliais() {
+        List<Filial> filiais = filialUseCase.obterTodosLocais();
+        return ResponseEntity.ok(filiais);
     }
 
     @GetMapping("/{id}")
-    public CompletableFuture<ResponseEntity<Filial>> obterFilialPorId(@PathVariable UUID id) {
-        return filialUseCase.obterFilialPorId(id)
-                .thenApply(filial -> filial != null ? ResponseEntity.ok(filial) : ResponseEntity.notFound().build());
+    public ResponseEntity<Filial> obterFilialPorId(@PathVariable UUID id) {
+        Filial filial = filialUseCase.obterFilialPorId(id);
+        return filial != null ? ResponseEntity.ok(filial) : ResponseEntity.notFound().build();
     }
 
     @PostMapping
-    public CompletableFuture<ResponseEntity<Filial>> criarFilial(@RequestBody Filial filial) {
-        return filialUseCase.criarFilial(filial)
-                .thenApply(novoFilial -> ResponseEntity.created(null).body(novoFilial));
+    public ResponseEntity<Filial> criarFilial(@RequestBody Filial filial) {
+        Filial novoFilial = filialUseCase.criarFilial(filial);
+        return ResponseEntity.created(null).body(novoFilial);
     }
 
     @PutMapping("/{id}")
-    public CompletableFuture<ResponseEntity<Void>> atualizarFilial(@PathVariable UUID id, @RequestBody Filial filial) {
-        return filialUseCase.atualizarFilial(id, filial)
-                .thenApply(result -> result ? ResponseEntity.noContent().build() : ResponseEntity.notFound().build());
+    public ResponseEntity<Void> atualizarFilial(@PathVariable UUID id, @RequestBody Filial filial) {
+        Boolean result = filialUseCase.atualizarFilial(id, filial);
+        return result ? ResponseEntity.noContent().build() : ResponseEntity.notFound().build();
     }
 
     @DeleteMapping("/{id}")
-    public CompletableFuture<ResponseEntity<Void>> excluirFilial(@PathVariable UUID id) {
-        return filialUseCase.excluirFilial(id)
-                .thenApply(result -> result ? ResponseEntity.noContent().build() : ResponseEntity.notFound().build());
+    public ResponseEntity<Void> excluirFilial(@PathVariable UUID id) {
+        Boolean result = filialUseCase.excluirFilial(id);
+        return result ? ResponseEntity.noContent().build() : ResponseEntity.notFound().build();
     }
 }

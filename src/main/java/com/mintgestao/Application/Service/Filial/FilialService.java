@@ -7,8 +7,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.UUID;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.Executors;
 
 @Service
 public class FilialService implements IFilialService {
@@ -21,40 +19,36 @@ public class FilialService implements IFilialService {
     }
 
     @Override
-    public CompletableFuture<List<Filial>> obterTodosLocais() {
-        return CompletableFuture.supplyAsync(() -> filialRepository.findAll(), Executors.newCachedThreadPool());
+    public List<Filial> obterTodosLocais() {
+        return filialRepository.findAll();
     }
 
     @Override
-    public CompletableFuture<Filial> obterFilialPorId(UUID id) {
-        return CompletableFuture.supplyAsync(() -> filialRepository.findById(id).orElse(null), Executors.newCachedThreadPool());
+    public Filial obterFilialPorId(UUID id) {
+        return filialRepository.findById(id).orElse(null);
     }
 
     @Override
-    public CompletableFuture<Filial> criarFilial(Filial filial) {
-        return CompletableFuture.supplyAsync(() -> filialRepository.save(filial), Executors.newCachedThreadPool());
+    public Filial criarFilial(Filial filial) {
+        return filialRepository.save(filial);
     }
 
     @Override
-    public CompletableFuture<Boolean> atualizarFilial(UUID id, Filial filial) {
-        return CompletableFuture.supplyAsync(() -> {
-            if (filialRepository.existsById(id)) {
-                filial.setId(id);
-                filialRepository.save(filial);
-                return true;
-            }
-            return false;
-        }, Executors.newCachedThreadPool());
+    public Boolean atualizarFilial(UUID id, Filial filial) {
+        if (filialRepository.existsById(id)) {
+            filial.setId(id);
+            filialRepository.save(filial);
+            return true;
+        }
+        return false;
     }
 
     @Override
-    public CompletableFuture<Boolean> excluirFilial(UUID id) {
-        return CompletableFuture.supplyAsync(() -> {
-            if (filialRepository.existsById(id)) {
-                filialRepository.deleteById(id);
-                return true;
-            }
-            return false;
-        }, Executors.newCachedThreadPool());
+    public Boolean excluirFilial(UUID id) {
+        if (filialRepository.existsById(id)) {
+            filialRepository.deleteById(id);
+            return true;
+        }
+        return false;
     }
 }

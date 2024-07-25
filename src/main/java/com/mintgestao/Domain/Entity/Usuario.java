@@ -27,14 +27,6 @@ public class Usuario implements UserDetails {
     private String senha;
     private EnumPermissao role;
 
-    @ManyToMany
-    @JoinTable(
-            name = "usuariofilial",
-            joinColumns = @JoinColumn(name = "idusuario"),
-            inverseJoinColumns = @JoinColumn(name = "idfilial")
-    )
-    private List<Filial> filiais = new ArrayList<>();
-
     @TenantId
     private Integer idtenant;
 

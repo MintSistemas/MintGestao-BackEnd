@@ -9,12 +9,11 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.UUID;
-import java.util.concurrent.CompletableFuture;
 
 @RestController
 @CrossOrigin
 @RequestMapping("gestao/usuario")
-@Tag(name = "Usuario", description = "Endpoint responsavel pelo gerenciamento de usuarios")
+@Tag(name = "Usuario", description = "Endpoint responsável pelo gerenciamento de usuários")
 public class UsuarioController {
 
     @Autowired
@@ -25,33 +24,33 @@ public class UsuarioController {
     }
 
     @GetMapping
-    public CompletableFuture<ResponseEntity<List<Usuario>>> obterTodosUsuarios() {
-        return usuarioUseCase.obterTodosUsuarios()
-                .thenApply(ResponseEntity::ok);
+    public ResponseEntity<List<Usuario>> obterTodosUsuarios() {
+        List<Usuario> usuarios = usuarioUseCase.obterTodosUsuarios();
+        return ResponseEntity.ok(usuarios);
     }
 
     @GetMapping("/{id}")
-    public CompletableFuture<ResponseEntity<Usuario>> obterUsuarioPorId(@PathVariable UUID id) {
-        return usuarioUseCase.obterUsuarioPorId(id)
-                .thenApply(usuario -> usuario != null ? ResponseEntity.ok(usuario) : ResponseEntity.notFound().build());
+    public ResponseEntity<Usuario> obterUsuarioPorId(@PathVariable UUID id) {
+        Usuario usuario = usuarioUseCase.obterUsuarioPorId(id);
+        return usuario != null ? ResponseEntity.ok(usuario) : ResponseEntity.notFound().build();
     }
 
     @PostMapping
-    public CompletableFuture<ResponseEntity<Usuario>> criarUsuario(@RequestBody Usuario usuario) {
-        return usuarioUseCase.criarUsuario(usuario)
-                .thenApply(novoUsuario -> ResponseEntity.created(null).body(novoUsuario));
+    public ResponseEntity<Usuario> criarUsuario(@RequestBody Usuario usuario) {
+        Usuario novoUsuario = usuarioUseCase.criarUsuario(usuario);
+        return ResponseEntity.created(null).body(novoUsuario);
     }
 
     @PutMapping("/{id}")
-    public CompletableFuture<ResponseEntity<Void>> atualizarUsuario(@PathVariable UUID id, @RequestBody Usuario usuario) {
-        return usuarioUseCase.atualizarUsuario(id, usuario)
-                .thenApply(result -> result ? ResponseEntity.noContent().build() : ResponseEntity.notFound().build());
+    public ResponseEntity<Void> atualizarUsuario(@PathVariable UUID id, @RequestBody Usuario usuario) {
+        Boolean result = usuarioUseCase.atualizarUsuario(id, usuario);
+        return result ? ResponseEntity.noContent().build() : ResponseEntity.notFound().build();
     }
 
     @DeleteMapping("/{id}")
-    public CompletableFuture<ResponseEntity<Void>> excluirUsuario(@PathVariable UUID id) {
-        return usuarioUseCase.excluirUsuario(id)
-                .thenApply(result -> result ? ResponseEntity.noContent().build() : ResponseEntity.notFound().build());
+    public ResponseEntity<Void> excluirUsuario(@PathVariable UUID id) {
+        Boolean result = usuarioUseCase.excluirUsuario(id);
+        return result ? ResponseEntity.noContent().build() : ResponseEntity.notFound().build();
     }
 
 }

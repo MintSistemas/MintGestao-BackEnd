@@ -7,8 +7,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.UUID;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.Executors;
 
 @Service
 public class UsuarioService implements IUsuarioService {
@@ -21,40 +19,36 @@ public class UsuarioService implements IUsuarioService {
     }
 
     @Override
-    public CompletableFuture<List<Usuario>> obterTodosUsuarios() {
-        return CompletableFuture.supplyAsync(() -> usuarioRepository.findAll(), Executors.newCachedThreadPool());
+    public List<Usuario> obterTodosUsuarios() {
+        return usuarioRepository.findAll();
     }
 
     @Override
-    public CompletableFuture<Usuario> obterUsuarioPorId(UUID id) {
-        return CompletableFuture.supplyAsync(() -> usuarioRepository.findById(id).orElse(null), Executors.newCachedThreadPool());
+    public Usuario obterUsuarioPorId(UUID id) {
+        return usuarioRepository.findById(id).orElse(null);
     }
 
     @Override
-    public CompletableFuture<Usuario> criarUsuario(Usuario usuario) {
-        return CompletableFuture.supplyAsync(() -> usuarioRepository.save(usuario), Executors.newCachedThreadPool());
+    public Usuario criarUsuario(Usuario usuario) {
+        return usuarioRepository.save(usuario);
     }
 
     @Override
-    public CompletableFuture<Boolean> atualizarUsuario(UUID id, Usuario usuario) {
-        return CompletableFuture.supplyAsync(() -> {
-            if (usuarioRepository.existsById(id)) {
-                usuario.setId(id);
-                usuarioRepository.save(usuario);
-                return true;
-            }
-            return false;
-        }, Executors.newCachedThreadPool());
+    public Boolean atualizarUsuario(UUID id, Usuario usuario) {
+        if (usuarioRepository.existsById(id)) {
+            usuario.setId(id);
+            usuarioRepository.save(usuario);
+            return true;
+        }
+        return false;
     }
 
     @Override
-    public CompletableFuture<Boolean> excluirUsuario(UUID id) {
-        return CompletableFuture.supplyAsync(() -> {
-            if (usuarioRepository.existsById(id)) {
-                usuarioRepository.deleteById(id);
-                return true;
-            }
-            return false;
-        }, Executors.newCachedThreadPool());
+    public Boolean excluirUsuario(UUID id) {
+        if (usuarioRepository.existsById(id)) {
+            usuarioRepository.deleteById(id);
+            return true;
+        }
+        return false;
     }
 }

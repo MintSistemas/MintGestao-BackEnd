@@ -1,5 +1,7 @@
 package com.mintgestao.Api.Controller;
 
+import com.mintgestao.Application.UseCase.Autenticacao.IAutenticacaoUseCase;
+import com.mintgestao.Application.UseCase.Cliente.IClienteUseCase;
 import com.mintgestao.Domain.DTO.Login.LoginRequestDTO;
 import com.mintgestao.Domain.DTO.Login.LoginResponseDTO;
 import com.mintgestao.Domain.Entity.Usuario;
@@ -9,11 +11,6 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -23,46 +20,27 @@ import org.springframework.web.bind.annotation.*;
 public class AutenticacaoController {
 
     @Autowired
-    private UsuarioRepository repository;
+    private IAutenticacaoUseCase autenticacaoUseCase;
 
-    @Autowired
-    private TokenService tokenService;
-
-    @Autowired
-    private AuthenticationManager authenticationManager;
+    public AutenticacaoController(IAutenticacaoUseCase autenticacaoUseCase) {
+        this.autenticacaoUseCase = autenticacaoUseCase;
+    }
 
     @PostMapping("/entrar")
-    public ResponseEntity login(@RequestBody @Valid LoginRequestDTO data) {
-        try {
-            var usernamePassword = new UsernamePasswordAuthenticationToken(data.email(), data.senha());
-            var auth = authenticationManager.authenticate(usernamePassword);
-            var token = tokenService.gerarToken((Usuario) auth.getPrincipal());
-            var refreshToken = tokenService.gerarRefreshToken((Usuario) auth.getPrincipal());
-
-            Usuario usuario = (Usuario) repository.findByEmail(data.email());
-            return ResponseEntity.ok(new LoginResponseDTO(usuario, token, refreshToken));
-        } catch (AuthenticationException e) {
-            return ResponseEntity.status(401).body("Usuário ou senha inválidos");
-        }
+    public ResponseEntity<LoginResponseDTO> entrar(@RequestBody @Valid LoginRequestDTO data) {
+        LoginResponseDTO dto = autenticacaoUseCase.entrar(data);
+        return dto != null ? ResponseEntity.ok(dto) : ResponseEntity.badRequest().build();
     }
 
     @PostMapping("/registrar")
-    public ResponseEntity register(@RequestBody @Valid Usuario usuario) {
-        if (this.repository.findByEmail(usuario.getEmail()) != null) return ResponseEntity.badRequest().build();
-        String senhaCriptografada = new BCryptPasswordEncoder().encode(usuario.getSenha());
-        usuario.setSenha(senhaCriptografada);
-        repository.save(usuario);
-        return ResponseEntity.ok().build();
+    public ResponseEntity registrar(@RequestBody @Valid Usuario usuario) {
+        Boolean sucesso = autenticacaoUseCase.registrar(usuario);
+        return sucesso ? ResponseEntity.noContent().build() : ResponseEntity.badRequest().build();
     }
 
     @PostMapping("/atualizartoken")
-    public ResponseEntity refresh(@RequestBody @Valid String refreshToken) {
-        try {
-            Usuario usuario = tokenService.validarRefreshToken(refreshToken);
-            UserDetails user = repository.findByEmail(usuario.getEmail());
-            return ResponseEntity.ok(tokenService.gerarToken((Usuario) user));
-        } catch (Exception e) {
-            return ResponseEntity.status(401).body(e.getMessage());
-        }
+    public ResponseEntity atualizarToken(@RequestBody @Valid String refreshToken) {
+        String token = autenticacaoUseCase.atualizarToken(refreshToken);
+        return token != null ? ResponseEntity.ok(token) : ResponseEntity.badRequest().build();
     }
 }

@@ -7,7 +7,6 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.UUID;
-import java.util.concurrent.CompletableFuture;
 
 @Component
 public class LocalUseCase implements ILocalUseCase {
@@ -20,27 +19,27 @@ public class LocalUseCase implements ILocalUseCase {
     }
 
     @Override
-    public CompletableFuture<List<Local>> obterTodosLocais() {
+    public List<Local> obterTodosLocais() {
         return localService.obterTodosLocais();
     }
 
     @Override
-    public CompletableFuture<Local> obterLocalPorId(UUID id) {
+    public Local obterLocalPorId(UUID id) {
         return localService.obterLocalPorId(id);
     }
 
     @Override
-    public CompletableFuture<Local> criarLocal(Local local) {
+    public Local criarLocal(Local local) {
         return localService.criarLocal(local);
     }
 
     @Override
-    public CompletableFuture<Boolean> atualizarLocal(UUID id, Local local) {
+    public Boolean atualizarLocal(UUID id, Local local) {
         return localService.atualizarLocal(id, local);
     }
 
     @Override
-    public CompletableFuture<Boolean> excluirLocal(UUID id) {
+    public Boolean excluirLocal(UUID id) {
         return localService.excluirLocal(id);
     }
 }

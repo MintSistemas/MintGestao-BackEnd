@@ -7,8 +7,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.UUID;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.Executors;
 
 @Service
 public class ClienteService implements IClienteService {
@@ -21,40 +19,36 @@ public class ClienteService implements IClienteService {
     }
 
     @Override
-    public CompletableFuture<List<Cliente>> obterTodosClientes() {
-        return CompletableFuture.supplyAsync(() -> clienteRepository.findAll(), Executors.newCachedThreadPool());
+    public List<Cliente> obterTodosClientes() {
+        return clienteRepository.findAll();
     }
 
     @Override
-    public CompletableFuture<Cliente> obterClientePorId(UUID id) {
-        return CompletableFuture.supplyAsync(() -> clienteRepository.findById(id).orElse(null), Executors.newCachedThreadPool());
+    public Cliente obterClientePorId(UUID id) {
+        return clienteRepository.findById(id).orElse(null);
     }
 
     @Override
-    public CompletableFuture<Cliente> criarCliente(Cliente cliente) {
-        return CompletableFuture.supplyAsync(() -> clienteRepository.save(cliente), Executors.newCachedThreadPool());
+    public Cliente criarCliente(Cliente cliente) {
+        return clienteRepository.save(cliente);
     }
 
     @Override
-    public CompletableFuture<Boolean> atualizarCliente(UUID id, Cliente cliente) {
-        return CompletableFuture.supplyAsync(() -> {
-            if (clienteRepository.existsById(id)) {
-                cliente.setId(id);
-                clienteRepository.save(cliente);
-                return true;
-            }
-            return false;
-        }, Executors.newCachedThreadPool());
+    public Boolean atualizarCliente(UUID id, Cliente cliente) {
+        if (clienteRepository.existsById(id)) {
+            cliente.setId(id);
+            clienteRepository.save(cliente);
+            return true;
+        }
+        return false;
     }
 
     @Override
-    public CompletableFuture<Boolean> excluirCliente(UUID id) {
-        return CompletableFuture.supplyAsync(() -> {
-            if (clienteRepository.existsById(id)) {
-                clienteRepository.deleteById(id);
-                return true;
-            }
-            return false;
-        }, Executors.newCachedThreadPool());
+    public Boolean excluirCliente(UUID id) {
+        if (clienteRepository.existsById(id)) {
+            clienteRepository.deleteById(id);
+            return true;
+        }
+        return false;
     }
 }
