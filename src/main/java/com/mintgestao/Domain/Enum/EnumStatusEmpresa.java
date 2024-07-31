@@ -1,12 +1,12 @@
 package com.mintgestao.Domain.Enum;
 
-public enum EnumStatusFilial {
+public enum EnumStatusEmpresa {
     Inativo(0),
     Ativo(1);
 
     private Integer enumValue;
 
-    EnumStatusFilial(Integer enumValue) {
+    EnumStatusEmpresa(Integer enumValue) {
         this.enumValue = enumValue;
     }
 

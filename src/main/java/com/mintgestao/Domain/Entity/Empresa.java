@@ -1,21 +1,18 @@
 package com.mintgestao.Domain.Entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.mintgestao.Domain.Enum.EnumStatusFilial;
+import com.mintgestao.Domain.Enum.EnumStatusEmpresa;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.TenantId;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 import java.util.UUID;
 
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-public class Filial {
+public class Empresa {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
@@ -34,7 +31,7 @@ public class Filial {
     private String cidade;
     private String bairro;
     private String cep;
-    private EnumStatusFilial status;
+    private EnumStatusEmpresa status;
     private Boolean padrao;
     private Date datahoracad;
 
