@@ -1,5 +1,8 @@
 FROM maven:3.9.5-amazoncorretto-21 AS build
-COPY src .
+WORKDIR /src
+COPY pom.xml .
+RUN mvn dependency:go-offline
+COPY src ./src
 RUN mvn clean package
 
 FROM amazoncorretto:21.0.4
