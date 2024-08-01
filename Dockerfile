@@ -5,4 +5,4 @@ RUN mvn clean package
 FROM amazoncorretto:21.0.4
 COPY --from=build /target/MintGestao-BackEnd-0.0.1-SNAPSHOT.jar MintGestao-0.0.1-SNAPSHOT.jar
 EXPOSE 8080
-ENTRYPOINT ["java", "-jar", "MintEcommerce-0.0.1-SNAPSHOT.jar"]
+ENTRYPOINT ["java", "-jar", "MintGestao-0.0.1-SNAPSHOT.jar"]
