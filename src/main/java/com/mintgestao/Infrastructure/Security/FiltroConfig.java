@@ -27,7 +27,7 @@ public class FiltroConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers(HttpMethod.POST, "/autenticacao/**").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/autenticacao/ping").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/ping").permitAll()
                         .requestMatchers(HttpMethod.GET, "/swagger-ui/*").permitAll()
                         .requestMatchers(HttpMethod.GET, "/v3/**").permitAll()
                         .anyRequest().authenticated()
