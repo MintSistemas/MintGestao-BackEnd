@@ -12,7 +12,7 @@ import java.util.concurrent.TimeUnit;
 
 @Component
 public class Pong {
-    private static final String URL = "https://mintgestao-api.onrender.com/autenticacao/ping";
+    private static final String URL = "https://mintgestao-api.onrender.com/ping";
 
     public static void pong() {
         HttpClient client = HttpClient.newHttpClient();

@@ -44,9 +44,4 @@ public class AutenticacaoController {
         String token = autenticacaoUseCase.atualizarToken(refreshToken);
         return token != null ? ResponseEntity.ok(token) : ResponseEntity.badRequest().build();
     }
-
-    @GetMapping("/ping")
-    public ResponseEntity getAll() {
-        return ResponseEntity.ok().build();
-    }
 }
