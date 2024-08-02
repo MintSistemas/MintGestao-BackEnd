@@ -9,6 +9,7 @@ import com.mintgestao.Infrastructure.Repository.UsuarioRepository;
 import com.mintgestao.Application.Service.Token.TokenService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -42,5 +43,10 @@ public class AutenticacaoController {
     public ResponseEntity atualizarToken(@RequestBody @Valid String refreshToken) {
         String token = autenticacaoUseCase.atualizarToken(refreshToken);
         return token != null ? ResponseEntity.ok(token) : ResponseEntity.badRequest().build();
+    }
+
+    @GetMapping("/ping")
+    public ResponseEntity getAll() {
+        return ResponseEntity.ok().build();
     }
 }
