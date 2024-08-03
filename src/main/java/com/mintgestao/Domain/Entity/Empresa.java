@@ -34,7 +34,7 @@ public class Empresa {
     private EnumStatusEmpresa status;
     private Boolean padrao;
     private Date datahoracad;
-
+    
     @TenantId
     private Integer idtenant;
 }
