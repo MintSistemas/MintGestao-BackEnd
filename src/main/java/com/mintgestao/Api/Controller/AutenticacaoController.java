@@ -4,6 +4,7 @@ import com.mintgestao.Application.UseCase.Autenticacao.IAutenticacaoUseCase;
 import com.mintgestao.Application.UseCase.Cliente.IClienteUseCase;
 import com.mintgestao.Domain.DTO.Login.LoginRequestDTO;
 import com.mintgestao.Domain.DTO.Login.LoginResponseDTO;
+import com.mintgestao.Domain.DTO.RefreshToken.RefreshTokenDTO;
 import com.mintgestao.Domain.Entity.Usuario;
 import com.mintgestao.Infrastructure.Repository.UsuarioRepository;
 import com.mintgestao.Application.Service.Token.TokenService;
@@ -40,8 +41,8 @@ public class AutenticacaoController {
     }
 
     @PostMapping("/atualizartoken")
-    public ResponseEntity atualizarToken(@RequestBody @Valid String refreshToken) {
-        String token = autenticacaoUseCase.atualizarToken(refreshToken);
+    public ResponseEntity atualizarToken(@RequestBody @Valid RefreshTokenDTO refreshTokenDTO) {
+        String token = autenticacaoUseCase.atualizarToken(refreshTokenDTO.refreshToken());
         return token != null ? ResponseEntity.ok(token) : ResponseEntity.badRequest().build();
     }
 }
