@@ -6,6 +6,7 @@ import com.mintgestao.Infrastructure.Tenant.TenantResolver;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 
@@ -19,14 +20,20 @@ public class TenantInterceptor implements HandlerInterceptor {
     private TokenService TokenService;
 
     @Override
-    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
-        String token = recuperarToken(request);
-        if (token == null) return true;
-        Usuario usuario = TokenService.validarToken(token);
-        if (usuario.getIdtenant() != null) {
-            tenantResolver.setCurrentTenant(usuario.getIdtenant());
+    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+        try{
+            String token = recuperarToken(request);
+            if (token == null) return true;
+            Usuario usuario = TokenService.validarToken(token);
+            if (usuario.getIdtenant() != null) {
+                tenantResolver.setCurrentTenant(usuario.getIdtenant());
+            }
+            return true;
+        } catch (Exception e) {
+            response.setStatus(401);
+            response.getWriter().write(e.getMessage());
+            return false;
         }
-        return true;
     }
 
     @Override

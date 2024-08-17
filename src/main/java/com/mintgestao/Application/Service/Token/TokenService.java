@@ -38,7 +38,7 @@ public class TokenService implements ITokenService {
         }
     }
 
-    public Usuario validarToken(String token) {
+    public Usuario validarToken(String token) throws Exception {
         try {
             Algorithm Algoritimo = Algorithm.HMAC256(secret);
             DecodedJWT jwt = JWT.require(Algoritimo)
@@ -51,7 +51,7 @@ public class TokenService implements ITokenService {
 
             return usuario;
         } catch (JWTVerificationException | JsonProcessingException e) {
-            throw new RuntimeException("Erro ao validar token", e);
+            throw new Exception("Erro ao validar token", e);
         }
     }
 

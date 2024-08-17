@@ -8,6 +8,7 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -33,7 +34,14 @@ public class Filtro extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         var token = recuperarToken(request);
         if (token != null) {
-            Usuario usuario = tokenService.validarToken(token);
+            Usuario usuario = null;
+            try {
+                usuario = tokenService.validarToken(token);
+            } catch (Exception e) {
+                response.setStatus(HttpServletResponse.SC_BAD_REQUEST); // 403 Forbidden
+                response.setContentType("application/json");
+                response.getWriter().write("{\"error\": \"Acesso negado. " + e.getMessage() + "\"}");
+            }
             UserDetails usuarioValidado = userReposirory.findByEmail(usuario.getEmail());
 
             var authentication = new UsernamePasswordAuthenticationToken(usuarioValidado, null, usuarioValidado.getAuthorities());
