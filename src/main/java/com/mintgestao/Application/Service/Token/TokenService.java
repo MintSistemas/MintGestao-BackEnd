@@ -51,7 +51,7 @@ public class TokenService implements ITokenService {
 
             return usuario;
         } catch (JWTVerificationException | JsonProcessingException e) {
-            throw new Exception("Erro ao validar token", e);
+            throw new Exception(e.getMessage());
         }
     }
 

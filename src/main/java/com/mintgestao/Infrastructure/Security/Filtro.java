@@ -10,6 +10,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -34,19 +35,19 @@ public class Filtro extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         var token = recuperarToken(request);
         if (token != null) {
-            Usuario usuario = null;
             try {
-                usuario = tokenService.validarToken(token);
-            } catch (Exception e) {
-                response.setStatus(HttpServletResponse.SC_BAD_REQUEST); // 403 Forbidden
-                response.setContentType("application/json");
-                response.getWriter().write("{\"error\": \"Acesso negado. " + e.getMessage() + "\"}");
-            }
-            UserDetails usuarioValidado = userReposirory.findByEmail(usuario.getEmail());
+                Usuario usuario = tokenService.validarToken(token);
+                UserDetails usuarioValidado = userReposirory.findByEmail(usuario.getEmail());
 
-            var authentication = new UsernamePasswordAuthenticationToken(usuarioValidado, null, usuarioValidado.getAuthorities());
-            SecurityContextHolder.getContext().setAuthentication(authentication);
-            TenantResolver.setCurrentTenant(usuario.getIdtenant());
+                var authentication = new UsernamePasswordAuthenticationToken(usuarioValidado, null, usuarioValidado.getAuthorities());
+                SecurityContextHolder.getContext().setAuthentication(authentication);
+                TenantResolver.setCurrentTenant(usuario.getIdtenant());
+
+            } catch (Exception e) {
+                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                response.getWriter().write(e.getMessage());
+                return;
+            }
         }
         filterChain.doFilter(request, response);
     }
