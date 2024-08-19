@@ -18,33 +18,33 @@ public class Evento {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
-    @NotBlank
+    @NotBlank(message = "Nome é obrigatório e deve ter entre 3 e 100 caracteres")
     @Size(min = 3, max = 100)
     private String nome;
-    @NotBlank
+    @NotBlank(message = "Sobrenome é obrigatório e deve ter entre 3 e 100 caracteres")
     @Size(min = 3, max = 100)
     private String sobrenome;
-    @NotBlank
+    @NotBlank(message = "Email é obrigatório")
     @Email
     private String email;
-    @NotBlank
+    @NotBlank(message = "Telefone é obrigatório")
     private String telefone;
-    @NotNull
+    @NotNull(message = "Valor total é obrigatório")
     @Positive
     private double valortotal;
-    @NotNull
+    @NotNull(message = "Valor hora é obrigatório")
     @Positive
     private double valorhora;
-    @NotBlank
+    @NotNull(message = "Hora inicial é obrigatório")
     @Future
     private Date horainicio;
-    @NotBlank
+    @NotNull(message = "Hora final é obrigatório")
     @Future
     private Date horafim;
     @NotNull
     private Date datahoracadastro;
 
-    @NotNull
+    @NotNull(message = "Local é obrigatório")
     @ManyToOne
     private Local local;
 

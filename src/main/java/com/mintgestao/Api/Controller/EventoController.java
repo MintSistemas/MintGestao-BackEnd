@@ -3,8 +3,10 @@ package com.mintgestao.Api.Controller;
 import com.mintgestao.Application.UseCase.Evento.EventoUseCase;
 import com.mintgestao.Domain.Entity.Evento;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -44,7 +46,7 @@ public class EventoController {
     }
 
     @PostMapping
-    public ResponseEntity criarEvento(@RequestBody Evento evento) {
+    public ResponseEntity criarEvento(@Valid @RequestBody Evento evento) {
         try {
             Evento novoEvento = eventoUseCase.criarEvento(evento);
             return ResponseEntity.created(null).body(novoEvento);
@@ -54,7 +56,7 @@ public class EventoController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity atualizarEvento(@PathVariable UUID id, @RequestBody Evento evento) {
+    public ResponseEntity atualizarEvento(@Valid @PathVariable UUID id, @RequestBody Evento evento) {
         try {
             eventoUseCase.atualizarEvento(id, evento);
             return ResponseEntity.ok().build();
@@ -64,7 +66,7 @@ public class EventoController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity excluirEvento(@PathVariable UUID id) {
+    public ResponseEntity excluirEvento(@Valid @PathVariable UUID id) {
         try {
             eventoUseCase.excluirEvento(id);
             return ResponseEntity.ok().build();
