@@ -25,7 +25,7 @@ public class Evento {
     @Size(min = 3, max = 100)
     private String sobrenome;
     @NotBlank(message = "Email é obrigatório")
-    @Email
+    @Email(message = "Insira um email válido")
     private String email;
     @NotBlank(message = "Telefone é obrigatório")
     private String telefone;
@@ -36,10 +36,9 @@ public class Evento {
     @Positive
     private double valorhora;
     @NotNull(message = "Hora inicial é obrigatório")
-    @Future
     private Date horainicio;
     @NotNull(message = "Hora final é obrigatório")
-    @Future
+    @Future(message = "Hora fim deve ser maior que a data atual")
     private Date horafim;
     @NotNull
     private Date datahoracadastro;
