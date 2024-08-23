@@ -7,6 +7,7 @@ import java.util.UUID;
 
 public interface IEventoUseCase {
     List<Evento> obterTodosEventos() throws Exception;
+    List<Evento> obterEventosPorLocal(UUID id) throws Exception;
     Evento obterEventoPorId(UUID id) throws Exception;
     Evento criarEvento(Evento evento) throws Exception;
     void atualizarEvento(UUID id, Evento evento) throws Exception;

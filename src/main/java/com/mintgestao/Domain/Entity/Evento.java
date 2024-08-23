@@ -1,5 +1,7 @@
 package com.mintgestao.Domain.Entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
@@ -45,6 +47,7 @@ public class Evento {
 
     @NotNull(message = "Local é obrigatório")
     @ManyToOne
+    @JsonIgnore
     private Local local;
 
     @ManyToOne

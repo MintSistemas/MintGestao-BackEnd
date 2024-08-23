@@ -29,6 +29,15 @@ public class EventoUseCase implements IEventoUseCase {
     }
 
     @Override
+    public List<Evento> obterEventosPorLocal(UUID id) throws Exception {
+        try {
+            return eventoService.obterEventosPorLocal(id);
+        } catch (Exception e) {
+            throw new Exception(e.getMessage());
+        }
+    }
+
+    @Override
     public Evento obterEventoPorId(UUID id) throws Exception {
         try {
             return eventoService.obterEventoPorId(id);

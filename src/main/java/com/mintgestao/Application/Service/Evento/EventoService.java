@@ -28,6 +28,15 @@ public class EventoService implements IEventoService {
     }
 
     @Override
+    public List<Evento> obterEventosPorLocal(UUID id) throws Exception {
+        try {
+            return eventoRepository.findByLocalId(id);
+        } catch (Exception e) {
+            throw new Exception(e.getMessage());
+        }
+    }
+
+    @Override
     public Evento obterEventoPorId(UUID id) throws Exception {
         try {
             return eventoRepository.findById(id).orElseThrow();

@@ -35,6 +35,16 @@ public class EventoController {
         }
     }
 
+    @GetMapping("/buscarporlocal/{id}")
+    public ResponseEntity obterEventosPorLocal(@PathVariable UUID id) {
+        try {
+            List<Evento> eventos = eventoUseCase.obterEventosPorLocal(id);
+            return ResponseEntity.ok(eventos);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity obterEventoPorId(@PathVariable UUID id) {
         try {
