@@ -1,7 +1,5 @@
 package com.mintgestao.Domain.Entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
@@ -21,10 +19,10 @@ public class Evento {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
     @NotBlank(message = "Nome é obrigatório e deve ter entre 3 e 100 caracteres")
-    @Size(min = 3, max = 100)
+    @Size(min = 3, max = 100, message = "Nome deve ter entre 3 e 100 caracteres")
     private String nome;
     @NotBlank(message = "Sobrenome é obrigatório e deve ter entre 3 e 100 caracteres")
-    @Size(min = 3, max = 100)
+    @Size(min = 3, max = 100, message = "Sobrenome deve ter entre 3 e 100 caracteres")
     private String sobrenome;
     @NotBlank(message = "Email é obrigatório")
     @Email(message = "Insira um email válido")
@@ -32,10 +30,10 @@ public class Evento {
     @NotBlank(message = "Telefone é obrigatório")
     private String telefone;
     @NotNull(message = "Valor total é obrigatório")
-    @Positive
+    @Positive(message = "Valor total deve ser maior que zero")
     private double valortotal;
     @NotNull(message = "Valor hora é obrigatório")
-    @Positive
+    @Positive(message = "Valor hora deve ser maior que zero")
     private double valorhora;
     @NotNull(message = "Hora inicial é obrigatório")
     private Date horainicio;
@@ -47,7 +45,6 @@ public class Evento {
 
     @NotNull(message = "Local é obrigatório")
     @ManyToOne
-    @JsonIgnore
     private Local local;
 
     @ManyToOne
