@@ -38,10 +38,10 @@ public class Evento {
     @NotNull(message = "Hora inicial é obrigatório")
     private Date horainicio;
     @NotNull(message = "Hora final é obrigatório")
-    @Future(message = "Hora fim deve ser maior que a data atual")
+    @Future(message = "Não é possível cadastrar um evento com a data menor que a atual")
     private Date horafim;
-    @NotNull
-    private Date datahoracadastro;
+
+    private Date datahoracadastro = new Date();
 
     @NotNull(message = "Local é obrigatório")
     @ManyToOne
