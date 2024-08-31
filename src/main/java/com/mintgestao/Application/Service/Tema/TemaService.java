@@ -38,7 +38,7 @@ public class TemaService implements ITemaService {
     @Override
     public Tema obterTemaPorUsuario(UUID id) throws Exception {
         try {
-            return temaRepository.findByUsuarioId(id).orElseThrow();
+            return temaRepository.findByUsuarioId(id).orElse(null);
         } catch (Exception e) {
             throw new Exception(e.getMessage());
         }
@@ -47,6 +47,9 @@ public class TemaService implements ITemaService {
     @Override
     public Tema criarTema(Tema tema) throws Exception {
         try {
+            temaRepository.findByUsuarioId(tema.getUsuario().getId()).ifPresent(t -> {
+                tema.setId(t.getId());
+            });
             return temaRepository.save(tema);
         } catch (Exception e) {
             throw new Exception(e.getMessage());
