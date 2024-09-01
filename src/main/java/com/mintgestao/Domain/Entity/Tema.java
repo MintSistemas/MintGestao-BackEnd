@@ -18,7 +18,7 @@ public class Tema {
 
     private String borderRadius;
 
-    private boolean isDarkMode;
+    private boolean darkMode;
 
     private String primaryColor;
 
