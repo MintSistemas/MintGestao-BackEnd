@@ -29,7 +29,7 @@ public class AutenticacaoController {
     }
 
     @PostMapping("/entrar")
-    public ResponseEntity<LoginResponseDTO> entrar(@RequestBody @Valid LoginRequestDTO data) {
+    public ResponseEntity<LoginResponseDTO> entrar(@RequestBody @Valid LoginRequestDTO data) throws Exception {
         LoginResponseDTO dto = autenticacaoUseCase.entrar(data);
         return dto != null ? ResponseEntity.ok(dto) : ResponseEntity.badRequest().build();
     }

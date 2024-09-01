@@ -1,8 +1,10 @@
 package com.mintgestao.Application.Service.Autenticacao;
 
+import com.mintgestao.Application.Service.Tema.TemaService;
 import com.mintgestao.Application.Service.Token.TokenService;
 import com.mintgestao.Domain.DTO.Login.LoginRequestDTO;
 import com.mintgestao.Domain.DTO.Login.LoginResponseDTO;
+import com.mintgestao.Domain.Entity.Tema;
 import com.mintgestao.Domain.Entity.Usuario;
 import com.mintgestao.Infrastructure.Repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,16 +26,20 @@ public class AutenticacaoService implements IAutenticacaoService {
 
     @Autowired
     private AuthenticationManager authenticationManager;
+    @Autowired
+    private TemaService temaService;
 
     @Override
-    public LoginResponseDTO entrar(LoginRequestDTO data) {
+    public LoginResponseDTO entrar(LoginRequestDTO data) throws Exception {
         var usernamePassword = new UsernamePasswordAuthenticationToken(data.email(), data.senha());
         var auth = authenticationManager.authenticate(usernamePassword);
         var token = tokenService.gerarToken((Usuario) auth.getPrincipal());
         var refreshToken = tokenService.gerarRefreshToken((Usuario) auth.getPrincipal());
 
         Usuario usuario = (Usuario) repository.findByEmail(data.email());
-        return new LoginResponseDTO(usuario, token, refreshToken);
+        Tema tema = temaService.obterTemaPorUsuario(usuario.getId());
+
+        return new LoginResponseDTO(usuario, token, refreshToken, tema);
     }
 
     @Override

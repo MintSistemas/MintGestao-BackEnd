@@ -19,7 +19,7 @@ public class AutenticacaoUseCase implements IAutenticacaoUseCase {
     }
 
     @Override
-    public LoginResponseDTO entrar(LoginRequestDTO loginRequestDTO) {
+    public LoginResponseDTO entrar(LoginRequestDTO loginRequestDTO) throws Exception {
         return autenticacaoService.entrar(loginRequestDTO);
     }
 
