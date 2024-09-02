@@ -19,36 +19,53 @@ public class EmpresaService implements IEmpresaService {
     }
 
     @Override
-    public List<Empresa> obterTodosLocais() {
-        return empresaRepository.findAll();
-    }
-
-    @Override
-    public Empresa obterEmpresaPorId(UUID id) {
-        return empresaRepository.findById(id).orElse(null);
-    }
-
-    @Override
-    public Empresa criarEmpresa(Empresa empresa) {
-        return empresaRepository.save(empresa);
-    }
-
-    @Override
-    public Boolean atualizarEmpresa(UUID id, Empresa empresa) {
-        if (empresaRepository.existsById(id)) {
-            empresa.setId(id);
-            empresaRepository.save(empresa);
-            return true;
+    public List<Empresa> obterTodasEmpresas() throws Exception {
+        try {
+            return empresaRepository.findAll();
+        } catch (Exception e) {
+            throw new Exception(e.getMessage());
         }
-        return false;
     }
 
     @Override
-    public Boolean excluirEmpresa(UUID id) {
-        if (empresaRepository.existsById(id)) {
+    public Empresa obterEmpresaPorId(UUID id) throws Exception {
+        try {
+            return empresaRepository.findById(id).orElseThrow();
+        } catch (Exception e) {
+            throw new Exception(e.getMessage());
+        }
+    }
+
+    @Override
+    public Empresa criarEmpresa(Empresa empresa) throws Exception {
+        try {
+            return empresaRepository.save(empresa);
+        } catch (Exception e) {
+            throw new Exception(e.getMessage());
+        }
+    }
+
+    @Override
+    public Boolean atualizarEmpresa(UUID id, Empresa empresa) throws Exception {
+       try {
+            if (empresaRepository.existsById(id)) {
+                empresa.setId(id);
+                empresaRepository.save(empresa);
+                return true;
+            }
+            return false;
+        } catch (Exception e) {
+            throw new Exception(e.getMessage());
+        }
+    }
+
+    @Override
+    public Boolean excluirEmpresa(UUID id) throws Exception {
+        try {
             empresaRepository.deleteById(id);
             return true;
+        } catch (Exception e) {
+            throw new Exception(e.getMessage());
         }
-        return false;
     }
 }

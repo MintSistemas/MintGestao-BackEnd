@@ -19,27 +19,47 @@ public class ClienteUseCase implements IClienteUseCase {
     }
 
     @Override
-    public List<Cliente> obterTodosClientes() {
-        return clienteService.obterTodosClientes();
+    public List<Cliente> obterTodosClientes() throws Exception {
+        try {
+            return clienteService.obterTodosClientes();
+        } catch (Exception e) {
+            throw new Exception(e.getMessage());
+        }
     }
 
     @Override
-    public Cliente obterClientePorId(UUID id) {
-        return clienteService.obterClientePorId(id);
+    public Cliente obterClientePorId(UUID id) throws Exception {
+        try {
+            return clienteService.obterClientePorId(id);
+        } catch (Exception e) {
+            throw new Exception(e.getMessage());
+        }
     }
 
     @Override
-    public Cliente criarCliente(Cliente cliente) {
-        return clienteService.criarCliente(cliente);
+    public Cliente criarCliente(Cliente cliente) throws Exception {
+        try {
+            return clienteService.criarCliente(cliente);
+        } catch (Exception e) {
+            throw new Exception(e.getMessage());
+        }
     }
 
     @Override
-    public Boolean atualizarCliente(UUID id, Cliente cliente) {
-        return clienteService.atualizarCliente(id, cliente);
+    public Boolean atualizarCliente(UUID id, Cliente cliente) throws Exception {
+        try {
+            return clienteService.atualizarCliente(id, cliente);
+        } catch (Exception e) {
+            throw new Exception(e.getMessage());
+        }
     }
 
     @Override
-    public Boolean excluirCliente(UUID id) {
-        return clienteService.excluirCliente(id);
+    public Boolean excluirCliente(UUID id) throws Exception {
+        try {
+            return clienteService.excluirCliente(id);
+        } catch (Exception e) {
+            throw new Exception(e.getMessage());
+        }
     }
 }

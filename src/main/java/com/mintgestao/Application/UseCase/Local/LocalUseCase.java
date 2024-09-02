@@ -19,27 +19,47 @@ public class LocalUseCase implements ILocalUseCase {
     }
 
     @Override
-    public List<Local> obterTodosLocais() {
-        return localService.obterTodosLocais();
+    public List<Local> obterTodosLocais() throws Exception {
+        try {
+            return localService.obterTodosLocais();
+        } catch (Exception e) {
+            throw new Exception(e.getMessage());
+        }
     }
 
     @Override
-    public Local obterLocalPorId(UUID id) {
-        return localService.obterLocalPorId(id);
+    public Local obterLocalPorId(UUID id) throws Exception {
+        try {
+            return localService.obterLocalPorId(id);
+        } catch (Exception e) {
+            throw new Exception(e.getMessage());
+        }
     }
 
     @Override
-    public Local criarLocal(Local local) {
-        return localService.criarLocal(local);
+    public Local criarLocal(Local local) throws Exception {
+        try {
+            return localService.criarLocal(local);
+        } catch (Exception e) {
+            throw new Exception(e.getMessage());
+        }
     }
 
     @Override
-    public Boolean atualizarLocal(UUID id, Local local) {
-        return localService.atualizarLocal(id, local);
+    public Boolean atualizarLocal(UUID id, Local local) throws Exception {
+        try {
+            return localService.atualizarLocal(id, local);
+        } catch (Exception e) {
+            throw new Exception(e.getMessage());
+        }
     }
 
     @Override
-    public Boolean excluirLocal(UUID id) {
-        return localService.excluirLocal(id);
+    public Boolean excluirLocal(UUID id) throws Exception {
+        try {
+            return localService.excluirLocal(id);
+        } catch (Exception e) {
+            throw new Exception(e.getMessage());
+        }
     }
 }

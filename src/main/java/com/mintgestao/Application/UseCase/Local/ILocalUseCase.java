@@ -6,9 +6,9 @@ import java.util.List;
 import java.util.UUID;
 
 public interface ILocalUseCase {
-    List<Local> obterTodosLocais();
-    Local obterLocalPorId(UUID id);
-    Local criarLocal(Local local);
-    Boolean atualizarLocal(UUID id, Local local);
-    Boolean excluirLocal(UUID id);
+    List<Local> obterTodosLocais() throws Exception;
+    Local obterLocalPorId(UUID id) throws Exception;
+    Local criarLocal(Local local) throws Exception;
+    Boolean atualizarLocal(UUID id, Local local) throws Exception;
+    Boolean excluirLocal(UUID id) throws Exception;
 }

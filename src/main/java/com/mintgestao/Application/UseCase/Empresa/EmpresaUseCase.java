@@ -19,27 +19,47 @@ public class EmpresaUseCase implements IEmpresaUseCase {
     }
 
     @Override
-    public List<Empresa> obterTodosLocais() {
-        return empresaService.obterTodosLocais();
+    public List<Empresa> obterTodasEmpresas() throws Exception {
+        try {
+            return empresaService.obterTodasEmpresas();
+        } catch (Exception e) {
+            throw new Exception(e.getMessage());
+        }
     }
 
     @Override
-    public Empresa obterEmpresaPorId(UUID id) {
-        return empresaService.obterEmpresaPorId(id);
+    public Empresa obterEmpresaPorId(UUID id) throws Exception {
+        try {
+            return empresaService.obterEmpresaPorId(id);
+        } catch (Exception e) {
+            throw new Exception(e.getMessage());
+        }
     }
 
     @Override
-    public Empresa criarEmpresa(Empresa empresa) {
-        return empresaService.criarEmpresa(empresa);
+    public Empresa criarEmpresa(Empresa empresa) throws Exception {
+        try {
+            return empresaService.criarEmpresa(empresa);
+        } catch (Exception e) {
+            throw new Exception(e.getMessage());
+        }
     }
 
     @Override
-    public Boolean atualizarEmpresa(UUID id, Empresa empresa) {
-        return empresaService.atualizarEmpresa(id, empresa);
+    public Boolean atualizarEmpresa(UUID id, Empresa empresa) throws Exception {
+        try {
+            return empresaService.atualizarEmpresa(id, empresa);
+        } catch (Exception e) {
+            throw new Exception(e.getMessage());
+        }
     }
 
     @Override
-    public Boolean excluirEmpresa(UUID id) {
-        return empresaService.excluirEmpresa(id);
+    public Boolean excluirEmpresa(UUID id) throws Exception {
+        try {
+            return empresaService.excluirEmpresa(id);
+        } catch (Exception e) {
+            throw new Exception(e.getMessage());
+        }
     }
 }

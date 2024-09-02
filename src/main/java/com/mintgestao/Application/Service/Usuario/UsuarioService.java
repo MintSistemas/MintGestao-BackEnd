@@ -19,36 +19,53 @@ public class UsuarioService implements IUsuarioService {
     }
 
     @Override
-    public List<Usuario> obterTodosUsuarios() {
-        return usuarioRepository.findAll();
-    }
-
-    @Override
-    public Usuario obterUsuarioPorId(UUID id) {
-        return usuarioRepository.findById(id).orElse(null);
-    }
-
-    @Override
-    public Usuario criarUsuario(Usuario usuario) {
-        return usuarioRepository.save(usuario);
-    }
-
-    @Override
-    public Boolean atualizarUsuario(UUID id, Usuario usuario) {
-        if (usuarioRepository.existsById(id)) {
-            usuario.setId(id);
-            usuarioRepository.save(usuario);
-            return true;
+    public List<Usuario> obterTodosUsuarios() throws Exception {
+        try {
+            return usuarioRepository.findAll();
+        } catch (Exception e) {
+            throw new Exception(e.getMessage());
         }
-        return false;
     }
 
     @Override
-    public Boolean excluirUsuario(UUID id) {
-        if (usuarioRepository.existsById(id)) {
+    public Usuario obterUsuarioPorId(UUID id) throws Exception {
+        try {
+            return usuarioRepository.findById(id).orElseThrow();
+        } catch (Exception e) {
+            throw new Exception(e.getMessage());
+        }
+    }
+
+    @Override
+    public Usuario criarUsuario(Usuario usuario) throws Exception {
+        try {
+            return usuarioRepository.save(usuario);
+        } catch (Exception e) {
+            throw new Exception(e.getMessage());
+        }
+    }
+
+    @Override
+    public Boolean atualizarUsuario(UUID id, Usuario usuario) throws Exception {
+        try {
+            if (usuarioRepository.existsById(id)) {
+                usuario.setId(id);
+                usuarioRepository.save(usuario);
+                return true;
+            }
+            return false;
+        } catch (Exception e) {
+            throw new Exception(e.getMessage());
+        }
+    }
+
+    @Override
+    public Boolean excluirUsuario(UUID id) throws Exception {
+        try {
             usuarioRepository.deleteById(id);
             return true;
+        } catch (Exception e) {
+            throw new Exception(e.getMessage());
         }
-        return false;
     }
 }

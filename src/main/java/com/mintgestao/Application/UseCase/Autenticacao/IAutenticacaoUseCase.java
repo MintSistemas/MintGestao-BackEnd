@@ -6,6 +6,6 @@ import com.mintgestao.Domain.Entity.Usuario;
 
 public interface IAutenticacaoUseCase {
     LoginResponseDTO entrar(LoginRequestDTO loginRequestDTO) throws Exception;
-    Boolean registrar(Usuario usuario);
-    String atualizarToken(String refreshToken);
+    Boolean registrar(Usuario usuario) throws Exception;
+    String atualizarToken(String refreshToken) throws Exception;
 }

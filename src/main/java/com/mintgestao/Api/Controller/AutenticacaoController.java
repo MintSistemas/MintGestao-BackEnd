@@ -29,20 +29,32 @@ public class AutenticacaoController {
     }
 
     @PostMapping("/entrar")
-    public ResponseEntity<LoginResponseDTO> entrar(@RequestBody @Valid LoginRequestDTO data) throws Exception {
-        LoginResponseDTO dto = autenticacaoUseCase.entrar(data);
-        return dto != null ? ResponseEntity.ok(dto) : ResponseEntity.badRequest().build();
+    public ResponseEntity entrar(@RequestBody @Valid LoginRequestDTO data) throws Exception {
+        try {
+            LoginResponseDTO loginResponseDTO = autenticacaoUseCase.entrar(data);
+            return ResponseEntity.ok(loginResponseDTO);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 
     @PostMapping("/registrar")
     public ResponseEntity registrar(@RequestBody @Valid Usuario usuario) {
-        Boolean sucesso = autenticacaoUseCase.registrar(usuario);
-        return sucesso ? ResponseEntity.noContent().build() : ResponseEntity.badRequest().build();
+        try {
+            Boolean sucesso = autenticacaoUseCase.registrar(usuario);
+            return sucesso ? ResponseEntity.noContent().build() : ResponseEntity.badRequest().build();
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 
     @PostMapping("/atualizartoken")
     public ResponseEntity atualizarToken(@RequestBody @Valid RefreshTokenDTO refreshTokenDTO) {
-        String token = autenticacaoUseCase.atualizarToken(refreshTokenDTO.refreshToken());
-        return token != null ? ResponseEntity.ok(token) : ResponseEntity.badRequest().build();
+        try {
+            String token = autenticacaoUseCase.atualizarToken(refreshTokenDTO.refreshToken());
+            return token != null ? ResponseEntity.ok(token) : ResponseEntity.badRequest().build();
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 }

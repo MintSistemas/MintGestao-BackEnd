@@ -67,8 +67,8 @@ public class TemaController {
     @PutMapping("/{id}")
     public ResponseEntity atualizarTema(@PathVariable UUID id, @Valid @RequestBody Tema tema) {
         try {
-            Boolean atualizado = temaUseCase.atualizarTema(id, tema);
-            return ResponseEntity.ok(atualizado);
+            temaUseCase.atualizarTema(id, tema);
+            return ResponseEntity.ok().build();
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
@@ -77,8 +77,8 @@ public class TemaController {
     @DeleteMapping("/{id}")
     public ResponseEntity excluirTema(@PathVariable UUID id) {
         try {
-            Boolean excluido = temaUseCase.excluirTema(id);
-            return ResponseEntity.ok(excluido);
+            temaUseCase.excluirTema(id);
+            return ResponseEntity.ok().build();
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }

@@ -19,36 +19,53 @@ public class ClienteService implements IClienteService {
     }
 
     @Override
-    public List<Cliente> obterTodosClientes() {
-        return clienteRepository.findAll();
-    }
-
-    @Override
-    public Cliente obterClientePorId(UUID id) {
-        return clienteRepository.findById(id).orElse(null);
-    }
-
-    @Override
-    public Cliente criarCliente(Cliente cliente) {
-        return clienteRepository.save(cliente);
-    }
-
-    @Override
-    public Boolean atualizarCliente(UUID id, Cliente cliente) {
-        if (clienteRepository.existsById(id)) {
-            cliente.setId(id);
-            clienteRepository.save(cliente);
-            return true;
+    public List<Cliente> obterTodosClientes() throws Exception {
+        try {
+            return clienteRepository.findAll();
+        } catch (Exception e) {
+            throw new Exception(e.getMessage());
         }
-        return false;
     }
 
     @Override
-    public Boolean excluirCliente(UUID id) {
-        if (clienteRepository.existsById(id)) {
+    public Cliente obterClientePorId(UUID id) throws Exception {
+        try {
+            return clienteRepository.findById(id).orElseThrow();
+        } catch (Exception e) {
+            throw new Exception(e.getMessage());
+        }
+    }
+
+    @Override
+    public Cliente criarCliente(Cliente cliente) throws Exception {
+        try {
+            return clienteRepository.save(cliente);
+        } catch (Exception e) {
+            throw new Exception(e.getMessage());
+        }
+    }
+
+    @Override
+    public Boolean atualizarCliente(UUID id, Cliente cliente) throws Exception {
+        try {
+            if (clienteRepository.existsById(id)) {
+                cliente.setId(id);
+                clienteRepository.save(cliente);
+                return true;
+            }
+            return false;
+        } catch (Exception e) {
+            throw new Exception(e.getMessage());
+        }
+    }
+
+    @Override
+    public Boolean excluirCliente(UUID id) throws Exception {
+        try {
             clienteRepository.deleteById(id);
             return true;
+        } catch (Exception e) {
+            throw new Exception(e.getMessage());
         }
-        return false;
     }
 }

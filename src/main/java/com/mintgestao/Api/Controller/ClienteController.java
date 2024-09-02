@@ -24,32 +24,52 @@ public class ClienteController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Cliente>> obterTodosClientes() {
-        List<Cliente> clientes = clienteUseCase.obterTodosClientes();
-        return ResponseEntity.ok(clientes);
+    public ResponseEntity obterTodosClientes() {
+        try {
+            List<Cliente> clientes = clienteUseCase.obterTodosClientes();
+            return ResponseEntity.ok(clientes);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Cliente> obterClientePorId(@PathVariable UUID id) {
-        Cliente cliente = clienteUseCase.obterClientePorId(id);
-        return cliente != null ? ResponseEntity.ok(cliente) : ResponseEntity.notFound().build();
+    public ResponseEntity obterClientePorId(@PathVariable UUID id) {
+        try {
+            Cliente cliente = clienteUseCase.obterClientePorId(id);
+            return ResponseEntity.ok(cliente);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 
     @PostMapping
-    public ResponseEntity<Cliente> criarCliente(@RequestBody Cliente cliente) {
-        Cliente novoCliente = clienteUseCase.criarCliente(cliente);
-        return ResponseEntity.created(null).body(novoCliente);
+    public ResponseEntity criarCliente(@RequestBody Cliente cliente) {
+        try {
+            Cliente novoCliente = clienteUseCase.criarCliente(cliente);
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Void> atualizarCliente(@PathVariable UUID id, @RequestBody Cliente cliente) {
-        Boolean sucesso = clienteUseCase.atualizarCliente(id, cliente);
-        return sucesso ? ResponseEntity.noContent().build() : ResponseEntity.notFound().build();
+    public ResponseEntity atualizarCliente(@PathVariable UUID id, @RequestBody Cliente cliente) {
+        try {
+            clienteUseCase.atualizarCliente(id, cliente);
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> excluirCliente(@PathVariable UUID id) {
-        Boolean sucesso = clienteUseCase.excluirCliente(id);
-        return sucesso ? ResponseEntity.noContent().build() : ResponseEntity.notFound().build();
+    public ResponseEntity excluirCliente(@PathVariable UUID id) {
+        try {
+            clienteUseCase.excluirCliente(id);
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 }

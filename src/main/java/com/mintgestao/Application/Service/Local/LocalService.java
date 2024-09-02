@@ -19,36 +19,53 @@ public class LocalService implements ILocalService {
     }
 
     @Override
-    public List<Local> obterTodosLocais() {
-        return localRepository.findAll();
-    }
-
-    @Override
-    public Local obterLocalPorId(UUID id) {
-        return localRepository.findById(id).orElse(null);
-    }
-
-    @Override
-    public Local criarLocal(Local local) {
-        return localRepository.save(local);
-    }
-
-    @Override
-    public Boolean atualizarLocal(UUID id, Local local) {
-        if (localRepository.existsById(id)) {
-            local.setId(id);
-            localRepository.save(local);
-            return true;
+    public List<Local> obterTodosLocais() throws Exception {
+        try {
+            return localRepository.findAll();
+        } catch (Exception e) {
+            throw new Exception(e.getMessage());
         }
-        return false;
     }
 
     @Override
-    public Boolean excluirLocal(UUID id) {
-        if (localRepository.existsById(id)) {
+    public Local obterLocalPorId(UUID id) throws Exception {
+        try {
+            return localRepository.findById(id).orElseThrow();
+        } catch (Exception e) {
+            throw new Exception(e.getMessage());
+        }
+    }
+
+    @Override
+    public Local criarLocal(Local local) throws Exception {
+        try {
+            return localRepository.save(local);
+        } catch (Exception e) {
+            throw new Exception(e.getMessage());
+        }
+    }
+
+    @Override
+    public Boolean atualizarLocal(UUID id, Local local) throws Exception {
+       try {
+            if (localRepository.existsById(id)) {
+                local.setId(id);
+                localRepository.save(local);
+                return true;
+            }
+            return false;
+        } catch (Exception e) {
+            throw new Exception(e.getMessage());
+        }
+    }
+
+    @Override
+    public Boolean excluirLocal(UUID id) throws Exception {
+        try {
             localRepository.deleteById(id);
             return true;
+        } catch (Exception e) {
+            throw new Exception(e.getMessage());
         }
-        return false;
     }
 }

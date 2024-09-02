@@ -7,9 +7,9 @@ import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
 public interface IClienteService {
-    List<Cliente> obterTodosClientes();
-    Cliente obterClientePorId(UUID id);
-    Cliente criarCliente(Cliente cliente);
-    Boolean atualizarCliente(UUID id, Cliente cliente);
-    Boolean excluirCliente(UUID id);
+    List<Cliente> obterTodosClientes() throws Exception;
+    Cliente obterClientePorId(UUID id) throws Exception;
+    Cliente criarCliente(Cliente cliente) throws Exception;
+    Boolean atualizarCliente(UUID id, Cliente cliente) throws Exception;
+    Boolean excluirCliente(UUID id) throws Exception;
 }

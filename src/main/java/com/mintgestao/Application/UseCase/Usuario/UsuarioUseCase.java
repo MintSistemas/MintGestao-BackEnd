@@ -19,27 +19,47 @@ public class UsuarioUseCase implements IUsuarioUseCase {
     }
 
     @Override
-    public List<Usuario> obterTodosUsuarios() {
-        return usuarioService.obterTodosUsuarios();
+    public List<Usuario> obterTodosUsuarios() throws Exception {
+        try {
+            return usuarioService.obterTodosUsuarios();
+        } catch (Exception e) {
+            throw new Exception(e.getMessage());
+        }
     }
 
     @Override
-    public Usuario obterUsuarioPorId(UUID id) {
-        return usuarioService.obterUsuarioPorId(id);
+    public Usuario obterUsuarioPorId(UUID id) throws Exception {
+        try {
+            return usuarioService.obterUsuarioPorId(id);
+        } catch (Exception e) {
+            throw new Exception(e.getMessage());
+        }
     }
 
     @Override
-    public Usuario criarUsuario(Usuario usuario) {
-        return usuarioService.criarUsuario(usuario);
+    public Usuario criarUsuario(Usuario usuario) throws Exception {
+        try {
+            return usuarioService.criarUsuario(usuario);
+        } catch (Exception e) {
+            throw new Exception(e.getMessage());
+        }
     }
 
     @Override
-    public Boolean atualizarUsuario(UUID id, Usuario usuario) {
-        return usuarioService.atualizarUsuario(id, usuario);
+    public Boolean atualizarUsuario(UUID id, Usuario usuario) throws Exception {
+        try {
+            return usuarioService.atualizarUsuario(id, usuario);
+        } catch (Exception e) {
+            throw new Exception(e.getMessage());
+        }
     }
 
     @Override
-    public Boolean excluirUsuario(UUID id) {
-        return usuarioService.excluirUsuario(id);
+    public Boolean excluirUsuario(UUID id) throws Exception {
+        try {
+            return usuarioService.excluirUsuario(id);
+        } catch (Exception e) {
+            throw new Exception(e.getMessage());
+        }
     }
 }

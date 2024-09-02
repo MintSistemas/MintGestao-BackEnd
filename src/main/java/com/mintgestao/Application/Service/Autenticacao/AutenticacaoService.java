@@ -31,30 +31,42 @@ public class AutenticacaoService implements IAutenticacaoService {
 
     @Override
     public LoginResponseDTO entrar(LoginRequestDTO data) throws Exception {
-        var usernamePassword = new UsernamePasswordAuthenticationToken(data.email(), data.senha());
-        var auth = authenticationManager.authenticate(usernamePassword);
-        var token = tokenService.gerarToken((Usuario) auth.getPrincipal());
-        var refreshToken = tokenService.gerarRefreshToken((Usuario) auth.getPrincipal());
+        try {
+            var usernamePassword = new UsernamePasswordAuthenticationToken(data.email(), data.senha());
+            var auth = authenticationManager.authenticate(usernamePassword);
+            var token = tokenService.gerarToken((Usuario) auth.getPrincipal());
+            var refreshToken = tokenService.gerarRefreshToken((Usuario) auth.getPrincipal());
 
-        Usuario usuario = (Usuario) repository.findByEmail(data.email());
-        Tema tema = temaService.obterTemaPorUsuario(usuario.getId());
+            Usuario usuario = (Usuario) repository.findByEmail(data.email());
+            Tema tema = temaService.obterTemaPorUsuario(usuario.getId());
 
-        return new LoginResponseDTO(usuario, token, refreshToken, tema);
+            return new LoginResponseDTO(usuario, token, refreshToken, tema);
+        } catch (Exception e) {
+            throw new Exception(e.getMessage());
+        }
     }
 
     @Override
-    public Boolean registrar(Usuario usuario) {
-        if (this.repository.findByEmail(usuario.getEmail()) != null) return false;
-        String senhaCriptografada = new BCryptPasswordEncoder().encode(usuario.getSenha());
-        usuario.setSenha(senhaCriptografada);
-        repository.save(usuario);
-        return true;
+    public Boolean registrar(Usuario usuario) throws Exception {
+        try {
+            if (this.repository.findByEmail(usuario.getEmail()) != null) return false;
+            String senhaCriptografada = new BCryptPasswordEncoder().encode(usuario.getSenha());
+            usuario.setSenha(senhaCriptografada);
+            repository.save(usuario);
+            return true;
+        } catch (Exception e) {
+            throw new Exception(e.getMessage());
+        }
     }
 
     @Override
-    public String atualizarToken(String refreshToken) {
-        Usuario usuario = tokenService.validarRefreshToken(refreshToken);
-        UserDetails user = repository.findByEmail(usuario.getEmail());
-        return tokenService.gerarToken((Usuario) user);
+    public String atualizarToken(String refreshToken) throws Exception {
+        try {
+            Usuario usuario = tokenService.validarRefreshToken(refreshToken);
+            UserDetails user = repository.findByEmail(usuario.getEmail());
+            return tokenService.gerarToken((Usuario) user);
+        } catch (Exception e) {
+            throw new Exception(e.getMessage());
+        }
     }
 }

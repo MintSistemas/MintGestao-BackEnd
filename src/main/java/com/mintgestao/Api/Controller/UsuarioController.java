@@ -25,32 +25,51 @@ public class UsuarioController {
 
     @GetMapping
     public ResponseEntity<List<Usuario>> obterTodosUsuarios() {
-        List<Usuario> usuarios = usuarioUseCase.obterTodosUsuarios();
-        return ResponseEntity.ok(usuarios);
+        try {
+            List<Usuario> usuarios = usuarioUseCase.obterTodosUsuarios();
+            return ResponseEntity.ok(usuarios);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(null);
+        }
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Usuario> obterUsuarioPorId(@PathVariable UUID id) {
-        Usuario usuario = usuarioUseCase.obterUsuarioPorId(id);
-        return usuario != null ? ResponseEntity.ok(usuario) : ResponseEntity.notFound().build();
+        try {
+            Usuario usuario = usuarioUseCase.obterUsuarioPorId(id);
+            return ResponseEntity.ok(usuario);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(null);
+        }
     }
 
     @PostMapping
     public ResponseEntity<Usuario> criarUsuario(@RequestBody Usuario usuario) {
-        Usuario novoUsuario = usuarioUseCase.criarUsuario(usuario);
-        return ResponseEntity.created(null).body(novoUsuario);
+        try {
+            Usuario novoUsuario = usuarioUseCase.criarUsuario(usuario);
+            return ResponseEntity.created(null).body(novoUsuario);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(null);
+        }
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<Void> atualizarUsuario(@PathVariable UUID id, @RequestBody Usuario usuario) {
-        Boolean result = usuarioUseCase.atualizarUsuario(id, usuario);
-        return result ? ResponseEntity.noContent().build() : ResponseEntity.notFound().build();
+        try {
+            usuarioUseCase.atualizarUsuario(id, usuario);
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().build();
+        }
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> excluirUsuario(@PathVariable UUID id) {
-        Boolean result = usuarioUseCase.excluirUsuario(id);
-        return result ? ResponseEntity.noContent().build() : ResponseEntity.notFound().build();
+        try {
+            usuarioUseCase.excluirUsuario(id);
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().build();
+        }
     }
-
 }

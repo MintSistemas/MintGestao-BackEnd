@@ -2,6 +2,7 @@ package com.mintgestao.Api.Controller;
 
 import com.mintgestao.Application.UseCase.Evento.EventoUseCase;
 import com.mintgestao.Domain.Entity.Evento;
+import com.mintgestao.Domain.Entity.Local;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -20,16 +20,28 @@ public class AutenticacaoUseCase implements IAutenticacaoUseCase {
 
     @Override
     public LoginResponseDTO entrar(LoginRequestDTO loginRequestDTO) throws Exception {
-        return autenticacaoService.entrar(loginRequestDTO);
+        try {
+            return autenticacaoService.entrar(loginRequestDTO);
+        } catch (Exception e) {
+            throw new Exception(e.getMessage());
+        }
     }
 
     @Override
-    public Boolean registrar(Usuario usuario) {
-        return autenticacaoService.registrar(usuario);
+    public Boolean registrar(Usuario usuario) throws Exception {
+        try {
+            return autenticacaoService.registrar(usuario);
+        } catch (Exception e) {
+            throw new Exception(e.getMessage());
+        }
     }
 
     @Override
-    public String atualizarToken(String refreshToken) {
-        return autenticacaoService.atualizarToken(refreshToken);
+    public String atualizarToken(String refreshToken) throws Exception {
+        try {
+            return autenticacaoService.atualizarToken(refreshToken);
+        } catch (Exception e) {
+            throw new Exception(e.getMessage());
+        }
     }
 }
