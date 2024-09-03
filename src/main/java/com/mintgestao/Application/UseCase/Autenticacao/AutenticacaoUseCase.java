@@ -1,7 +1,6 @@
 package com.mintgestao.Application.UseCase.Autenticacao;
 
-import com.mintgestao.Application.Service.Autenticacao.IAutenticacaoService;
-import com.mintgestao.Application.Service.Cliente.IClienteService;
+import com.mintgestao.Application.Service.Autenticacao.AutenticacaoService;
 import com.mintgestao.Domain.DTO.Login.LoginRequestDTO;
 import com.mintgestao.Domain.DTO.Login.LoginResponseDTO;
 import com.mintgestao.Domain.Entity.Usuario;
@@ -9,37 +8,33 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public class AutenticacaoUseCase implements IAutenticacaoUseCase {
+public class AutenticacaoUseCase {
 
-    @Autowired
-    private IAutenticacaoService autenticacaoService;
+    private AutenticacaoService service;
 
-    public AutenticacaoUseCase(IAutenticacaoService autenticacaoService) {
-        this.autenticacaoService = autenticacaoService;
+    public AutenticacaoUseCase(AutenticacaoService service) {
+        this.service = service;
     }
 
-    @Override
     public LoginResponseDTO entrar(LoginRequestDTO loginRequestDTO) throws Exception {
         try {
-            return autenticacaoService.entrar(loginRequestDTO);
+            return service.entrar(loginRequestDTO);
         } catch (Exception e) {
             throw new Exception(e.getMessage());
         }
     }
 
-    @Override
     public Boolean registrar(Usuario usuario) throws Exception {
         try {
-            return autenticacaoService.registrar(usuario);
+            return service.registrar(usuario);
         } catch (Exception e) {
             throw new Exception(e.getMessage());
         }
     }
 
-    @Override
     public String atualizarToken(String refreshToken) throws Exception {
         try {
-            return autenticacaoService.atualizarToken(refreshToken);
+            return service.atualizarToken(refreshToken);
         } catch (Exception e) {
             throw new Exception(e.getMessage());
         }

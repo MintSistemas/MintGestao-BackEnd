@@ -2,10 +2,8 @@ package com.mintgestao.Api.Controller;
 
 import com.mintgestao.Application.UseCase.Evento.EventoUseCase;
 import com.mintgestao.Domain.Entity.Evento;
-import com.mintgestao.Domain.Entity.Local;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,7 +16,6 @@ import java.util.UUID;
 @Tag(name = "Evento", description = "Endpoint responsável pelo gerenciamento de eventos")
 public class EventoController {
 
-    @Autowired
     private EventoUseCase eventoUseCase;
 
     public EventoController(EventoUseCase eventoUseCase) {
@@ -28,7 +25,7 @@ public class EventoController {
     @GetMapping
     public ResponseEntity obterTodosEventos() {
         try{
-            List<Evento> eventos = eventoUseCase.obterTodosEventos();
+            List<Evento> eventos = eventoUseCase.buscarTodos();
             return ResponseEntity.ok(eventos);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
@@ -48,7 +45,7 @@ public class EventoController {
     @GetMapping("/{id}")
     public ResponseEntity obterEventoPorId(@PathVariable UUID id) {
         try {
-            Evento evento = eventoUseCase.obterEventoPorId(id);
+            Evento evento = eventoUseCase.buscarPorId(id);
             return ResponseEntity.ok(evento);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
@@ -58,7 +55,7 @@ public class EventoController {
     @PostMapping
     public ResponseEntity criarEvento(@Valid @RequestBody Evento evento) {
         try {
-            Evento novoEvento = eventoUseCase.criarEvento(evento);
+            Evento novoEvento = eventoUseCase.criar(evento);
             return ResponseEntity.created(null).body(novoEvento);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
@@ -68,7 +65,7 @@ public class EventoController {
     @PutMapping("/{id}")
     public ResponseEntity atualizarEvento(@Valid @PathVariable UUID id, @RequestBody Evento evento) {
         try {
-            eventoUseCase.atualizarEvento(id, evento);
+            eventoUseCase.atualizar(id, evento);
             return ResponseEntity.ok().build();
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
@@ -78,7 +75,7 @@ public class EventoController {
     @DeleteMapping("/{id}")
     public ResponseEntity excluirEvento(@Valid @PathVariable UUID id) {
         try {
-            eventoUseCase.excluirEvento(id);
+            eventoUseCase.excluir(id);
             return ResponseEntity.ok().build();
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());

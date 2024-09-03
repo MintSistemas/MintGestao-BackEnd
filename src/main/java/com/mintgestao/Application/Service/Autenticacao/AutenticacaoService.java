@@ -16,7 +16,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 @Service
-public class AutenticacaoService implements IAutenticacaoService {
+public class AutenticacaoService {
 
     @Autowired
     private UsuarioRepository repository;
@@ -26,10 +26,10 @@ public class AutenticacaoService implements IAutenticacaoService {
 
     @Autowired
     private AuthenticationManager authenticationManager;
+
     @Autowired
     private TemaService temaService;
 
-    @Override
     public LoginResponseDTO entrar(LoginRequestDTO data) throws Exception {
         try {
             var usernamePassword = new UsernamePasswordAuthenticationToken(data.email(), data.senha());
@@ -46,7 +46,6 @@ public class AutenticacaoService implements IAutenticacaoService {
         }
     }
 
-    @Override
     public Boolean registrar(Usuario usuario) throws Exception {
         try {
             if (this.repository.findByEmail(usuario.getEmail()) != null) return false;
@@ -59,7 +58,6 @@ public class AutenticacaoService implements IAutenticacaoService {
         }
     }
 
-    @Override
     public String atualizarToken(String refreshToken) throws Exception {
         try {
             Usuario usuario = tokenService.validarRefreshToken(refreshToken);

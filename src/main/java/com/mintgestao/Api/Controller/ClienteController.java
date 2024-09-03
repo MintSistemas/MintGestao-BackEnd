@@ -1,9 +1,8 @@
 package com.mintgestao.Api.Controller;
 
-import com.mintgestao.Application.UseCase.Cliente.IClienteUseCase;
+import com.mintgestao.Application.UseCase.Cliente.ClienteUseCase;
 import com.mintgestao.Domain.Entity.Cliente;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,17 +15,16 @@ import java.util.UUID;
 @Tag(name = "Cliente", description = "Endpoint responsavel pelo gerenciamento de clientes")
 public class ClienteController {
 
-    @Autowired
-    private IClienteUseCase clienteUseCase;
+    private ClienteUseCase clienteUseCase;
 
-    public ClienteController(IClienteUseCase clienteUseCase) {
+    public ClienteController(ClienteUseCase clienteUseCase) {
         this.clienteUseCase = clienteUseCase;
     }
 
     @GetMapping
     public ResponseEntity obterTodosClientes() {
         try {
-            List<Cliente> clientes = clienteUseCase.obterTodosClientes();
+            List<Cliente> clientes = clienteUseCase.buscarTodos();
             return ResponseEntity.ok(clientes);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
@@ -36,7 +34,7 @@ public class ClienteController {
     @GetMapping("/{id}")
     public ResponseEntity obterClientePorId(@PathVariable UUID id) {
         try {
-            Cliente cliente = clienteUseCase.obterClientePorId(id);
+            Cliente cliente = clienteUseCase.buscarPorId(id);
             return ResponseEntity.ok(cliente);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
@@ -46,7 +44,7 @@ public class ClienteController {
     @PostMapping
     public ResponseEntity criarCliente(@RequestBody Cliente cliente) {
         try {
-            Cliente novoCliente = clienteUseCase.criarCliente(cliente);
+            Cliente novoCliente = clienteUseCase.criar(cliente);
             return ResponseEntity.ok().build();
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
@@ -56,7 +54,7 @@ public class ClienteController {
     @PutMapping("/{id}")
     public ResponseEntity atualizarCliente(@PathVariable UUID id, @RequestBody Cliente cliente) {
         try {
-            clienteUseCase.atualizarCliente(id, cliente);
+            clienteUseCase.atualizar(id, cliente);
             return ResponseEntity.ok().build();
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
@@ -66,7 +64,7 @@ public class ClienteController {
     @DeleteMapping("/{id}")
     public ResponseEntity excluirCliente(@PathVariable UUID id) {
         try {
-            clienteUseCase.excluirCliente(id);
+            clienteUseCase.excluir(id);
             return ResponseEntity.ok().build();
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());

@@ -1,16 +1,12 @@
 package com.mintgestao.Api.Controller;
 
-import com.mintgestao.Application.UseCase.Autenticacao.IAutenticacaoUseCase;
-import com.mintgestao.Application.UseCase.Cliente.IClienteUseCase;
+import com.mintgestao.Application.UseCase.Autenticacao.AutenticacaoUseCase;
 import com.mintgestao.Domain.DTO.Login.LoginRequestDTO;
 import com.mintgestao.Domain.DTO.Login.LoginResponseDTO;
 import com.mintgestao.Domain.DTO.RefreshToken.RefreshTokenDTO;
 import com.mintgestao.Domain.Entity.Usuario;
-import com.mintgestao.Infrastructure.Repository.UsuarioRepository;
-import com.mintgestao.Application.Service.Token.TokenService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -22,9 +18,9 @@ import org.springframework.web.bind.annotation.*;
 public class AutenticacaoController {
 
     @Autowired
-    private IAutenticacaoUseCase autenticacaoUseCase;
+    private AutenticacaoUseCase autenticacaoUseCase;
 
-    public AutenticacaoController(IAutenticacaoUseCase autenticacaoUseCase) {
+    public AutenticacaoController(AutenticacaoUseCase autenticacaoUseCase) {
         this.autenticacaoUseCase = autenticacaoUseCase;
     }
 

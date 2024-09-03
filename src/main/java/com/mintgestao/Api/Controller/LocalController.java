@@ -1,9 +1,8 @@
 package com.mintgestao.Api.Controller;
 
-import com.mintgestao.Application.UseCase.Local.ILocalUseCase;
+import com.mintgestao.Application.UseCase.Local.LocalUseCase;
 import com.mintgestao.Domain.Entity.Local;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,17 +15,16 @@ import java.util.UUID;
 @Tag(name = "Local", description = "Endpoint responsável pelo gerenciamento de locais/quadras")
 public class LocalController {
 
-    @Autowired
-    private ILocalUseCase localUseCase;
+    private LocalUseCase localUseCase;
 
-    public LocalController(ILocalUseCase localUseCase) {
+    public LocalController(LocalUseCase localUseCase) {
         this.localUseCase = localUseCase;
     }
 
     @GetMapping
     public ResponseEntity obterTodosLocals() {
         try {
-            List<Local> locals = localUseCase.obterTodosLocais();
+            List<Local> locals = localUseCase.buscarTodos();
             return ResponseEntity.ok(locals);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
@@ -36,7 +34,7 @@ public class LocalController {
     @PostMapping
     public ResponseEntity criarLocal(@RequestBody Local local) {
         try {
-            Local novoLocal = localUseCase.criarLocal(local);
+            Local novoLocal = localUseCase.criar(local);
             return ResponseEntity.created(null).body(novoLocal);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
@@ -46,7 +44,7 @@ public class LocalController {
     @GetMapping("/{id}")
     public ResponseEntity obterLocalPorId(@PathVariable UUID id) {
         try {
-            Local local = localUseCase.obterLocalPorId(id);
+            Local local = localUseCase.buscarPorId(id);
             return ResponseEntity.ok(local);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
@@ -56,7 +54,7 @@ public class LocalController {
     @PutMapping("/{id}")
     public ResponseEntity atualizarLocal(@PathVariable UUID id, @RequestBody Local local) {
         try {
-            localUseCase.atualizarLocal(id, local);
+            localUseCase.atualizar(id, local);
             return ResponseEntity.ok().build();
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
@@ -66,7 +64,7 @@ public class LocalController {
     @DeleteMapping("/{id}")
     public ResponseEntity excluirLocal(@PathVariable UUID id) {
         try {
-            localUseCase.excluirLocal(id);
+            localUseCase.excluir(id);
             return ResponseEntity.ok().build();
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());

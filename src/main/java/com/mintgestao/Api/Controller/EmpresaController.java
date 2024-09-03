@@ -1,9 +1,8 @@
 package com.mintgestao.Api.Controller;
 
-import com.mintgestao.Application.UseCase.Empresa.IEmpresaUseCase;
+import com.mintgestao.Application.UseCase.Empresa.EmpresaUseCase;
 import com.mintgestao.Domain.Entity.Empresa;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,17 +15,16 @@ import java.util.UUID;
 @Tag(name = "Empresa", description = "Endpoint responsável pelo gerenciamento de empresas")
 public class EmpresaController {
 
-    @Autowired
-    private IEmpresaUseCase empresaUseCase;
+    private EmpresaUseCase empresaUseCase;
 
-    public EmpresaController(IEmpresaUseCase empresaUseCase) {
+    public EmpresaController(EmpresaUseCase empresaUseCase) {
         this.empresaUseCase = empresaUseCase;
     }
 
     @GetMapping
     public ResponseEntity obterTodasEmpresas() {
         try {
-            List<Empresa> empresas = empresaUseCase.obterTodasEmpresas();
+            List<Empresa> empresas = empresaUseCase.buscarTodos();
             return ResponseEntity.ok(empresas);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
@@ -36,7 +34,7 @@ public class EmpresaController {
     @GetMapping("/{id}")
     public ResponseEntity obterEmpresaPorId(@PathVariable UUID id) {
         try {
-            Empresa empresa = empresaUseCase.obterEmpresaPorId(id);
+            Empresa empresa = empresaUseCase.buscarPorId(id);
             return ResponseEntity.ok(empresa);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
@@ -46,7 +44,7 @@ public class EmpresaController {
     @PostMapping
     public ResponseEntity criarEmpresa(@RequestBody Empresa empresa) {
         try {
-            Empresa novaEmpresa = empresaUseCase.criarEmpresa(empresa);
+            Empresa novaEmpresa = empresaUseCase.criar(empresa);
             return ResponseEntity.created(null).body(novaEmpresa);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
@@ -56,7 +54,7 @@ public class EmpresaController {
     @PutMapping("/{id}")
     public ResponseEntity atualizarEmpresa(@PathVariable UUID id, @RequestBody Empresa empresa) {
         try {
-            empresaUseCase.atualizarEmpresa(id, empresa);
+            empresaUseCase.atualizar(id, empresa);
             return ResponseEntity.ok().build();
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
@@ -66,7 +64,7 @@ public class EmpresaController {
     @DeleteMapping("/{id}")
     public ResponseEntity excluirEmpresa(@PathVariable UUID id) {
         try {
-            empresaUseCase.excluirEmpresa(id);
+            empresaUseCase.excluir(id);
             return ResponseEntity.ok().build();
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());

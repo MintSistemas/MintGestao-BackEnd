@@ -1,12 +1,9 @@
 package com.mintgestao.Api.Controller;
 
-import com.mintgestao.Application.UseCase.Local.ILocalUseCase;
-import com.mintgestao.Application.UseCase.Tema.ITemaUseCase;
-import com.mintgestao.Domain.Entity.Evento;
+import com.mintgestao.Application.UseCase.Tema.TemaUseCase;
 import com.mintgestao.Domain.Entity.Tema;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,15 +16,16 @@ import java.util.UUID;
 @Tag(name = "Tema", description = "Endpoint responsável pelo gerenciamento de temas")
 public class TemaController {
 
-    @Autowired
-    private ITemaUseCase temaUseCase;
+    private final TemaUseCase temaUseCase;
 
-    public TemaController(ITemaUseCase temaUseCase) {this.temaUseCase = temaUseCase;}
+    public TemaController(TemaUseCase temaUseCase) {
+        this.temaUseCase = temaUseCase;
+    }
 
     @GetMapping
     public ResponseEntity obterTodosTemas() {
         try{
-            List<Tema> temas = temaUseCase.obterTodosTemas();
+            List<Tema> temas = temaUseCase.buscarTodos();
             return ResponseEntity.ok(temas);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
@@ -47,7 +45,7 @@ public class TemaController {
     @GetMapping("/{id}")
     public ResponseEntity obterTemaPorId(@PathVariable UUID id) {
         try {
-            Tema tema = temaUseCase.obterTemaPorId(id);
+            Tema tema = temaUseCase.buscarPorId(id);
             return ResponseEntity.ok(tema);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
@@ -57,7 +55,7 @@ public class TemaController {
     @PostMapping
     public ResponseEntity criarTema(@Valid @RequestBody Tema tema) {
         try {
-            Tema novoTema = temaUseCase.criarTema(tema);
+            Tema novoTema = temaUseCase.criar(tema);
             return ResponseEntity.ok(novoTema);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
@@ -67,7 +65,7 @@ public class TemaController {
     @PutMapping("/{id}")
     public ResponseEntity atualizarTema(@PathVariable UUID id, @Valid @RequestBody Tema tema) {
         try {
-            temaUseCase.atualizarTema(id, tema);
+            temaUseCase.atualizar(id, tema);
             return ResponseEntity.ok().build();
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
@@ -77,7 +75,7 @@ public class TemaController {
     @DeleteMapping("/{id}")
     public ResponseEntity excluirTema(@PathVariable UUID id) {
         try {
-            temaUseCase.excluirTema(id);
+            temaUseCase.excluir(id);
             return ResponseEntity.ok().build();
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
