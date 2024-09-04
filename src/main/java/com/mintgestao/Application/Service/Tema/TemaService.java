@@ -22,7 +22,8 @@ public class TemaService extends ServiceBase<Tema, TemaRepository> {
         }
     }
 
-    public Tema criarTema(Tema tema) throws Exception {
+    @Override
+    public Tema criar(Tema tema) throws Exception {
         try {
             repository.findByUsuarioId(tema.getUsuario().getId()).ifPresent(t -> {
                 tema.setId(t.getId());
