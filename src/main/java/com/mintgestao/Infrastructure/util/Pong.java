@@ -33,6 +33,6 @@ public class Pong {
         };
 
         ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
-        scheduler.scheduleAtFixedRate(task, 0, 1, TimeUnit.MINUTES);
+        scheduler.scheduleAtFixedRate(task, 0, 3, TimeUnit.MINUTES);
     }
 }
