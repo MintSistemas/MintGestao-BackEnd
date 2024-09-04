@@ -23,6 +23,7 @@ public class Local {
     @NotBlank(message = "Nome é obrigatório e deve ter entre 3 e 100 caracteres")
     @Size(min = 3, max = 100, message = "Nome deve ter entre 3 e 100 caracteres")
     private String nome;
+    @Enumerated(EnumType.ORDINAL)
     private EnumStatusLocal status;
     @NotBlank(message = "Endereço é obrigatório")
     private String endereco;
