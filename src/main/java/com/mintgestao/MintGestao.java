@@ -8,6 +8,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class MintGestao {
     public static void main(String[] args) {
         SpringApplication.run(MintGestao.class, args);
-        //Pong.pong();
+        Pong.pong();
     }
 }
