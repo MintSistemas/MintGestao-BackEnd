@@ -24,8 +24,8 @@ public class AutenticacaoController {
         this.autenticacaoUseCase = autenticacaoUseCase;
     }
 
-    @GetMapping("/entrar")
-    public ResponseEntity entrar(@ModelAttribute @Valid LoginRequestDTO data) throws Exception {
+    @PostMapping("/entrar")
+    public ResponseEntity entrar(@RequestBody @Valid LoginRequestDTO data) throws Exception {
         try {
             LoginResponseDTO loginResponseDTO = autenticacaoUseCase.entrar(data);
             return ResponseEntity.ok(loginResponseDTO);
