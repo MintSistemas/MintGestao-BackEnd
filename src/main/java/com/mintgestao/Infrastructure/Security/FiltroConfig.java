@@ -27,13 +27,11 @@ public class FiltroConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers(HttpMethod.POST, "/autenticacao/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/autenticacao/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/ping").permitAll()
                         .requestMatchers(HttpMethod.GET, "/swagger-ui/*").permitAll()
                         .requestMatchers(HttpMethod.GET, "/v3/**").permitAll()
                         .anyRequest().authenticated()
-                )
-                .requiresChannel(channel ->
-                        channel.anyRequest().requiresSecure() // Redireciona HTTP para HTTPS
                 )
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
