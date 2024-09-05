@@ -32,6 +32,9 @@ public class FiltroConfig {
                         .requestMatchers(HttpMethod.GET, "/v3/**").permitAll()
                         .anyRequest().authenticated()
                 )
+                .requiresChannel(channel ->
+                        channel.anyRequest().requiresSecure() // Redireciona HTTP para HTTPS
+                )
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
