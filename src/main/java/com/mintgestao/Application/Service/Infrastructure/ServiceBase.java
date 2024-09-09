@@ -1,11 +1,16 @@
 package com.mintgestao.Application.Service.Infrastructure;
 
+import jakarta.transaction.Transactional;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.UUID;
 
 public class ServiceBase<TClass, TRepository extends JpaRepository<TClass, UUID>> implements IServiceBase<TClass> {
+
     protected final TRepository repository;
 
     public ServiceBase(TRepository repository) {

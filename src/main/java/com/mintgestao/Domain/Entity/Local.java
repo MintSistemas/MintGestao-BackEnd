@@ -25,19 +25,24 @@ public class Local {
     private String nome;
     @Enumerated(EnumType.ORDINAL)
     private EnumStatusLocal status;
-    @NotBlank(message = "Endereço é obrigatório")
-    private String endereco;
-    @NotBlank(message = "Complemento é obrigatório")
-    private String complemento;
-    @NotBlank(message = "Observação é obrigatório")
-    private String observacao;
-    @NotNull(message = "Hora de abertura é obrigatório")
-    private Date horaAbertura;
-    @NotNull(message = "Hora de fechamento é obrigatório")
-    private Date horaFechamento;
+    @NotBlank(message = "CEP é obrigatório")
+    private String cep;
+    @NotBlank(message = "Estado é obrigatório")
+    private String estado;
+    @NotBlank(message = "Cidade é obrigatório")
+    private String cidade;
+    @NotBlank(message = "Bairro é obrigatório")
+    private String bairro;
+    @NotBlank(message = "Rua é obrigatório")
+    private String rua;
     @NotBlank(message = "Dias de funcionamento é obrigatório")
     private String diasFuncionamento;
-    @NotNull(message = "Valor hora é obrigatório")
+    private String complemento;
+    @NotBlank(message = "Horário de abertura é obrigatório")
+    private Date horarioAbertura;
+    @NotBlank(message = "Horário de fechamento é obrigatório")
+    private Date horarioFechamento;
+    private String observacao;
     @PositiveOrZero(message = "Valor hora deve positivo")
     private Double valorHora;
 
