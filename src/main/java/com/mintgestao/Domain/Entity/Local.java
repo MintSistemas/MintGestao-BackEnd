@@ -38,9 +38,9 @@ public class Local {
     @NotBlank(message = "Dias de funcionamento é obrigatório")
     private String diasFuncionamento;
     private String complemento;
-    @NotBlank(message = "Horário de abertura é obrigatório")
+    @NotNull(message = "Horário de abertura é obrigatório")
     private Date horarioAbertura;
-    @NotBlank(message = "Horário de fechamento é obrigatório")
+    @NotNull(message = "Horário de fechamento é obrigatório")
     private Date horarioFechamento;
     private String observacao;
     @PositiveOrZero(message = "Valor hora deve positivo")

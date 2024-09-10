@@ -70,4 +70,24 @@ public class LocalController {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
+
+    @PutMapping("/{id}/ativar")
+    public ResponseEntity ativarLocal(@PathVariable UUID id) {
+        try {
+            localUseCase.ativar(id);
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @PutMapping("/{id}/inativar")
+    public ResponseEntity desativarLocal(@PathVariable UUID id) {
+        try {
+            localUseCase.desativar(id);
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
 }
