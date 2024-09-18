@@ -44,7 +44,9 @@ public class ServiceBase<TClass, TRepository extends JpaRepository<TClass, UUID>
     public void atualizar(UUID id, TClass entity) throws Exception {
         try {
             if (!repository.existsById(id)) throw new Exception("Registro não encontrado");
-            repository.save(entity);
+            TClass entityToUpdate = entity;
+            entityToUpdate.getClass().getMethod("setId", UUID.class).invoke(entityToUpdate, id);
+            repository.save(entityToUpdate);
         } catch (Exception e) {
             throw new Exception(e.getMessage());
         }
