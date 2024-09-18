@@ -41,9 +41,9 @@ public class Local {
     private String diasFuncionamento;
     private String complemento;
     @NotNull(message = "Horário de abertura é obrigatório")
-    private LocalDateTime horarioAbertura;
+    private LocalDate horarioAbertura;
     @NotNull(message = "Horário de fechamento é obrigatório")
-    private LocalDateTime horarioFechamento;
+    private LocalDate horarioFechamento;
     private String observacao;
     @PositiveOrZero(message = "Valor hora deve positivo")
     private Double valorHora;
