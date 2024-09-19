@@ -40,12 +40,12 @@ public class Evento {
     @NotNull(message = "Hora inicial é obrigatório")
     private LocalTime horainicio;
     @NotNull(message = "Hora final é obrigatório")
-    @Future(message = "Não é possível cadastrar um evento com a data menor que a atual")
     private LocalTime horafim;
     @NotNull(message = "Data é obrigatório")
     @Future(message = "Não é possível cadastrar um evento com a data menor que a atual")
     private LocalDate dataevento;
 
+    @NotNull
     private Date dataAlteracao = new Date();
 
     @NotNull(message = "Local é obrigatório")
