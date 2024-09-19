@@ -11,6 +11,7 @@ import org.hibernate.annotations.TenantId;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.Date;
 import java.util.UUID;
 
@@ -41,12 +42,14 @@ public class Local {
     private String diasFuncionamento;
     private String complemento;
     @NotNull(message = "Horário de abertura é obrigatório")
-    private LocalDate horarioAbertura;
+    private LocalTime horarioAbertura;
     @NotNull(message = "Horário de fechamento é obrigatório")
-    private LocalDate horarioFechamento;
+    private LocalTime horarioFechamento;
     private String observacao;
     @PositiveOrZero(message = "Valor hora deve positivo")
     private Double valorHora;
+
+    private Date dataAlteracao = new Date();
 
     @TenantId
     private Integer idtenant;

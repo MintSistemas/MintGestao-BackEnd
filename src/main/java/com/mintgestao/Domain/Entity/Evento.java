@@ -7,6 +7,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.TenantId;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.Date;
 import java.util.UUID;
 
@@ -36,12 +39,15 @@ public class Evento {
     @Positive(message = "Valor hora deve ser maior que zero")
     private double valorhora;
     @NotNull(message = "Hora inicial é obrigatório")
-    private Date horainicio;
+    private LocalTime horainicio;
     @NotNull(message = "Hora final é obrigatório")
     @Future(message = "Não é possível cadastrar um evento com a data menor que a atual")
-    private Date horafim;
+    private LocalTime horafim;
+    @NotNull(message = "Data é obrigatório")
+    @Future(message = "Não é possível cadastrar um evento com a data menor que a atual")
+    private LocalDate dataevento;
 
-    private Date datahoracadastro = new Date();
+    private Date dataAlteracao = new Date();
 
     @NotNull(message = "Local é obrigatório")
     @ManyToOne
