@@ -14,5 +14,5 @@ import java.util.UUID;
 public interface EventoRepository extends JpaRepository<Evento, UUID> {
     List<Evento> findByLocalId(UUID id);
 
-    List<Evento> findByDataevento(@NotNull(message = "Data é obrigatório") @Future(message = "Não é possível cadastrar um evento com a data menor que a atual") LocalDate dataevento);
+    List<Evento> findByDataeventoAndLocalId(@NotNull(message = "Data é obrigatório") @Future(message = "Não é possível cadastrar um evento com a data menor que a atual") LocalDate dataevento, UUID id);
 }

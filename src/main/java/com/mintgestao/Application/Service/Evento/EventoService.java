@@ -29,7 +29,7 @@ public class EventoService extends ServiceBase<Evento, EventoRepository> {
     public boolean verificarDisponibilidade(Evento evento) {
         try {
             // Busca todos os eventos na mesma data
-            List<Evento> eventos = repository.findByDataevento(evento.getDataevento());
+            List<Evento> eventos = repository.findByDataeventoAndLocalId(evento.getDataevento(), evento.getLocal().getId());
 
             for (Evento e : eventos) {
                 // Se o evento novo começar ou terminar no meio de um evento existente
