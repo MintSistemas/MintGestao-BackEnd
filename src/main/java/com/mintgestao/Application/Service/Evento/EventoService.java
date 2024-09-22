@@ -26,7 +26,7 @@ public class EventoService extends ServiceBase<Evento, EventoRepository> {
         }
     }
 
-    public boolean verificarDisponibilidade(Evento evento) {
+    public void verificarDisponibilidade(Evento evento) throws Exception {
         try {
             // Busca todos os eventos na mesma data
             List<Evento> eventos = repository.findByDataeventoAndLocalId(evento.getDataevento(), evento.getLocal().getId());
@@ -34,12 +34,21 @@ public class EventoService extends ServiceBase<Evento, EventoRepository> {
             for (Evento e : eventos) {
                 // Se o evento novo começar ou terminar no meio de um evento existente
                 if (evento.getHorainicio().isBefore(e.getHorafim()) && evento.getHorafim().isAfter(e.getHorainicio())) {
-                    return false;
+                    throw new Exception("Já existe um evento cadastrado nesse horário");
                 }
             }
-            return true;
         } catch (Exception e) {
-            return false;
+            throw new Exception(e.getMessage());
+        }
+    }
+
+    public void varificarHorarioFuncionamento(Evento evento, Local local) throws Exception {
+        try {
+            if (evento.getHorainicio().isBefore(local.getHorarioAbertura()) || evento.getHorafim().isAfter(local.getHorarioFechamento())) {
+                throw new Exception("O evento não pode ser cadastrado fora do horário de funcionamento do local");
+            }
+        } catch (Exception e) {
+            throw new Exception(e.getMessage());
         }
     }
 }

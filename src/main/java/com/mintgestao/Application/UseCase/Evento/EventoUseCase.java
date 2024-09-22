@@ -3,6 +3,9 @@ package com.mintgestao.Application.UseCase.Evento;
 import com.mintgestao.Application.Service.Evento.EventoService;
 import com.mintgestao.Application.UseCase.Infrastructure.UseCaseBase;
 import com.mintgestao.Domain.Entity.Evento;
+import com.mintgestao.Domain.Entity.Local;
+import com.mintgestao.Infrastructure.Repository.LocalRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -15,6 +18,9 @@ public class EventoUseCase extends UseCaseBase<Evento> {
         super(service);
     }
 
+    @Autowired
+    LocalRepository localRepository;
+
     public List<Evento> obterEventosPorLocal(UUID id) throws Exception {
         try {
             return ((EventoService) service).obterEventosPorLocal(id);
@@ -25,12 +31,13 @@ public class EventoUseCase extends UseCaseBase<Evento> {
 
     @Override
     public Evento criar(Evento evento) throws Exception {
+        Local local = localRepository.findById(evento.getLocal().getId()).get();
+
         try {
-            if (((EventoService) service).verificarDisponibilidade(evento)) {
-                return ((EventoService) service).criar(evento);
-            } else {
-                throw new Exception("Já existe um evento cadastrado nesse horário");
-            }
+            ((EventoService) service).verificarDisponibilidade(evento);
+            ((EventoService) service).varificarHorarioFuncionamento(evento, local);
+
+            return service.criar(evento);
         } catch (Exception e) {
             throw new Exception(e.getMessage());
         }
