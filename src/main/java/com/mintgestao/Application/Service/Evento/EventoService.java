@@ -25,4 +25,21 @@ public class EventoService extends ServiceBase<Evento, EventoRepository> {
             throw new Exception(e.getMessage());
         }
     }
+
+    public boolean verificarDisponibilidade(Evento evento) {
+        try {
+            // Busca todos os eventos na mesma data
+            List<Evento> eventos = repository.findByDataevento(evento.getDataevento());
+
+            for (Evento e : eventos) {
+                // Se o evento novo começar ou terminar no meio de um evento existente
+                if (evento.getHorainicio().isBefore(e.getHorafim()) && evento.getHorafim().isAfter(e.getHorainicio())) {
+                    return false;
+                }
+            }
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
 }

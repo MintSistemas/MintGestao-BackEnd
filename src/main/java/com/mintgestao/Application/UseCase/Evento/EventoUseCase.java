@@ -22,4 +22,17 @@ public class EventoUseCase extends UseCaseBase<Evento> {
             throw new Exception(e.getMessage());
         }
     }
+
+    @Override
+    public Evento criar(Evento evento) throws Exception {
+        try {
+            if (((EventoService) service).verificarDisponibilidade(evento)) {
+                return ((EventoService) service).criar(evento);
+            } else {
+                throw new Exception("Já existe um evento cadastrado nesse horário");
+            }
+        } catch (Exception e) {
+            throw new Exception(e.getMessage());
+        }
+    }
 }
