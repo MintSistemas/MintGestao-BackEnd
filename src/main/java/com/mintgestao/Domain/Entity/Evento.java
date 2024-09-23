@@ -45,11 +45,9 @@ public class Evento {
     private double valorhora;
 
     @NotNull(message = "Hora inicial é obrigatória")
-    @FutureOrPresent
     private LocalTime horainicio;
 
     @NotNull(message = "Hora final é obrigatória")
-    @Future
     private LocalTime horafim;
 
     @NotNull(message = "Data é obrigatória")

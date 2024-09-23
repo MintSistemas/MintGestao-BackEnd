@@ -8,6 +8,8 @@ import com.mintgestao.Infrastructure.Repository.LocalRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.DayOfWeek;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
@@ -46,6 +48,16 @@ public class EventoService extends ServiceBase<Evento, EventoRepository> {
         try {
             if (evento.getHorainicio().isBefore(local.getHorarioAbertura()) || evento.getHorafim().isAfter(local.getHorarioFechamento())) {
                 throw new Exception("O evento não pode ser cadastrado fora do horário de funcionamento do local");
+            }
+        } catch (Exception e) {
+            throw new Exception(e.getMessage());
+        }
+    }
+
+    public void verificarDiasFuncionamento(LocalDate dataEvento, List<DayOfWeek> diasFuncionamento) throws Exception {
+        try {
+            if (!diasFuncionamento.contains(dataEvento.getDayOfWeek())) {
+                throw new Exception("O local não funciona nesse dia da semana");
             }
         } catch (Exception e) {
             throw new Exception(e.getMessage());

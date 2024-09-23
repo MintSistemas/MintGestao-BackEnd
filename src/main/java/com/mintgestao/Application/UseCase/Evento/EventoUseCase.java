@@ -36,6 +36,7 @@ public class EventoUseCase extends UseCaseBase<Evento> {
         try {
             ((EventoService) service).verificarDisponibilidade(evento);
             ((EventoService) service).varificarHorarioFuncionamento(evento, local);
+            ((EventoService) service).verificarDiasFuncionamento(evento.getDataevento(), local.getDiasFuncionamentoList());
 
             return service.criar(evento);
         } catch (Exception e) {

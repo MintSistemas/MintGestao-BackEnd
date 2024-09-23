@@ -9,11 +9,15 @@ import jakarta.validation.constraints.Size;
 import lombok.*;
 import org.hibernate.annotations.TenantId;
 
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Entity
 @NoArgsConstructor
@@ -53,4 +57,23 @@ public class Local {
 
     @TenantId
     private Integer idtenant;
+
+    public List<DayOfWeek> getDiasFuncionamentoList() {
+        return Arrays.stream(diasFuncionamento.split(","))
+                .map(this::convertToDayOfWeek)
+                .collect(Collectors.toList());
+    }
+
+    private DayOfWeek convertToDayOfWeek(String dia) {
+        switch (dia.toLowerCase()) {
+            case "dom": return DayOfWeek.SUNDAY;
+            case "seg": return DayOfWeek.MONDAY;
+            case "ter": return DayOfWeek.TUESDAY;
+            case "qua": return DayOfWeek.WEDNESDAY;
+            case "qui": return DayOfWeek.THURSDAY;
+            case "sex": return DayOfWeek.FRIDAY;
+            case "sab": return DayOfWeek.SATURDAY;
+            default: throw new IllegalArgumentException("Dia da semana inválido: " + dia);
+        }
+    }
 }
