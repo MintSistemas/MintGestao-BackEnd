@@ -49,9 +49,10 @@ public class EventoUseCase extends UseCaseBase<Evento> {
         Local local = localRepository.findById(evento.getLocal().getId()).get();
 
         try {
-            ((EventoService) service).atualizar(id, evento);
             ((EventoService) service).varificarHorarioFuncionamento(evento, local);
             ((EventoService) service).verificarDiasFuncionamento(evento.getDataevento(), local.getDiasFuncionamentoList());
+
+            ((EventoService) service).atualizar(id, evento);
         } catch (Exception e) {
             throw new Exception(e.getMessage());
         }
