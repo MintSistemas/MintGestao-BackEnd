@@ -46,13 +46,14 @@ public class EventoUseCase extends UseCaseBase<Evento> {
 
     @Override
     public void atualizar(UUID id, Evento evento) throws Exception {
-        Local local = localRepository.findById(evento.getLocal().getId()).get();
-
         try {
+            Local local = localRepository.findById(evento.getLocal().getId()).get();
+            evento.setId(id);
+
+            ((EventoService) service).verificarDisponibilidade(evento);
+            ((EventoService) service).varificarHorarioFuncionamento(evento, local);
+            ((EventoService) service).verificarDiasFuncionamento(evento.getDataevento(), local.getDiasFuncionamentoList());
             service.atualizar(id, evento);
-            // sim, nao faz sentido eu persistir a transação aqui e validar dps, mas vou deixar assim por enquanto e dps arrumo
-//            ((EventoService) service).varificarHorarioFuncionamento(evento, local);
-//            ((EventoService) service).verificarDiasFuncionamento(evento.getDataevento(), local.getDiasFuncionamentoList());
 
         } catch (Exception e) {
             throw new Exception(e.getMessage());

@@ -34,7 +34,9 @@ public class EventoService extends ServiceBase<Evento, EventoRepository> {
             List<Evento> eventos = repository.findByDataeventoAndLocalId(evento.getDataevento(), evento.getLocal().getId());
 
             for (Evento e : eventos) {
-
+                if(evento.getId() != null && evento.getId().equals(e.getId())) {
+                    continue;
+                }
                 if (evento.getHorainicio().isBefore(e.getHorafim()) && evento.getHorafim().isAfter(e.getHorainicio())) {
                     throw new Exception("Já existe um evento cadastrado nesse horário");
                 }
