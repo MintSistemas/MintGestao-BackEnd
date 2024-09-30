@@ -5,11 +5,13 @@ import com.mintgestao.Domain.Entity.Evento;
 import com.mintgestao.Domain.Entity.Local;
 import com.mintgestao.Infrastructure.Repository.EventoRepository;
 import com.mintgestao.Infrastructure.Repository.LocalRepository;
+import jakarta.validation.constraints.AssertTrue;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -63,6 +65,16 @@ public class EventoService extends ServiceBase<Evento, EventoRepository> {
             }
         } catch (Exception e) {
             throw new Exception(e.getMessage());
+        }
+    }
+
+    public void validarHoras(LocalTime horainicio, LocalTime horafim) throws Exception {
+        try {
+            if (!horafim.isAfter(horainicio)) {
+                throw new Exception("A hora fim não pode ser menor que a hora inicial do evento");
+            }
+        } catch(Exception e){
+                throw new Exception(e.getMessage());
         }
     }
 }

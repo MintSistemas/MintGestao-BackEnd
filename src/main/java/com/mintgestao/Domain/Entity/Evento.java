@@ -66,13 +66,4 @@ public class Evento {
 
     @TenantId
     private Integer idtenant;
-
-    // Método de validação customizado
-    @AssertTrue(message = "A hora final deve ser maior que a hora inicial")
-    public boolean isHoraFimMaiorQueHoraInicio() {
-        if (horainicio != null && horafim != null) {
-            return horafim.isAfter(horainicio);
-        }
-        return true;
-    }
 }
