@@ -31,9 +31,9 @@ public class EventoUseCase extends UseCaseBase<Evento> {
 
     @Override
     public Evento criar(Evento evento) throws Exception {
-        Local local = localRepository.findById(evento.getLocal().getId()).get();
 
         try {
+            Local local = localRepository.findById(evento.getLocal().getId()).get();
             ((EventoService) service).verificarDisponibilidade(evento);
             ((EventoService) service).varificarHorarioFuncionamento(evento, local);
             ((EventoService) service).verificarDiasFuncionamento(evento.getDataevento(), local.getDiasFuncionamentoList());
