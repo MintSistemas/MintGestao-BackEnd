@@ -38,13 +38,13 @@ public class ContasAReceber {
     private Date dataalteracao = new Date();
 
     @NotNull(message = "O Contas a receber deve ser vinculado a um evento")
-    @OneToOne
+    @ManyToOne
     private Evento evento;
 
-    @OneToOne
+    @ManyToOne
     private Cliente cliente;
 
     @NotNull(message = "Local é obrigatório")
-    @OneToOne
+    @ManyToOne
     private Local local;
 }
