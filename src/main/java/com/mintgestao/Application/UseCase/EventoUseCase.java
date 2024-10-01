@@ -1,10 +1,12 @@
 package com.mintgestao.Application.UseCase;
 
+import com.mintgestao.Application.Service.ContasAReceberService;
 import com.mintgestao.Application.Service.EventoService;
 import com.mintgestao.Application.UseCase.Base.UseCaseBase;
 import com.mintgestao.Domain.Entity.Evento;
 import com.mintgestao.Domain.Entity.Local;
 import com.mintgestao.Infrastructure.Repository.LocalRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -21,6 +23,9 @@ public class EventoUseCase extends UseCaseBase<Evento> {
     @Autowired
     LocalRepository localRepository;
 
+    @Autowired
+    ContasAReceberService contasAReceberService;
+
     public List<Evento> obterEventosPorLocal(UUID id) throws Exception {
         try {
             return ((EventoService) service).obterEventosPorLocal(id);
@@ -30,6 +35,7 @@ public class EventoUseCase extends UseCaseBase<Evento> {
     }
 
     @Override
+    @Transactional
     public Evento criar(Evento evento) throws Exception {
 
         try {
@@ -37,8 +43,9 @@ public class EventoUseCase extends UseCaseBase<Evento> {
             ((EventoService) service).verificarDisponibilidade(evento);
             ((EventoService) service).varificarHorarioFuncionamento(evento, local);
             ((EventoService) service).verificarDiasFuncionamento(evento.getDataevento(), local.getDiasFuncionamentoList());
-
-            return service.criar(evento);
+            service.criar(evento);
+            contasAReceberService.gerarContasAReceber(evento);
+            return evento;
         } catch (Exception e) {
             throw new Exception(e.getMessage());
         }

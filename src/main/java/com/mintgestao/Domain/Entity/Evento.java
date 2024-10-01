@@ -6,6 +6,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.TenantId;
+
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Date;
@@ -38,11 +40,11 @@ public class Evento {
 
     @NotNull(message = "Valor total é obrigatório")
     @Positive(message = "Valor total deve ser maior que zero")
-    private double valortotal;
+    private BigDecimal valortotal;
 
     @NotNull(message = "Valor hora é obrigatório")
     @Positive(message = "Valor hora deve ser maior que zero")
-    private double valorhora;
+    private BigDecimal valorhora;
 
     @NotNull(message = "Hora inicial é obrigatória")
     private LocalTime horainicio;

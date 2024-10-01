@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Date;
 import java.util.UUID;
@@ -20,13 +21,13 @@ public class ContasAReceber {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-    private Number numero;
+    private Long numero;
 
-    private LocalDate dataEvento;
+    private LocalDate dataevento;
 
-    private LocalDate dataBaixa;
+    private LocalDate databaixa;
 
-    private Float valor;
+    private BigDecimal valor;
 
     private String observacao;
 
@@ -34,13 +35,12 @@ public class ContasAReceber {
     private EnumStatusContasAReceber status;
 
     @NotNull
-    private Date dataAlteracao = new Date();
+    private Date dataalteracao = new Date();
 
     @NotNull(message = "O Contas a receber deve ser vinculado a um evento")
     @OneToOne
     private Evento evento;
 
-    @NotNull(message = "Cliente é obrigatório")
     @OneToOne
     private Cliente cliente;
 
