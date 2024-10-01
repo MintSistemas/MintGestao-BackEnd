@@ -1,21 +1,21 @@
-package com.mintgestao.Application.UseCase.Infrastructure;
+package com.mintgestao.Application.Service.Base;
 
-import com.mintgestao.Application.Service.Infrastructure.ServiceBase;
+import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 import java.util.UUID;
 
-public class UseCaseBase<TClass> implements IUseCaseBase<TClass> {
+public class ServiceBase<TClass, TRepository extends JpaRepository<TClass, UUID>> implements IServiceBase<TClass> {
 
-    protected final ServiceBase<TClass, ?> service;
+    protected final TRepository repository;
 
-    public UseCaseBase(ServiceBase<TClass, ?> service) {
-        this.service = service;
+    public ServiceBase(TRepository repository) {
+        this.repository = repository;
     }
 
     public List<TClass> buscarTodos() throws Exception {
         try {
-            return service.buscarTodos();
+            return repository.findAll();
         } catch (Exception e) {
             throw new Exception(e.getMessage());
         }
@@ -23,7 +23,7 @@ public class UseCaseBase<TClass> implements IUseCaseBase<TClass> {
 
     public TClass buscarPorId(UUID id) throws Exception {
         try {
-            return service.buscarPorId(id);
+            return repository.findById(id).orElseThrow();
         } catch (Exception e) {
             throw new Exception(e.getMessage());
         }
@@ -31,7 +31,7 @@ public class UseCaseBase<TClass> implements IUseCaseBase<TClass> {
 
     public TClass criar(TClass entity) throws Exception {
         try {
-            return service.criar(entity);
+            return repository.save(entity);
         } catch (Exception e) {
             throw new Exception(e.getMessage());
         }
@@ -39,7 +39,10 @@ public class UseCaseBase<TClass> implements IUseCaseBase<TClass> {
 
     public void atualizar(UUID id, TClass entity) throws Exception {
         try {
-            service.atualizar(id, entity);
+            if (!repository.existsById(id)) throw new Exception("Registro não encontrado");
+            TClass entityToUpdate = entity;
+            entityToUpdate.getClass().getMethod("setId", UUID.class).invoke(entityToUpdate, id);
+            repository.save(entityToUpdate);
         } catch (Exception e) {
             throw new Exception(e.getMessage());
         }
@@ -47,10 +50,10 @@ public class UseCaseBase<TClass> implements IUseCaseBase<TClass> {
 
     public void excluir(UUID id) throws Exception {
         try {
-            service.excluir(id);
+            if (!repository.existsById(id)) throw new Exception("Registro não encontrado");
+            repository.deleteById(id);
         } catch (Exception e) {
             throw new Exception(e.getMessage());
         }
     }
-
 }

@@ -1,6 +1,5 @@
-package com.mintgestao.Application.Service.Autenticacao;
+package com.mintgestao.Application.Service;
 
-import com.mintgestao.Application.Service.Tema.TemaService;
 import com.mintgestao.Application.Service.Token.TokenService;
 import com.mintgestao.Domain.DTO.Login.LoginRequestDTO;
 import com.mintgestao.Domain.DTO.Login.LoginResponseDTO;
@@ -12,7 +11,6 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 @Service

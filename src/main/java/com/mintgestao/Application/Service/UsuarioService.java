@@ -1,13 +1,9 @@
-package com.mintgestao.Application.Service.Usuario;
+package com.mintgestao.Application.Service;
 
-import com.mintgestao.Application.Service.Infrastructure.ServiceBase;
+import com.mintgestao.Application.Service.Base.ServiceBase;
 import com.mintgestao.Domain.Entity.Usuario;
 import com.mintgestao.Infrastructure.Repository.UsuarioRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
-import java.util.UUID;
 
 @Service
 public class UsuarioService extends ServiceBase<Usuario, UsuarioRepository> {

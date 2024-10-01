@@ -1,7 +1,7 @@
-package com.mintgestao.Application.UseCase.Evento;
+package com.mintgestao.Application.UseCase;
 
-import com.mintgestao.Application.Service.Evento.EventoService;
-import com.mintgestao.Application.UseCase.Infrastructure.UseCaseBase;
+import com.mintgestao.Application.Service.EventoService;
+import com.mintgestao.Application.UseCase.Base.UseCaseBase;
 import com.mintgestao.Domain.Entity.Evento;
 import com.mintgestao.Domain.Entity.Local;
 import com.mintgestao.Infrastructure.Repository.LocalRepository;

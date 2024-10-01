@@ -1,6 +1,6 @@
 package com.mintgestao.Api.Controller;
 
-import com.mintgestao.Application.UseCase.Evento.EventoUseCase;
+import com.mintgestao.Application.UseCase.EventoUseCase;
 import com.mintgestao.Domain.Entity.Evento;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;

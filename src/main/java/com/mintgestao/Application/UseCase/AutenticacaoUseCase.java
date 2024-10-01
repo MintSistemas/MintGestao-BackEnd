@@ -1,10 +1,9 @@
-package com.mintgestao.Application.UseCase.Autenticacao;
+package com.mintgestao.Application.UseCase;
 
-import com.mintgestao.Application.Service.Autenticacao.AutenticacaoService;
+import com.mintgestao.Application.Service.AutenticacaoService;
 import com.mintgestao.Domain.DTO.Login.LoginRequestDTO;
 import com.mintgestao.Domain.DTO.Login.LoginResponseDTO;
 import com.mintgestao.Domain.Entity.Usuario;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component

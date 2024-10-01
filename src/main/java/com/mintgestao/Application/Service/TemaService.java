@@ -1,6 +1,6 @@
-package com.mintgestao.Application.Service.Tema;
+package com.mintgestao.Application.Service;
 
-import com.mintgestao.Application.Service.Infrastructure.ServiceBase;
+import com.mintgestao.Application.Service.Base.ServiceBase;
 import com.mintgestao.Domain.Entity.Tema;
 import com.mintgestao.Infrastructure.Repository.TemaRepository;
 import org.springframework.stereotype.Service;

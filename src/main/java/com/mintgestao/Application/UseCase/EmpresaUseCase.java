@@ -1,7 +1,7 @@
-package com.mintgestao.Application.UseCase.Empresa;
+package com.mintgestao.Application.UseCase;
 
-import com.mintgestao.Application.Service.Empresa.EmpresaService;
-import com.mintgestao.Application.UseCase.Infrastructure.UseCaseBase;
+import com.mintgestao.Application.Service.EmpresaService;
+import com.mintgestao.Application.UseCase.Base.UseCaseBase;
 import com.mintgestao.Domain.Entity.Empresa;
 import org.springframework.stereotype.Component;
 

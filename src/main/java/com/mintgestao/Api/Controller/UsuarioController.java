@@ -1,6 +1,6 @@
 package com.mintgestao.Api.Controller;
 
-import com.mintgestao.Application.UseCase.Usuario.UsuarioUseCase;
+import com.mintgestao.Application.UseCase.UsuarioUseCase;
 import com.mintgestao.Domain.Entity.Usuario;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;

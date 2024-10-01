@@ -1,4 +1,4 @@
-package com.mintgestao.Application.Service.Autorizacao;
+package com.mintgestao.Application.Service;
 
 import com.mintgestao.Infrastructure.Repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;

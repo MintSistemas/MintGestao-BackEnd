@@ -1,12 +1,9 @@
-package com.mintgestao.Application.Service.Evento;
+package com.mintgestao.Application.Service;
 
-import com.mintgestao.Application.Service.Infrastructure.ServiceBase;
+import com.mintgestao.Application.Service.Base.ServiceBase;
 import com.mintgestao.Domain.Entity.Evento;
 import com.mintgestao.Domain.Entity.Local;
 import com.mintgestao.Infrastructure.Repository.EventoRepository;
-import com.mintgestao.Infrastructure.Repository.LocalRepository;
-import jakarta.validation.constraints.AssertTrue;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.DayOfWeek;

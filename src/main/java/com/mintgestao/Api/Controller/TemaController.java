@@ -1,6 +1,6 @@
 package com.mintgestao.Api.Controller;
 
-import com.mintgestao.Application.UseCase.Tema.TemaUseCase;
+import com.mintgestao.Application.UseCase.TemaUseCase;
 import com.mintgestao.Domain.Entity.Tema;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;

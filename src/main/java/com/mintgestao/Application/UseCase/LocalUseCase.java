@@ -1,13 +1,10 @@
-package com.mintgestao.Application.UseCase.Local;
+package com.mintgestao.Application.UseCase;
 
-import com.mintgestao.Application.Service.Local.LocalService;
-import com.mintgestao.Application.Service.Tema.TemaService;
-import com.mintgestao.Application.UseCase.Infrastructure.UseCaseBase;
+import com.mintgestao.Application.Service.LocalService;
+import com.mintgestao.Application.UseCase.Base.UseCaseBase;
 import com.mintgestao.Domain.Entity.Local;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
 import java.util.UUID;
 
 @Component

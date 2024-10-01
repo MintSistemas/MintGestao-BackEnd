@@ -1,6 +1,6 @@
 package com.mintgestao.Api.Controller;
 
-import com.mintgestao.Application.UseCase.Autenticacao.AutenticacaoUseCase;
+import com.mintgestao.Application.UseCase.AutenticacaoUseCase;
 import com.mintgestao.Domain.DTO.Login.LoginRequestDTO;
 import com.mintgestao.Domain.DTO.Login.LoginResponseDTO;
 import com.mintgestao.Domain.DTO.RefreshToken.RefreshTokenDTO;

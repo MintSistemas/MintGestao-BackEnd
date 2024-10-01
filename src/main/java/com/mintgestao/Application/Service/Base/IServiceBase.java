@@ -1,4 +1,4 @@
-package com.mintgestao.Application.Service.Infrastructure;
+package com.mintgestao.Application.Service.Base;
 
 import java.util.List;
 import java.util.UUID;

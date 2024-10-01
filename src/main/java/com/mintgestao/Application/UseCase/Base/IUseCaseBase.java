@@ -1,4 +1,4 @@
-package com.mintgestao.Application.UseCase.Infrastructure;
+package com.mintgestao.Application.UseCase.Base;
 
 import java.util.List;
 import java.util.UUID;

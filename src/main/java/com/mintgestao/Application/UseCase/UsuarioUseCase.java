@@ -1,7 +1,7 @@
-package com.mintgestao.Application.UseCase.Usuario;
+package com.mintgestao.Application.UseCase;
 
-import com.mintgestao.Application.Service.Usuario.UsuarioService;
-import com.mintgestao.Application.UseCase.Infrastructure.UseCaseBase;
+import com.mintgestao.Application.Service.UsuarioService;
+import com.mintgestao.Application.UseCase.Base.UseCaseBase;
 import com.mintgestao.Domain.Entity.Usuario;
 import org.springframework.stereotype.Component;
 
