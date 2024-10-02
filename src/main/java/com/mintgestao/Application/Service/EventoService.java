@@ -19,6 +19,10 @@ public class EventoService extends ServiceBase<Evento, EventoRepository> {
         super(repository);
     }
 
+    public Long gerarProximoNumero() {
+        return repository.findMaxNumero() + 1;
+    }
+
     public List<Evento> obterEventosPorLocal(UUID id) throws Exception {
         try {
             return repository.findByLocalId(id);

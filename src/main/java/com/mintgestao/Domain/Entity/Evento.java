@@ -23,13 +23,11 @@ public class Evento {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
+    private Long numero;
+
     @NotBlank(message = "Nome é obrigatório e deve ter entre 3 e 100 caracteres")
     @Size(min = 3, max = 100, message = "Nome deve ter entre 3 e 100 caracteres")
     private String nome;
-
-    @NotBlank(message = "Sobrenome é obrigatório e deve ter entre 3 e 100 caracteres")
-    @Size(min = 3, max = 100, message = "Sobrenome deve ter entre 3 e 100 caracteres")
-    private String sobrenome;
 
     @NotBlank(message = "Email é obrigatório")
     @Email(message = "Insira um email válido")

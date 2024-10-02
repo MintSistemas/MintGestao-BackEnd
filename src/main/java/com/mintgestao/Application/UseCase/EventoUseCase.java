@@ -43,6 +43,7 @@ public class EventoUseCase extends UseCaseBase<Evento> {
             ((EventoService) service).verificarDisponibilidade(evento);
             ((EventoService) service).varificarHorarioFuncionamento(evento, local);
             ((EventoService) service).verificarDiasFuncionamento(evento.getDataevento(), local.getDiasFuncionamentoList());
+            evento.setNumero(((EventoService) service).gerarProximoNumero());
             service.criar(evento);
             contasAReceberService.gerarContasAReceber(evento);
             return evento;

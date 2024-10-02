@@ -39,12 +39,15 @@ public class ContasAReceber {
 
     @NotNull(message = "O Contas a receber deve ser vinculado a um evento")
     @ManyToOne
+    @JoinColumn(name = "idevento")
     private Evento evento;
 
     @ManyToOne
+    @JoinColumn(name = "idcliente")
     private Cliente cliente;
 
     @NotNull(message = "Local é obrigatório")
     @ManyToOne
+    @JoinColumn(name = "idlocal")
     private Local local;
 }
