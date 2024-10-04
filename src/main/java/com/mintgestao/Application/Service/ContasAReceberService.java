@@ -9,6 +9,8 @@ import jakarta.validation.Valid;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.List;
+import java.util.UUID;
 
 @Service
 public class ContasAReceberService extends ServiceBase<ContasAReceber, ContasAReceberRepository> {
@@ -34,6 +36,22 @@ public class ContasAReceberService extends ServiceBase<ContasAReceber, ContasARe
             contasAReceber.setDataalteracao(new Date());
 
             return criar(contasAReceber);
+        } catch (Exception e) {
+            throw new Exception(e.getMessage());
+        }
+    }
+
+    public void cancelarContasAReceber(UUID idevento) throws Exception {
+        try {
+            List<ContasAReceber> contasAReceber = repository.findAllByEventoId(idevento);
+
+            for (ContasAReceber c : contasAReceber) {
+                c.setStatus(EnumStatusContasAReceber.Cancelado);
+                c.setDataalteracao(new Date());
+                c.setObservacao("Evento cancelado");
+            }
+
+            repository.saveAll(contasAReceber);
         } catch (Exception e) {
             throw new Exception(e.getMessage());
         }

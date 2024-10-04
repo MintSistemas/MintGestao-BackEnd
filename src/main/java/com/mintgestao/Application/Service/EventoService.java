@@ -3,6 +3,7 @@ package com.mintgestao.Application.Service;
 import com.mintgestao.Application.Service.Base.ServiceBase;
 import com.mintgestao.Domain.Entity.Evento;
 import com.mintgestao.Domain.Entity.Local;
+import com.mintgestao.Domain.Enum.EnumStatusEvento;
 import com.mintgestao.Infrastructure.Repository.EventoRepository;
 import org.springframework.stereotype.Service;
 
@@ -34,7 +35,7 @@ public class EventoService extends ServiceBase<Evento, EventoRepository> {
     public void verificarDisponibilidade(Evento evento) throws Exception {
         try {
             // Busca todos os eventos na mesma data
-            List<Evento> eventos = repository.findByDataeventoAndLocalId(evento.getDataevento(), evento.getLocal().getId());
+            List<Evento> eventos = repository.buscarPorDataEventoEIdLocal(evento.getDataevento(), evento.getLocal().getId());
 
             for (Evento e : eventos) {
                 if(evento.getId() != null && evento.getId().equals(e.getId())) {
@@ -76,6 +77,16 @@ public class EventoService extends ServiceBase<Evento, EventoRepository> {
             }
         } catch(Exception e){
                 throw new Exception(e.getMessage());
+        }
+    }
+
+    public Evento cancelarEvento(UUID id) throws Exception {
+        try {
+            Evento evento = repository.findById(id).orElseThrow(() -> new Exception("Evento não encontrado"));
+            evento.setStatus(EnumStatusEvento.Cancelado);
+            return repository.save(evento);
+        } catch (Exception e) {
+            throw new Exception(e.getMessage());
         }
     }
 }

@@ -28,6 +28,7 @@ public class Usuario implements UserDetails {
     private EnumPermissao role;
 
     @ManyToOne
+    @JoinColumn(name = "idempresa")
     private Empresa empresa;
 
     private Integer idtenant;

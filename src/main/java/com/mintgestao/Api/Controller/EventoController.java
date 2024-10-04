@@ -72,10 +72,10 @@ public class EventoController {
         }
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity excluirEvento(@Valid @PathVariable UUID id) {
+    @PutMapping("/cancelar/{id}")
+    public ResponseEntity cancelarEvento(@Valid @PathVariable UUID id) {
         try {
-            eventoUseCase.excluir(id);
+            eventoUseCase.cancelarEvento(id);
             return ResponseEntity.ok().build();
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());

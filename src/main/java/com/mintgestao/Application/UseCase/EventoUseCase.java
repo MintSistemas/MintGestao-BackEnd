@@ -5,6 +5,7 @@ import com.mintgestao.Application.Service.EventoService;
 import com.mintgestao.Application.UseCase.Base.UseCaseBase;
 import com.mintgestao.Domain.Entity.Evento;
 import com.mintgestao.Domain.Entity.Local;
+import com.mintgestao.Domain.Enum.EnumStatusEvento;
 import com.mintgestao.Infrastructure.Repository.LocalRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,6 +45,7 @@ public class EventoUseCase extends UseCaseBase<Evento> {
             ((EventoService) service).varificarHorarioFuncionamento(evento, local);
             ((EventoService) service).verificarDiasFuncionamento(evento.getDataevento(), local.getDiasFuncionamentoList());
             evento.setNumero(((EventoService) service).gerarProximoNumero());
+            evento.setStatus(EnumStatusEvento.AguardandoPagto);
             service.criar(evento);
             contasAReceberService.gerarContasAReceber(evento);
             return evento;
@@ -55,6 +57,10 @@ public class EventoUseCase extends UseCaseBase<Evento> {
     @Override
     public void atualizar(UUID id, Evento evento) throws Exception {
         try {
+            if(evento.getStatus() != EnumStatusEvento.AguardandoPagto) {
+                throw new Exception("Não é possível alterar um evento cancelado ou pago");
+            }
+
             Local local = localRepository.findById(evento.getLocal().getId()).get();
             evento.setId(id);
 
@@ -64,6 +70,16 @@ public class EventoUseCase extends UseCaseBase<Evento> {
             ((EventoService) service).verificarDiasFuncionamento(evento.getDataevento(), local.getDiasFuncionamentoList());
             service.atualizar(id, evento);
 
+        } catch (Exception e) {
+            throw new Exception(e.getMessage());
+        }
+    }
+
+    @Transactional
+    public void cancelarEvento(UUID id) throws Exception {
+        try {
+            contasAReceberService.cancelarContasAReceber(id);
+            ((EventoService) service).cancelarEvento(id);
         } catch (Exception e) {
             throw new Exception(e.getMessage());
         }

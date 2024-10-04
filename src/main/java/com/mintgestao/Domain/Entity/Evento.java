@@ -1,5 +1,6 @@
 package com.mintgestao.Domain.Entity;
 
+import com.mintgestao.Domain.Enum.EnumStatusEvento;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
@@ -54,14 +55,18 @@ public class Evento {
     @FutureOrPresent(message = "Não é possível cadastrar um evento com a data menor que a atual")
     private LocalDate dataevento;
 
+    private EnumStatusEvento status;
+
     @NotNull
     private Date dataAlteracao = new Date();
 
     @NotNull(message = "Local é obrigatório")
     @ManyToOne
+    @JoinColumn(name = "idlocal")
     private Local local;
 
     @ManyToOne
+    @JoinColumn(name = "idcliente")
     private Cliente cliente;
 
     @TenantId

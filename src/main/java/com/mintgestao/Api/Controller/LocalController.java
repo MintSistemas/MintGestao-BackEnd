@@ -71,20 +71,20 @@ public class LocalController {
         }
     }
 
-    @PutMapping("/{id}/ativar")
-    public ResponseEntity ativarLocal(@PathVariable UUID id) {
+    @PutMapping("/ativar")
+    public ResponseEntity ativarLocal(@RequestBody List<UUID> ids) {
         try {
-            localUseCase.ativar(id);
+            localUseCase.ativar(ids);
             return ResponseEntity.ok().build();
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 
-    @PutMapping("/{id}/inativar")
-    public ResponseEntity desativarLocal(@PathVariable UUID id) {
+    @PutMapping("/inativar")
+    public ResponseEntity desativarLocal(@RequestBody List<UUID> ids) {
         try {
-            localUseCase.desativar(id);
+            localUseCase.desativar(ids);
             return ResponseEntity.ok().build();
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
