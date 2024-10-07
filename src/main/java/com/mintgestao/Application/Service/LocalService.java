@@ -26,17 +26,26 @@ public class LocalService extends ServiceBase<Local, LocalRepository> {
         return repository.save(local);
     }
 
-    public List<Local> mudarStatusDeVarios(List<UUID> ids, EnumStatusLocal novoStatus) {
-        List<Local> locais = repository.findAllById(ids);
+    public List<Local> mudarStatusDeVarios(List<UUID> ids, EnumStatusLocal novoStatus) throws Exception {
+        try {
+            List<Local> locais = repository.findAllById(ids);
 
         if (locais.isEmpty()) {
             throw new EntityNotFoundException("Nenhum Local encontrado para os IDs fornecidos.");
         }
 
         for (Local local : locais) {
+            if (local.getStatus() == novoStatus) {
+                throw new Exception("O status do Local já é " + novoStatus);
+            }
             local.setStatus(novoStatus);
         }
 
         return repository.saveAll(locais);
+        } catch (EntityNotFoundException e) {
+            throw new EntityNotFoundException(e.getMessage());
+        } catch (Exception e) {
+            throw new Exception(e.getMessage());
+        }
     }
 }
