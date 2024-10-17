@@ -1,4 +1,4 @@
-package com.mintgestao.Domain.DTO.Login;
+package com.mintgestao.Domain.DTO.Autenticacao;
 
 public record LoginRequestDTO(
     String email,

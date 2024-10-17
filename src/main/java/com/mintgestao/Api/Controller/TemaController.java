@@ -22,7 +22,7 @@ public class TemaController {
         this.temaUseCase = temaUseCase;
     }
 
-    @GetMapping
+    @GetMapping("/buscartodos")
     public ResponseEntity obterTodosTemas() {
         try{
             List<Tema> temas = temaUseCase.buscarTodos();
@@ -42,7 +42,7 @@ public class TemaController {
         }
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/buscarporid/{id}")
     public ResponseEntity obterTemaPorId(@PathVariable UUID id) {
         try {
             Tema tema = temaUseCase.buscarPorId(id);
@@ -52,7 +52,7 @@ public class TemaController {
         }
     }
 
-    @PostMapping
+    @PostMapping("/criar")
     public ResponseEntity criarTema(@Valid @RequestBody Tema tema) {
         try {
             Tema novoTema = temaUseCase.criar(tema);
@@ -62,7 +62,7 @@ public class TemaController {
         }
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/atualizar/{id}")
     public ResponseEntity atualizarTema(@PathVariable UUID id, @Valid @RequestBody Tema tema) {
         try {
             temaUseCase.atualizar(id, tema);
@@ -72,7 +72,7 @@ public class TemaController {
         }
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/apagar/{id}")
     public ResponseEntity excluirTema(@PathVariable UUID id) {
         try {
             temaUseCase.excluir(id);

@@ -1,4 +1,4 @@
-package com.mintgestao.Domain.DTO.Login;
+package com.mintgestao.Domain.DTO.Autenticacao;
 
 import com.mintgestao.Domain.Entity.Tema;
 import com.mintgestao.Domain.Entity.Usuario;

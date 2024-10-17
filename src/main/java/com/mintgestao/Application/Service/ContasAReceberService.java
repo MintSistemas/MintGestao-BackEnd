@@ -27,7 +27,7 @@ public class ContasAReceberService extends ServiceBase<ContasAReceber, ContasARe
         try {
             ContasAReceber contasAReceber = new ContasAReceber();
             contasAReceber.setEvento(evento);
-            contasAReceber.setCliente(evento.getCliente());
+            contasAReceber.setUsuario(evento.getUsuario());
             contasAReceber.setLocal(evento.getLocal());
             contasAReceber.setDataevento(evento.getDataevento());
             contasAReceber.setValor(evento.getValortotal());

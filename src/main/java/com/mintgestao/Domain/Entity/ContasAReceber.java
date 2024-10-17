@@ -43,8 +43,8 @@ public class ContasAReceber {
     private Evento evento;
 
     @ManyToOne
-    @JoinColumn(name = "idcliente")
-    private Cliente cliente;
+    @JoinColumn(name = "idusuario")
+    private Usuario usuario;
 
     @NotNull(message = "Local é obrigatório")
     @ManyToOne

@@ -26,6 +26,17 @@ public class Usuario implements UserDetails {
     private String email;
     private String senha;
     private EnumPermissao role;
+    private boolean usaapp;
+
+    private boolean ativo;
+    private String endereco;
+    private String bairro;
+    private String cidade;
+    private String telefone;
+    private String numero;
+    private String cpf;
+    private String dataNascimento;
+    private String cep;
 
     @ManyToOne
     @JoinColumn(name = "idempresa")

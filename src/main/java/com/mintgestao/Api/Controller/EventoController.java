@@ -22,7 +22,7 @@ public class EventoController {
         this.eventoUseCase = eventoUseCase;
     }
 
-    @GetMapping
+    @GetMapping("/buscartodos")
     public ResponseEntity obterTodosEventos() {
         try{
             List<Evento> eventos = eventoUseCase.buscarTodos();
@@ -42,7 +42,7 @@ public class EventoController {
         }
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/buscarporid/{id}")
     public ResponseEntity obterEventoPorId(@PathVariable UUID id) {
         try {
             Evento evento = eventoUseCase.buscarPorId(id);
@@ -52,7 +52,7 @@ public class EventoController {
         }
     }
 
-    @PostMapping
+    @PostMapping("/criar")
     public ResponseEntity criarEvento(@Valid @RequestBody Evento evento) {
         try {
             Evento novoEvento = eventoUseCase.criar(evento);
@@ -62,7 +62,7 @@ public class EventoController {
         }
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/atualizar/{id}")
     public ResponseEntity atualizarEvento(@Valid @PathVariable UUID id, @RequestBody Evento evento) {
         try {
             eventoUseCase.atualizar(id, evento);

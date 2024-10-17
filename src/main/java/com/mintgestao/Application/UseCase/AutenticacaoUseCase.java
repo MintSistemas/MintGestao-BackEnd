@@ -1,9 +1,11 @@
 package com.mintgestao.Application.UseCase;
 
 import com.mintgestao.Application.Service.AutenticacaoService;
-import com.mintgestao.Domain.DTO.Login.LoginRequestDTO;
-import com.mintgestao.Domain.DTO.Login.LoginResponseDTO;
+import com.mintgestao.Domain.DTO.Autenticacao.LoginRequestDTO;
+import com.mintgestao.Domain.DTO.Autenticacao.LoginResponseDTO;
+import com.mintgestao.Domain.DTO.Autenticacao.RegistroAppDTO;
 import com.mintgestao.Domain.Entity.Usuario;
+import com.mintgestao.Domain.Enum.EnumPermissao;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -23,8 +25,33 @@ public class AutenticacaoUseCase {
         }
     }
 
-    public Boolean registrar(Usuario usuario) throws Exception {
+    public Usuario registrar(Usuario usuario) throws Exception {
         try {
+            usuario.setAtivo(true);
+            return service.registrar(usuario);
+        } catch (Exception e) {
+            throw new Exception(e.getMessage());
+        }
+    }
+
+    public Usuario registrarApp(RegistroAppDTO registroAppDTO) throws Exception {
+        try {
+            Usuario usuario = new Usuario();
+            usuario.setNome(registroAppDTO.nome());
+            usuario.setEmail(registroAppDTO.email());
+            usuario.setSenha(registroAppDTO.senha());
+            usuario.setCidade(registroAppDTO.cidade());
+            usuario.setBairro(registroAppDTO.bairro());
+            usuario.setEndereco(registroAppDTO.endereco());
+            usuario.setTelefone(registroAppDTO.telefone());
+            usuario.setNumero(registroAppDTO.numero());
+            usuario.setCpf(registroAppDTO.cpf());
+            usuario.setDataNascimento(registroAppDTO.dataNascimento());
+            usuario.setCep(registroAppDTO.cep());
+            usuario.setUsaapp(registroAppDTO.usaapp());
+            usuario.setIdtenant(-1);
+            usuario.setAtivo(true);
+
             return service.registrar(usuario);
         } catch (Exception e) {
             throw new Exception(e.getMessage());

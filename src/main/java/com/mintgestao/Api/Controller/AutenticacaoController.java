@@ -1,8 +1,9 @@
 package com.mintgestao.Api.Controller;
 
 import com.mintgestao.Application.UseCase.AutenticacaoUseCase;
-import com.mintgestao.Domain.DTO.Login.LoginRequestDTO;
-import com.mintgestao.Domain.DTO.Login.LoginResponseDTO;
+import com.mintgestao.Domain.DTO.Autenticacao.LoginRequestDTO;
+import com.mintgestao.Domain.DTO.Autenticacao.LoginResponseDTO;
+import com.mintgestao.Domain.DTO.Autenticacao.RegistroAppDTO;
 import com.mintgestao.Domain.DTO.RefreshToken.RefreshTokenDTO;
 import com.mintgestao.Domain.Entity.Usuario;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -34,11 +35,21 @@ public class AutenticacaoController {
         }
     }
 
-    @PostMapping("/registrar")
+    @PostMapping("/gestao/criar")
     public ResponseEntity registrar(@RequestBody @Valid Usuario usuario) {
         try {
-            Boolean sucesso = autenticacaoUseCase.registrar(usuario);
-            return sucesso ? ResponseEntity.noContent().build() : ResponseEntity.badRequest().build();
+            Usuario usuarioAutenticado = autenticacaoUseCase.registrar(usuario);
+            return ResponseEntity.ok(usuarioAutenticado);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @PostMapping("/app/criar")
+    public ResponseEntity registrarApp(@RequestBody @Valid RegistroAppDTO dto) {
+        try {
+            Usuario usuarioAutenticado = autenticacaoUseCase.registrarApp(dto);
+            return ResponseEntity.ok(usuarioAutenticado);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }

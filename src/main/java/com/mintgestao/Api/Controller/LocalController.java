@@ -21,7 +21,7 @@ public class LocalController {
         this.localUseCase = localUseCase;
     }
 
-    @GetMapping
+    @GetMapping("/buscartodos")
     public ResponseEntity obterTodosLocals() {
         try {
             List<Local> locals = localUseCase.buscarTodos();
@@ -31,7 +31,7 @@ public class LocalController {
         }
     }
 
-    @PostMapping
+    @PostMapping("/criar")
     public ResponseEntity criarLocal(@RequestBody Local local) {
         try {
             Local novoLocal = localUseCase.criar(local);
@@ -41,7 +41,7 @@ public class LocalController {
         }
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/buscarporid/{id}")
     public ResponseEntity obterLocalPorId(@PathVariable UUID id) {
         try {
             Local local = localUseCase.buscarPorId(id);
@@ -51,7 +51,7 @@ public class LocalController {
         }
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/atualizar/{id}")
     public ResponseEntity atualizarLocal(@PathVariable UUID id, @RequestBody Local local) {
         try {
             localUseCase.atualizar(id, local);
@@ -61,7 +61,7 @@ public class LocalController {
         }
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/apagar/{id}")
     public ResponseEntity excluirLocal(@PathVariable UUID id) {
         try {
             localUseCase.excluir(id);

@@ -21,7 +21,7 @@ public class UsuarioController {
         this.usuarioUseCase = usuarioUseCase;
     }
 
-    @GetMapping
+    @GetMapping("/buscartodos")
     public ResponseEntity<List<Usuario>> obterTodosUsuarios() {
         try {
             List<Usuario> usuarios = usuarioUseCase.buscarTodos();
@@ -31,7 +31,7 @@ public class UsuarioController {
         }
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/buscarporid/{id}")
     public ResponseEntity<Usuario> obterUsuarioPorId(@PathVariable UUID id) {
         try {
             Usuario usuario = usuarioUseCase.buscarPorId(id);
@@ -41,7 +41,7 @@ public class UsuarioController {
         }
     }
 
-    @PostMapping
+    @PostMapping("/criar")
     public ResponseEntity<Usuario> criarUsuario(@RequestBody Usuario usuario) {
         try {
             Usuario novoUsuario = usuarioUseCase.criar(usuario);
@@ -51,7 +51,7 @@ public class UsuarioController {
         }
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/atualizar/{id}")
     public ResponseEntity<Void> atualizarUsuario(@PathVariable UUID id, @RequestBody Usuario usuario) {
         try {
             usuarioUseCase.atualizar(id, usuario);
@@ -61,7 +61,7 @@ public class UsuarioController {
         }
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/apagar/{id}")
     public ResponseEntity<Void> excluirUsuario(@PathVariable UUID id) {
         try {
             usuarioUseCase.excluir(id);

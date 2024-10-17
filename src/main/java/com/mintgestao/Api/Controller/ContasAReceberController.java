@@ -21,7 +21,7 @@ public class ContasAReceberController {
         this.contasAReceberUseCase = contasAReceberUseCase;
     }
 
-    @GetMapping
+    @GetMapping("/buscartodos")
     public ResponseEntity obterTodasContasAReceber() {
         try {
             List<ContasAReceber> contasAReceber = contasAReceberUseCase.buscarTodos();
@@ -31,7 +31,7 @@ public class ContasAReceberController {
         }
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/buscarporid/{id}")
     public ResponseEntity obterContasAReceberPorId(@PathVariable UUID id) {
         try {
             ContasAReceber contasAReceber = contasAReceberUseCase.buscarPorId(id);
@@ -41,7 +41,7 @@ public class ContasAReceberController {
         }
     }
 
-    @PostMapping
+    @PostMapping("/criar")
     public ResponseEntity criarContasAReceber(@RequestBody ContasAReceber contasAReceber) {
         try {
             ContasAReceber novaContasAReceber = contasAReceberUseCase.criar(contasAReceber);
@@ -51,7 +51,7 @@ public class ContasAReceberController {
         }
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/atualizar/{id}")
     public ResponseEntity atualizarContasAReceber(@PathVariable UUID id, @RequestBody ContasAReceber contasAReceber) {
         try {
             contasAReceberUseCase.atualizar(id, contasAReceber);
@@ -61,7 +61,7 @@ public class ContasAReceberController {
         }
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/apagar/{id}")
     public ResponseEntity deletarContasAReceber(@PathVariable UUID id) {
         try {
             contasAReceberUseCase.excluir(id);

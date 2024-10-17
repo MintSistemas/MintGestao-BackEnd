@@ -66,8 +66,8 @@ public class Evento {
     private Local local;
 
     @ManyToOne
-    @JoinColumn(name = "idcliente")
-    private Cliente cliente;
+    @JoinColumn(name = "idusuario")
+    private Usuario usuario;
 
     @TenantId
     private Integer idtenant;

@@ -21,7 +21,7 @@ public class EmpresaController {
         this.empresaUseCase = empresaUseCase;
     }
 
-    @GetMapping
+    @GetMapping("/buscartodos")
     public ResponseEntity obterTodasEmpresas() {
         try {
             List<Empresa> empresas = empresaUseCase.buscarTodos();
@@ -31,7 +31,7 @@ public class EmpresaController {
         }
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/buscarporid/{id}")
     public ResponseEntity obterEmpresaPorId(@PathVariable UUID id) {
         try {
             Empresa empresa = empresaUseCase.buscarPorId(id);
@@ -41,7 +41,7 @@ public class EmpresaController {
         }
     }
 
-    @PostMapping
+    @PostMapping("/criar")
     public ResponseEntity criarEmpresa(@RequestBody Empresa empresa) {
         try {
             Empresa novaEmpresa = empresaUseCase.criar(empresa);
@@ -51,7 +51,7 @@ public class EmpresaController {
         }
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/atualizar/{id}")
     public ResponseEntity atualizarEmpresa(@PathVariable UUID id, @RequestBody Empresa empresa) {
         try {
             empresaUseCase.atualizar(id, empresa);
@@ -61,7 +61,7 @@ public class EmpresaController {
         }
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/apagar/{id}")
     public ResponseEntity excluirEmpresa(@PathVariable UUID id) {
         try {
             empresaUseCase.excluir(id);

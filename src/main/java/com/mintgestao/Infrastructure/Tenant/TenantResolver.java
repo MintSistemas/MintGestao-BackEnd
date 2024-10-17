@@ -34,7 +34,7 @@ public class TenantResolver implements CurrentTenantIdentifierResolver, Hibernat
 
     @Override
     public @UnknownKeyFor @Initialized boolean isRoot(Object tenantId) {
-        return CurrentTenantIdentifierResolver.super.isRoot(tenantId);
+        return CurrentTenantIdentifierResolver.super.isRoot(tenantId) || tenantId.equals(-1);
     }
 
     @Override

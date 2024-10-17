@@ -1,8 +1,8 @@
 package com.mintgestao.Application.Service;
 
 import com.mintgestao.Application.Service.Token.TokenService;
-import com.mintgestao.Domain.DTO.Login.LoginRequestDTO;
-import com.mintgestao.Domain.DTO.Login.LoginResponseDTO;
+import com.mintgestao.Domain.DTO.Autenticacao.LoginRequestDTO;
+import com.mintgestao.Domain.DTO.Autenticacao.LoginResponseDTO;
 import com.mintgestao.Domain.Entity.Tema;
 import com.mintgestao.Domain.Entity.Usuario;
 import com.mintgestao.Infrastructure.Repository.UsuarioRepository;
@@ -44,13 +44,12 @@ public class AutenticacaoService {
         }
     }
 
-    public Boolean registrar(Usuario usuario) throws Exception {
+    public Usuario registrar(Usuario usuario) throws Exception {
         try {
-            if (this.repository.findByEmail(usuario.getEmail()) != null) return false;
+            if (this.repository.findByEmail(usuario.getEmail()) != null) throw new Exception("Usuário já cadastrado");
             String senhaCriptografada = new BCryptPasswordEncoder().encode(usuario.getSenha());
             usuario.setSenha(senhaCriptografada);
-            repository.save(usuario);
-            return true;
+            return repository.save(usuario);
         } catch (Exception e) {
             throw new Exception(e.getMessage());
         }
