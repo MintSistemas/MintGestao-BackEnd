@@ -8,6 +8,7 @@ import com.mintgestao.Infrastructure.Repository.ContasAReceberRepository;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -23,7 +24,7 @@ public class ContasAReceberService extends ServiceBase<ContasAReceber, ContasARe
         return repository.findMaxNumero() + 1;
     }
 
-    public ContasAReceber gerarContasAReceber(@Valid  Evento evento) throws Exception {
+    public ContasAReceber gerarContasAReceber(@Valid Evento evento) throws Exception {
         try {
             ContasAReceber contasAReceber = new ContasAReceber();
             contasAReceber.setEvento(evento);
@@ -54,6 +55,36 @@ public class ContasAReceberService extends ServiceBase<ContasAReceber, ContasARe
             repository.saveAll(contasAReceber);
         } catch (Exception e) {
             throw new Exception(e.getMessage());
+        }
+    }
+
+    public ContasAReceber baixar(UUID idContasAReceber) throws Exception {
+        try {
+            ContasAReceber contasAReceber = repository.findById(idContasAReceber).orElseThrow(() -> new Exception("Conta a receber não encontrada"));
+            contasAReceber.setStatus(EnumStatusContasAReceber.Pago);
+            contasAReceber.setDatabaixa(LocalDate.now());
+            return repository.save(contasAReceber);
+        } catch (Exception e) {
+            throw new Exception(e.getMessage());
+        }
+    }
+
+    public ContasAReceber cancelar(UUID idContasAReceber) throws Exception {
+        try {
+            ContasAReceber contasAReceber = repository.findById(idContasAReceber).orElseThrow(() -> new Exception("Conta a receber não encontrada"));
+            contasAReceber.setStatus(EnumStatusContasAReceber.Cancelado);
+            contasAReceber.setDataalteracao(new Date());
+            contasAReceber.setObservacao("Evento cancelado");
+            return repository.save(contasAReceber);
+        } catch (Exception e) {
+            throw new Exception(e.getMessage());
+        }
+    }
+
+    public void verificarStatusValidoAlteracao(UUID idContasAReceber) throws Exception {
+        ContasAReceber contasAReceber = repository.findById(idContasAReceber).orElseThrow(() -> new Exception("Conta a receber não encontrada"));
+        if (contasAReceber.getStatus() != EnumStatusContasAReceber.Aberto) {
+            throw new Exception("Status inválido para alteração");
         }
     }
 }

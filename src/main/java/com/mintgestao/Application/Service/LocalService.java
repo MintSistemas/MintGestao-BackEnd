@@ -22,6 +22,11 @@ public class LocalService extends ServiceBase<Local, LocalRepository> {
     public Local mudarStatus(UUID id, EnumStatusLocal novoStatus) {
         Local local = repository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Local não encontrado: " + id));
+
+        if (local.getStatus() == novoStatus) {
+            throw new IllegalArgumentException("O status do Local já é " + novoStatus);
+        }
+
         local.setStatus(novoStatus);
         return repository.save(local);
     }

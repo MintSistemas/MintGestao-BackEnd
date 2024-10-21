@@ -16,17 +16,17 @@ public class LocalUseCase extends UseCaseBase<Local> {
         super(service);
     }
 
-    public List<Local> ativar(List<UUID> ids) throws Exception {
+    public Local ativar(UUID id) throws Exception {
         try{
-            return ((LocalService) service).mudarStatusDeVarios(ids, EnumStatusLocal.Ativo);
+            return ((LocalService) service).mudarStatus(id, EnumStatusLocal.Ativo);
         } catch (Exception e) {
             throw new Exception(e.getMessage());
         }
     }
 
-    public List<Local> desativar(List<UUID> ids) throws Exception {
+    public Local desativar(UUID id) throws Exception {
         try{
-            return ((LocalService) service).mudarStatusDeVarios(ids, EnumStatusLocal.Inativo);
+            return ((LocalService) service).mudarStatus(id, EnumStatusLocal.Inativo);
         } catch (Exception e) {
             throw new Exception(e.getMessage());
         }

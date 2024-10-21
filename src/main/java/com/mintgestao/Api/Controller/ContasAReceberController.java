@@ -70,4 +70,24 @@ public class ContasAReceberController {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
+
+    @PutMapping("/baixar/{id}")
+    public ResponseEntity baixarContasAReceber(@PathVariable UUID id) {
+        try {
+            contasAReceberUseCase.baixar(id);
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @PutMapping("/cancelar/{id}")
+    public ResponseEntity cancelarContasAReceber(@PathVariable UUID id) {
+        try {
+            contasAReceberUseCase.cancelarContasAReceber(id);
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
 }

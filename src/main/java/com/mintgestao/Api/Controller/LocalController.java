@@ -72,9 +72,9 @@ public class LocalController {
     }
 
     @PutMapping("/ativar")
-    public ResponseEntity ativarLocal(@RequestBody List<UUID> ids) {
+    public ResponseEntity ativarLocal(@RequestBody UUID id) {
         try {
-            localUseCase.ativar(ids);
+            localUseCase.ativar(id);
             return ResponseEntity.ok().build();
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
@@ -82,9 +82,9 @@ public class LocalController {
     }
 
     @PutMapping("/inativar")
-    public ResponseEntity desativarLocal(@RequestBody List<UUID> ids) {
+    public ResponseEntity inativarLocal(@RequestBody UUID id) {
         try {
-            localUseCase.desativar(ids);
+            localUseCase.desativar(id);
             return ResponseEntity.ok().build();
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
