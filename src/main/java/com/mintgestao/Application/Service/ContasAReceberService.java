@@ -87,4 +87,20 @@ public class ContasAReceberService extends ServiceBase<ContasAReceber, ContasARe
             throw new Exception("Status inválido para alteração");
         }
     }
+
+    public void atualizarReceberComBaseNoEvento(Evento evento) throws Exception {
+        try {
+            List<ContasAReceber> contasAReceber = repository.findAllByEventoId(evento.getId());
+            for (ContasAReceber c : contasAReceber) {
+                c.setValor(evento.getValortotal());
+                c.setDataevento(evento.getDataevento());
+                c.setLocal(evento.getLocal());
+                c.setUsuario(evento.getUsuario());
+                c.setDataalteracao(new Date());
+            }
+            repository.saveAll(contasAReceber);
+        } catch (Exception e) {
+            throw new Exception(e.getMessage());
+        }
+    }
 }
