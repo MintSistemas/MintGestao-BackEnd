@@ -8,6 +8,7 @@ import com.mintgestao.Infrastructure.Repository.ContasAReceberRepository;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
@@ -102,5 +103,9 @@ public class ContasAReceberService extends ServiceBase<ContasAReceber, ContasARe
         } catch (Exception e) {
             throw new Exception(e.getMessage());
         }
+    }
+
+    public Double obterReceitaTotalPorPeriodo(LocalDate dataInicio, LocalDate dataFim) {
+        return repository.obterReceitaTotalPorPeriodo(dataInicio, dataFim);
     }
 }

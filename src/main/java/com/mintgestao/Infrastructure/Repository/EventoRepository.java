@@ -1,6 +1,7 @@
 package com.mintgestao.Infrastructure.Repository;
 
 import com.mintgestao.Domain.Entity.Evento;
+import com.mintgestao.Domain.Enum.EnumStatusEvento;
 import jakarta.validation.constraints.Future;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -21,4 +22,13 @@ public interface EventoRepository extends JpaRepository<Evento, UUID> {
 
     @Query("SELECT COALESCE(MAX(e.numero), 0) FROM Evento e")
     public Long findMaxNumero();
+
+    @Query("SELECT e FROM Evento e WHERE e.status in ( 1, 2) and e.dataAlteracao >= current_date")
+    List<Evento> obterEventosAgendadosRecentemente();
+
+    @Query("SELECT COUNT(e) FROM Evento e WHERE e.status = 1 and e.dataevento = current_date")
+    Integer obterQuantidadeEventosHoje();
+
+    @Query("SELECT COUNT(e) FROM Evento e WHERE e.status = 1 and e.dataevento BETWEEN ?1 AND ?2")
+    Integer obterQuantidadeEventos(LocalDate dataInicio, LocalDate dataFim);
 }

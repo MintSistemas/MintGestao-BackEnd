@@ -89,4 +89,35 @@ public class EventoService extends ServiceBase<Evento, EventoRepository> {
             throw new Exception(e.getMessage());
         }
     }
+
+    public Integer obterQuantidadeEventos(LocalDate dataInicio, LocalDate dataFim) throws Exception {
+        try {
+            return repository.obterQuantidadeEventos(dataInicio, dataFim);
+        } catch (Exception e) {
+            throw new Exception(e.getMessage());
+        }
+    }
+
+    public Integer obterQuantidadeEventosHoje() throws Exception {
+        try {
+            return repository.obterQuantidadeEventosHoje();
+        } catch (Exception e) {
+            throw new Exception(e.getMessage());
+        }
+    }
+
+    public List<Evento> obterEventosAgendadosRecentemente() throws Exception {
+        try {
+            return repository.obterEventosAgendadosRecentemente();
+        } catch (Exception e) {
+            throw new Exception(e.getMessage());
+        }
+    }
+
+    public Integer obterQuantidadeEventosRecorrentes(LocalDate dataInicio, LocalDate dataFim) {
+        return 0;
+        /*return eventoService.obterQuantidadeEventosRecorrentes(dataInicio, dataFim);*/
+    }
+
+
 }

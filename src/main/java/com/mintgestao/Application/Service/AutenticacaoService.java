@@ -3,6 +3,7 @@ package com.mintgestao.Application.Service;
 import com.mintgestao.Application.Service.Token.TokenService;
 import com.mintgestao.Domain.DTO.Autenticacao.LoginRequestDTO;
 import com.mintgestao.Domain.DTO.Autenticacao.LoginResponseDTO;
+import com.mintgestao.Domain.DTO.DashBoard.DashBoardResponseDTO;
 import com.mintgestao.Domain.Entity.Tema;
 import com.mintgestao.Domain.Entity.Usuario;
 import com.mintgestao.Infrastructure.Repository.UsuarioRepository;

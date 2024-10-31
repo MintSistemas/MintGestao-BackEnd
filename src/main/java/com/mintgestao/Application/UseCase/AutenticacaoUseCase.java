@@ -3,9 +3,9 @@ package com.mintgestao.Application.UseCase;
 import com.mintgestao.Application.Service.AutenticacaoService;
 import com.mintgestao.Domain.DTO.Autenticacao.LoginRequestDTO;
 import com.mintgestao.Domain.DTO.Autenticacao.LoginResponseDTO;
+import com.mintgestao.Domain.DTO.DashBoard.DashBoardResponseDTO;
 import com.mintgestao.Domain.DTO.Autenticacao.RegistroAppDTO;
 import com.mintgestao.Domain.Entity.Usuario;
-import com.mintgestao.Domain.Enum.EnumPermissao;
 import org.springframework.stereotype.Component;
 
 @Component
