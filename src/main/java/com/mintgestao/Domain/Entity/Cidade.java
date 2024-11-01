@@ -1,11 +1,11 @@
 package com.mintgestao.Domain.Entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 
 @Entity
@@ -18,5 +18,6 @@ public class Cidade {
     private String nome;
 
     @ManyToOne
+    @JoinColumn(name = "estado_id")
     private Estado estado;
 }

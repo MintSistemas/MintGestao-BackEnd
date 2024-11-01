@@ -42,6 +42,6 @@ public class LocalidadeController {
     @GetMapping("/atualizarDados")
     public void atualizarDados() {
         SincronizacaoLocalidadesService sincronizacaoLocalidadesService = new SincronizacaoLocalidadesService(estadoRepository, cidadeRepository, bairroRepository);
-        sincronizacaoLocalidadesService.sincronizarDados();
+        sincronizacaoLocalidadesService.sincronizarLocalidades();
     }
 }
