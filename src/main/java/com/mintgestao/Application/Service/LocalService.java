@@ -1,18 +1,29 @@
 package com.mintgestao.Application.Service;
 
 import com.mintgestao.Application.Service.Base.ServiceBase;
+import com.mintgestao.Domain.Entity.ImagemLocal;
 import com.mintgestao.Domain.Entity.Local;
 import com.mintgestao.Domain.Enum.EnumStatusLocal;
+import com.mintgestao.Infrastructure.Repository.ImagemLocalRepository;
 import com.mintgestao.Infrastructure.Repository.LocalRepository;
+import com.mintgestao.Infrastructure.util.CloudinaryService;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
 
 @Service
 public class LocalService extends ServiceBase<Local, LocalRepository> {
+
+    @Autowired
+    private ImagemLocalRepository imagemLocalRepository;
+
+    @Autowired
+    private CloudinaryService cloudinaryService;
 
     @Autowired
     public LocalService(LocalRepository repository) {
@@ -52,5 +63,33 @@ public class LocalService extends ServiceBase<Local, LocalRepository> {
         } catch (Exception e) {
             throw new Exception(e.getMessage());
         }
+    }
+
+    public ImagemLocal adicionarImagem(UUID localId, List<MultipartFile> imagens) throws IOException {
+        Local local = repository.findById(localId)
+                .orElseThrow(() -> new EntityNotFoundException("Local não encontrado"));
+
+        for (MultipartFile imagem : imagens) {
+            String url = cloudinaryService.uploadImage(imagem);
+            ImagemLocal imagemLocal = new ImagemLocal();
+            imagemLocal.setUrl(url);
+            imagemLocal.setLocal(local);
+            imagemLocalRepository.save(imagemLocal);
+        }
+        return null;
+    }
+
+    public void removerImagem(UUID imagemId) throws IOException {
+        ImagemLocal imagemLocal = imagemLocalRepository.findById(imagemId)
+                .orElseThrow(() -> new EntityNotFoundException("Imagem não encontrada"));
+
+        String publicId = imagemLocal.getUrl().split("/")[8].split("\\.")[0]; // Extraia o publicId da URL se necessário.
+        cloudinaryService.deleteImage(publicId);
+
+        imagemLocalRepository.delete(imagemLocal);
+    }
+
+    public List<ImagemLocal> listarImagensPorLocal(UUID localId) {
+        return imagemLocalRepository.findAllByLocalId(localId);
     }
 }

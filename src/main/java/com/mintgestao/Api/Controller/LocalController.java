@@ -1,10 +1,12 @@
 package com.mintgestao.Api.Controller;
 
 import com.mintgestao.Application.UseCase.LocalUseCase;
+import com.mintgestao.Domain.Entity.ImagemLocal;
 import com.mintgestao.Domain.Entity.Local;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.UUID;
@@ -86,6 +88,36 @@ public class LocalController {
         try {
             localUseCase.desativar(id);
             return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @PostMapping("/{id}/imagem")
+    public ResponseEntity adicionarImagem(@PathVariable UUID id, @RequestBody List<MultipartFile> imagens) {
+        try {
+            localUseCase.adicionarImagem(id, imagens);
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @DeleteMapping("/imagem/{imagemId}")
+    public ResponseEntity removerImagem(@PathVariable UUID imagemId) {
+        try {
+            localUseCase.removerImagem(imagemId);
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @GetMapping("/{id}/imagens")
+    public ResponseEntity listarImagensPorLocal(@PathVariable UUID id) {
+        try {
+            List<ImagemLocal> imagens = localUseCase.listarImagensPorLocal(id);
+            return ResponseEntity.ok(imagens);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
