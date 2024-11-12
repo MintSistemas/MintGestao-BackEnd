@@ -53,6 +53,9 @@ public class Local {
     @PositiveOrZero(message = "Valor hora deve positivo")
     private Double valorHora;
 
+    @OneToMany(mappedBy = "local", cascade = CascadeType.ALL)
+    private List<ImagemLocal> imagens;
+
     private Date dataAlteracao = new Date();
 
     @TenantId

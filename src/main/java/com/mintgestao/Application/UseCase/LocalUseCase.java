@@ -34,29 +34,4 @@ public class LocalUseCase extends UseCaseBase<Local> {
             throw new Exception(e.getMessage());
         }
     }
-
-    public ImagemLocal adicionarImagem(UUID localId, List<MultipartFile> imagens) throws IOException {
-        try {
-            return ((LocalService) service).adicionarImagem(localId, imagens);
-        } catch (IOException e) {
-            throw new IOException(e.getMessage());
-        }
-    }
-
-    public List<ImagemLocal> listarImagensPorLocal(UUID localId) {
-        try {
-            return ((LocalService) service).listarImagensPorLocal(localId);
-        } catch (Exception e) {
-            throw new IllegalArgumentException(e.getMessage());
-        }
-    }
-
-    public void removerImagem(UUID imagemId) {
-        try {
-            ((LocalService) service).removerImagem(imagemId);
-        } catch (Exception e) {
-            throw new IllegalArgumentException(e.getMessage());
-        }
-    }
-
 }

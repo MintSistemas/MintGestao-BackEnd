@@ -4,15 +4,11 @@ import com.mintgestao.Application.Service.Base.ServiceBase;
 import com.mintgestao.Domain.Entity.ImagemLocal;
 import com.mintgestao.Domain.Entity.Local;
 import com.mintgestao.Domain.Enum.EnumStatusLocal;
-import com.mintgestao.Infrastructure.Repository.ImagemLocalRepository;
 import com.mintgestao.Infrastructure.Repository.LocalRepository;
-import com.mintgestao.Infrastructure.util.CloudinaryService;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
 
@@ -20,15 +16,12 @@ import java.util.UUID;
 public class LocalService extends ServiceBase<Local, LocalRepository> {
 
     @Autowired
-    private ImagemLocalRepository imagemLocalRepository;
-
-    @Autowired
-    private CloudinaryService cloudinaryService;
-
-    @Autowired
     public LocalService(LocalRepository repository) {
         super(repository);
     }
+
+    @Autowired
+    private ImagemLocalService imagemLocalService;
 
     public Local mudarStatus(UUID id, EnumStatusLocal novoStatus) {
         Local local = repository.findById(id)
@@ -46,18 +39,18 @@ public class LocalService extends ServiceBase<Local, LocalRepository> {
         try {
             List<Local> locais = repository.findAllById(ids);
 
-        if (locais.isEmpty()) {
-            throw new EntityNotFoundException("Nenhum Local encontrado para os IDs fornecidos.");
-        }
-
-        for (Local local : locais) {
-            if (local.getStatus() == novoStatus) {
-                throw new Exception("O status do Local já é " + novoStatus);
+            if (locais.isEmpty()) {
+                throw new EntityNotFoundException("Nenhum Local encontrado para os IDs fornecidos.");
             }
-            local.setStatus(novoStatus);
-        }
 
-        return repository.saveAll(locais);
+            for (Local local : locais) {
+                if (local.getStatus() == novoStatus) {
+                    throw new Exception("O status do Local já é " + novoStatus);
+                }
+                local.setStatus(novoStatus);
+            }
+
+            return repository.saveAll(locais);
         } catch (EntityNotFoundException e) {
             throw new EntityNotFoundException(e.getMessage());
         } catch (Exception e) {
@@ -65,31 +58,48 @@ public class LocalService extends ServiceBase<Local, LocalRepository> {
         }
     }
 
-    public ImagemLocal adicionarImagem(UUID localId, List<MultipartFile> imagens) throws IOException {
-        Local local = repository.findById(localId)
-                .orElseThrow(() -> new EntityNotFoundException("Local não encontrado"));
+    @Override
+    public Local criar(Local local) {
+        local.setStatus(EnumStatusLocal.Ativo);
+        List<ImagemLocal> imagens = local.getImagens();
 
-        for (MultipartFile imagem : imagens) {
-            String url = cloudinaryService.uploadImage(imagem);
-            ImagemLocal imagemLocal = new ImagemLocal();
-            imagemLocal.setUrl(url);
-            imagemLocal.setLocal(local);
-            imagemLocalRepository.save(imagemLocal);
+        // Remove as imagens do local para evitar erro de referência cíclica
+        local.setImagens(null);
+
+        Local localSalvo = repository.save(local);
+
+        if (imagens != null) {
+            imagens.forEach(imagem -> {
+                try {
+                    imagemLocalService.salvarImagem(imagem, localSalvo);
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+            });
         }
-        return null;
+
+        return localSalvo;
     }
 
-    public void removerImagem(UUID imagemId) throws IOException {
-        ImagemLocal imagemLocal = imagemLocalRepository.findById(imagemId)
-                .orElseThrow(() -> new EntityNotFoundException("Imagem não encontrada"));
+    @Override
+    public void atualizar(UUID id, Local local) {
+        Local localAtual = repository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Local não encontrado: " + id));
 
-        String publicId = imagemLocal.getUrl().split("/")[8].split("\\.")[0]; // Extraia o publicId da URL se necessário.
-        cloudinaryService.deleteImage(publicId);
+        local.setId(localAtual.getId());
+        local.setStatus(localAtual.getStatus());
+        local.setDataAlteracao(localAtual.getDataAlteracao());
 
-        imagemLocalRepository.delete(imagemLocal);
-    }
+        if (local.getImagens() != null) {
+            local.getImagens().forEach(imagem -> {
+                try {
+                    imagemLocalService.salvarImagem(imagem, local);
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+            });
+        }
 
-    public List<ImagemLocal> listarImagensPorLocal(UUID localId) {
-        return imagemLocalRepository.findAllByLocalId(localId);
+        repository.save(local);
     }
 }

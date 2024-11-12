@@ -1,5 +1,6 @@
 package com.mintgestao.Domain.Entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -20,5 +21,6 @@ public class ImagemLocal {
 
     @ManyToOne
     @JoinColumn(name = "local_id", nullable = false)
+    @JsonIgnore
     private Local local;
 }
