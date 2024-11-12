@@ -19,6 +19,8 @@ public class ImagemLocal {
     @Column(nullable = false)
     private String url;
 
+    private String public_id;
+
     @ManyToOne
     @JoinColumn(name = "local_id", nullable = false)
     @JsonIgnore
