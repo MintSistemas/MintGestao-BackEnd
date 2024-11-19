@@ -82,7 +82,7 @@ public class LocalService extends ServiceBase<Local, LocalRepository> {
     }
 
     @Override
-    public void atualizar(UUID id, Local local) {
+    public void atualizar(UUID id, Local local) throws Exception {
         Local localAtual = repository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Local não encontrado: " + id));
 
@@ -90,7 +90,19 @@ public class LocalService extends ServiceBase<Local, LocalRepository> {
         local.setStatus(localAtual.getStatus());
         local.setDataAlteracao(localAtual.getDataAlteracao());
 
-        if (local.getImagens() != null) {
+        localAtual.getImagens().forEach(imagem -> {
+            try {
+                imagemLocalService.excluir(imagem.getId());
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        });
+
+//        if(!localAtual.getImagens().isEmpty()) {
+//            imagemLocalService.excluirPorLocalId(local.getId());
+//        }
+
+        if (!local.getImagens().isEmpty()) {
             local.getImagens().forEach(imagem -> {
                 try {
                     imagemLocalService.salvarImagem(imagem, local);
