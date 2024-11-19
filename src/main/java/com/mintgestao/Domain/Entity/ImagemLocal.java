@@ -5,6 +5,8 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
+
 import java.util.UUID;
 
 @Entity
@@ -24,5 +26,6 @@ public class ImagemLocal {
     @ManyToOne
     @JoinColumn(name = "local_id", nullable = false)
     @JsonIgnore
+    @ToString.Exclude
     private Local local;
 }

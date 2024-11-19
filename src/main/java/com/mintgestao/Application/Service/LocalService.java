@@ -9,6 +9,7 @@ import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -71,7 +72,7 @@ public class LocalService extends ServiceBase<Local, LocalRepository> {
         if (imagens != null) {
             imagens.forEach(imagem -> {
                 try {
-                    imagemLocalService.salvarImagem(imagem, localSalvo);
+                    imagemLocalService.salvar(imagem, localSalvo);
                 } catch (Exception e) {
                     throw new RuntimeException(e);
                 }
@@ -83,35 +84,29 @@ public class LocalService extends ServiceBase<Local, LocalRepository> {
 
     @Override
     public void atualizar(UUID id, Local local) throws Exception {
+        // Busca o local atual
         Local localAtual = repository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Local não encontrado: " + id));
 
+        // Copia dados relevantes do local atual
         local.setId(localAtual.getId());
         local.setStatus(localAtual.getStatus());
-        local.setDataAlteracao(localAtual.getDataAlteracao());
+        local.setDataAlteracao(new Date());
 
-        localAtual.getImagens().forEach(imagem -> {
-            try {
-                imagemLocalService.excluir(imagem.getId());
-            } catch (Exception e) {
-                throw new RuntimeException(e);
-            }
-        });
-
-//        if(!localAtual.getImagens().isEmpty()) {
-//            imagemLocalService.excluirPorLocalId(local.getId());
-//        }
-
-        if (!local.getImagens().isEmpty()) {
-            local.getImagens().forEach(imagem -> {
-                try {
-                    imagemLocalService.salvarImagem(imagem, local);
-                } catch (Exception e) {
-                    throw new RuntimeException(e);
-                }
-            });
+        // Exclui as imagens antigas, se existirem
+        if (!localAtual.getImagens().isEmpty()) {
+            imagemLocalService.excluirPorLocalId(localAtual.getId());
         }
 
-        repository.save(local);
+        // Salva o local sem imagens inicialmente
+        local.setImagens(null);
+        Local localSalvo = repository.save(local);
+
+        // Adiciona e salva as novas imagens associadas ao local salvo
+        if (local.getImagens() != null && !local.getImagens().isEmpty()) {
+            for (ImagemLocal imagem : local.getImagens()) {
+                imagemLocalService.salvarImagem(imagem, localSalvo);
+            }
+        }
     }
 }

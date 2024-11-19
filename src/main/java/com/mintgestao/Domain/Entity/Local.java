@@ -54,6 +54,7 @@ public class Local {
     private Double valorHora;
 
     @OneToMany(mappedBy = "local", cascade = CascadeType.ALL)
+    @ToString.Exclude
     private List<ImagemLocal> imagens;
 
     private Date dataAlteracao = new Date();

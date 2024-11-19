@@ -17,12 +17,22 @@ public class ImagemLocalService extends ServiceBase<ImagemLocal, ImagemLocalRepo
     }{
     }
 
+    @Transactional
     public void salvarImagem(ImagemLocal imagemLocal, Local local) throws Exception {
         try {
-            imagemLocal.setLocal(local);
+            imagemLocal.setLocal(local); // Reassocia o local à imagem
             repository.save(imagemLocal);
         } catch (Exception e) {
-            throw new Exception(e.getMessage());
+            throw new Exception("Erro ao salvar imagem: " + e.getMessage(), e);
+        }
+    }
+
+    public void salvar(ImagemLocal imagemLocal, Local local) throws Exception {
+        try {
+            imagemLocal.setLocal(local); // Reassocia o local à imagem
+            repository.save(imagemLocal);
+        } catch (Exception e) {
+            throw new Exception("Erro ao salvar imagem: " + e.getMessage(), e);
         }
     }
 
