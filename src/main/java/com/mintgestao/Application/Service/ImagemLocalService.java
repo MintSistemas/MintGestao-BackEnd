@@ -44,4 +44,13 @@ public class ImagemLocalService extends ServiceBase<ImagemLocal, ImagemLocalRepo
             throw new Exception("Erro ao excluir imagens locais: " + e.getMessage(), e);
         }
     }
+
+    @Transactional
+    public void excluirPorId(UUID imagemId) throws Exception {
+        try {
+            repository.deleteById(imagemId);
+        } catch (Exception e) {
+            throw new Exception("Erro ao excluir imagem: " + e.getMessage(), e);
+        }
+    }
 }

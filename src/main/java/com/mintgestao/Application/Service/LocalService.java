@@ -6,12 +6,14 @@ import com.mintgestao.Domain.Entity.Local;
 import com.mintgestao.Domain.Enum.EnumStatusLocal;
 import com.mintgestao.Infrastructure.Repository.LocalRepository;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 public class LocalService extends ServiceBase<Local, LocalRepository> {
@@ -83,30 +85,40 @@ public class LocalService extends ServiceBase<Local, LocalRepository> {
     }
 
     @Override
+    @Transactional
     public void atualizar(UUID id, Local local) throws Exception {
         // Busca o local atual
         Local localAtual = repository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Local não encontrado: " + id));
 
-        // Copia dados relevantes do local atual
+        // Atualiza os dados do local
         local.setId(localAtual.getId());
         local.setStatus(localAtual.getStatus());
         local.setDataAlteracao(new Date());
 
-        // Exclui as imagens antigas, se existirem
-        if (!localAtual.getImagens().isEmpty()) {
-            imagemLocalService.excluirPorLocalId(localAtual.getId());
-        }
+        // Gerencia as imagens associadas
+        List<ImagemLocal> imagensAtuais = localAtual.getImagens();
+        List<ImagemLocal> novasImagens = local.getImagens();
 
-        // Salva o local sem imagens inicialmente
-        local.setImagens(null);
-        Local localSalvo = repository.save(local);
+        // Excluir imagens que não estão mais na nova lista
+        if (imagensAtuais != null && novasImagens != null) {
+            List<ImagemLocal> imagensParaExcluir = imagensAtuais.stream()
+                    .filter(imagemAtual -> novasImagens.stream()
+                            .noneMatch(novaImagem -> novaImagem.getId() != null && novaImagem.getId().equals(imagemAtual.getId())))
+                    .collect(Collectors.toList());
 
-        // Adiciona e salva as novas imagens associadas ao local salvo
-        if (local.getImagens() != null && !local.getImagens().isEmpty()) {
-            for (ImagemLocal imagem : local.getImagens()) {
-                imagemLocalService.salvarImagem(imagem, localSalvo);
+            for (ImagemLocal imagemParaExcluir : imagensParaExcluir) {
+                imagemLocalService.excluirPorId(imagemParaExcluir.getId());
             }
         }
+
+        // Adiciona as novas imagens associando ao local
+        if (novasImagens != null) {
+            novasImagens.forEach(imagem -> imagem.setLocal(local));
+        }
+        local.setImagens(novasImagens);
+
+        // Salva o local com as novas imagens
+        repository.save(local);
     }
 }
