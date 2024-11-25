@@ -34,4 +34,7 @@ public interface EventoRepository extends JpaRepository<Evento, UUID> {
 
     @Query("SELECT e FROM Evento e WHERE e.status = 1 and e.local.id = ?1 and e.dataevento = ?2")
     List<Evento> obterEventosNoDia(UUID idlocal, LocalDate data);
+
+    @Query("SELECT e FROM Evento e WHERE e.status = 1 and e.usuario.id = ?1 ORDER BY e.dataAlteracao DESC limit 5")
+    List<Evento> buscarUltimasReservas(UUID idUsuario);
 }

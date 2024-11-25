@@ -31,6 +31,15 @@ public class LocalService extends ServiceBase<Local, LocalRepository> {
     @Autowired
     private EventoService eventoService;
 
+    public List<Local> buscarUltimasReservas(UUID idUsuario) throws Exception {
+        List<Evento> ultimosEventos = eventoService.buscarUltimasReservas(idUsuario);
+
+        return ultimosEventos.stream()
+                .map(Evento::getLocal)
+                .distinct()
+                .collect(Collectors.toList());
+    }
+
     public Local mudarStatus(UUID id, EnumStatusLocal novoStatus) {
         Local local = repository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Local não encontrado: " + id));

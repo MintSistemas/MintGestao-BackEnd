@@ -24,10 +24,30 @@ public class LocalController {
         this.localUseCase = localUseCase;
     }
 
+    @GetMapping("/buscarultimasreservas/{id}")
+    public ResponseEntity obterUltimasReservas(@PathVariable UUID id) {
+        try {
+            List<Local> locais = localUseCase.buscarUltimasReservas(id);
+            return ResponseEntity.ok(locais);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
     @GetMapping("/buscartodos")
     public ResponseEntity obterTodosLocals() {
         try {
             List<Local> locals = localUseCase.buscarTodos();
+            return ResponseEntity.ok(locals);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @GetMapping("/buscarlocaisapp")
+    public ResponseEntity obterLocaisApp() {
+        try {
+            List<Local> locals = localUseCase.buscarLocaisApp();
             return ResponseEntity.ok(locals);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());

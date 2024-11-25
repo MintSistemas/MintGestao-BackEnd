@@ -31,6 +31,14 @@ public class LocalUseCase extends UseCaseBase<Local> {
         }
     }
 
+    public List<Local> buscarUltimasReservas(UUID idUsuario) throws Exception {
+        try {
+            return ((LocalService) service).buscarUltimasReservas(idUsuario);
+        } catch (Exception e) {
+            throw new Exception(e.getMessage());
+        }
+    }
+
     public String verificaEventosDiaAtual(Local local, LocalDate diaFiltro) throws Exception {
         try {
             return ((LocalService) service).verificaEventosDiaAtual(local, diaFiltro);
@@ -73,6 +81,18 @@ public class LocalUseCase extends UseCaseBase<Local> {
     public Local desativar(UUID id) throws Exception {
         try{
             return ((LocalService) service).mudarStatus(id, EnumStatusLocal.Inativo);
+        } catch (Exception e) {
+            throw new Exception(e.getMessage());
+        }
+    }
+
+    public List<Local> buscarLocaisApp() throws Exception {
+        try {
+            List<Local> locais = service.buscarTodos();
+
+            return locais.stream()
+                    .filter(local -> local.getStatus().equals(EnumStatusLocal.Ativo))
+                    .collect(Collectors.toList());
         } catch (Exception e) {
             throw new Exception(e.getMessage());
         }

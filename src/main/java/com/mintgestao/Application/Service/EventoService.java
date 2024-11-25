@@ -27,6 +27,14 @@ public class EventoService extends ServiceBase<Evento, EventoRepository> {
         return repository.findMaxNumero() + 1;
     }
 
+    public List<Evento> buscarUltimasReservas(UUID idUsuario) throws Exception {
+        try {
+            return repository.buscarUltimasReservas(idUsuario);
+        } catch (Exception e) {
+            throw new Exception(e.getMessage());
+        }
+    }
+
     public List<Evento> obterEventosPorLocal(UUID id) throws Exception {
         try {
             return repository.findByLocalId(id);
