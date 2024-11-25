@@ -2,6 +2,7 @@ package com.mintgestao.Application.UseCase;
 
 import com.mintgestao.Application.Service.LocalService;
 import com.mintgestao.Application.UseCase.Base.UseCaseBase;
+import com.mintgestao.Domain.DTO.Local.LocalResponseDTO;
 import com.mintgestao.Domain.Entity.ImagemLocal;
 import com.mintgestao.Domain.Entity.Local;
 import com.mintgestao.Domain.Enum.EnumStatusLocal;
@@ -9,8 +10,11 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Component
 public class LocalUseCase extends UseCaseBase<Local> {
@@ -24,6 +28,45 @@ public class LocalUseCase extends UseCaseBase<Local> {
             return ((LocalService) service).mudarStatus(id, EnumStatusLocal.Ativo);
         } catch (Exception e) {
             throw new Exception(e.getMessage());
+        }
+    }
+
+    public String verificaEventosDiaAtual(Local local, LocalDate diaFiltro) throws Exception {
+        try {
+            return ((LocalService) service).verificaEventosDiaAtual(local, diaFiltro);
+        } catch (Exception e) {
+            throw new Exception(e.getMessage());
+        }
+    }
+
+    public LocalResponseDTO buscarLocalCardApp(UUID id, LocalDate diaFiltro) throws Exception {
+        try {
+            Local local = service.buscarPorId(id);
+
+            String eventosDia = this.verificaEventosDiaAtual(local, diaFiltro);
+
+            return new LocalResponseDTO(
+                    local.getId().toString(),
+                    local.getNome(),
+                    local.getStatus().toString(),
+                    local.getCep(),
+                    local.getEstado(),
+                    local.getCidade(),
+                    local.getBairro(),
+                    local.getRua(),
+                    local.getDiasFuncionamento(),
+                    local.getComplemento(),
+                    local.getHorarioAbertura(),
+                    local.getHorarioFechamento(),
+                    local.getObservacao(),
+                    local.getValorHora(),
+                    local.getImagens(),
+                    local.getDataAlteracao(),
+                    local.getDiasFuncionamentoList().stream().map(Enum::toString).toList(),
+                    eventosDia
+            );
+        } catch (Exception e) {
+            throw new Exception("Erro ao buscar os locais: " + e.getMessage());
         }
     }
 

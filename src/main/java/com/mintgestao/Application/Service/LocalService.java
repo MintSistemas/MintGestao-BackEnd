@@ -1,6 +1,7 @@
 package com.mintgestao.Application.Service;
 
 import com.mintgestao.Application.Service.Base.ServiceBase;
+import com.mintgestao.Domain.Entity.Evento;
 import com.mintgestao.Domain.Entity.ImagemLocal;
 import com.mintgestao.Domain.Entity.Local;
 import com.mintgestao.Domain.Enum.EnumStatusLocal;
@@ -10,6 +11,7 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -25,6 +27,9 @@ public class LocalService extends ServiceBase<Local, LocalRepository> {
 
     @Autowired
     private ImagemLocalService imagemLocalService;
+
+    @Autowired
+    private EventoService eventoService;
 
     public Local mudarStatus(UUID id, EnumStatusLocal novoStatus) {
         Local local = repository.findById(id)
@@ -120,5 +125,9 @@ public class LocalService extends ServiceBase<Local, LocalRepository> {
 
         // Salva o local com as novas imagens
         repository.save(local);
+    }
+
+    public String verificaEventosDiaAtual(Local local, LocalDate diaFiltro) throws Exception {
+        return eventoService.obterEventosNoDia(local, diaFiltro);
     }
 }

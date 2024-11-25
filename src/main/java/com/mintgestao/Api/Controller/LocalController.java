@@ -1,11 +1,14 @@
 package com.mintgestao.Api.Controller;
 
 import com.mintgestao.Application.UseCase.LocalUseCase;
+import com.mintgestao.Domain.DTO.Local.LocalResponseDTO;
 import com.mintgestao.Domain.Entity.Local;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -26,6 +29,16 @@ public class LocalController {
         try {
             List<Local> locals = localUseCase.buscarTodos();
             return ResponseEntity.ok(locals);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @GetMapping("/buscarhorariosdisponiveis/{id}/{data}")
+    public ResponseEntity obterLocalCardApp(@PathVariable UUID id, @PathVariable String data) {
+        try {
+            LocalResponseDTO local = localUseCase.buscarLocalCardApp(id, LocalDate.parse(data));
+            return ResponseEntity.ok(local);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }

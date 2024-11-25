@@ -31,4 +31,7 @@ public interface EventoRepository extends JpaRepository<Evento, UUID> {
 
     @Query("SELECT COUNT(e) FROM Evento e WHERE e.status = 1 and e.dataevento BETWEEN ?1 AND ?2")
     Integer obterQuantidadeEventos(LocalDate dataInicio, LocalDate dataFim);
+
+    @Query("SELECT e FROM Evento e WHERE e.status = 1 and e.local.id = ?1 and e.dataevento = ?2")
+    List<Evento> obterEventosNoDia(UUID idlocal, LocalDate data);
 }
