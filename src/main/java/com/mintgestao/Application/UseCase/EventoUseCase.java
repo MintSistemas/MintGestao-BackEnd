@@ -11,6 +11,7 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
@@ -26,6 +27,14 @@ public class EventoUseCase extends UseCaseBase<Evento> {
 
     @Autowired
     ContasAReceberService contasAReceberService;
+
+    public List<Evento> buscarEventosPorData(UUID idUsuario, LocalDate data) throws Exception {
+        try {
+            return ((EventoService) service).buscarEventosPorData(idUsuario, data);
+        } catch (Exception e) {
+            throw new Exception(e.getMessage());
+        }
+    }
 
     public List<Evento> obterEventosPorLocal(UUID id) throws Exception {
         try {

@@ -53,6 +53,9 @@ public class Local {
     @PositiveOrZero(message = "Valor hora deve positivo")
     private Double valorHora;
 
+    @ManyToOne
+    private Empresa empresa;
+
     @OneToMany(mappedBy = "local", cascade = CascadeType.ALL)
     @ToString.Exclude
     private List<ImagemLocal> imagens;

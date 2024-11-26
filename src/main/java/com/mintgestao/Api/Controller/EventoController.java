@@ -7,6 +7,7 @@ import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
@@ -47,6 +48,17 @@ public class EventoController {
         try {
             Evento evento = eventoUseCase.buscarPorId(id);
             return ResponseEntity.ok(evento);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @GetMapping("/buscareventospordata/{id}/{data}")
+    public ResponseEntity obterEventosPorData(@PathVariable UUID id, @PathVariable String data) {
+        try {
+            LocalDate dataFiltro = LocalDate.parse(data);
+            List<Evento> eventos = eventoUseCase.buscarEventosPorData(id, dataFiltro);
+            return ResponseEntity.ok(eventos);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
