@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -139,4 +140,40 @@ public class LocalService extends ServiceBase<Local, LocalRepository> {
     public String verificaEventosDiaAtual(Local local, LocalDate diaFiltro) throws Exception {
         return eventoService.obterEventosNoDia(local, diaFiltro);
     }
+
+    public List<Local> filtrarLocais(String nome, String data, String horaInicio, String horaFim, String estado, String cidade) throws Exception {
+        // Passo 1: Obter os locais com base nos filtros simples
+        List<Local> locais = repository.filtrarLocais(nome.toUpperCase(), cidade.toUpperCase(), estado.toUpperCase());
+
+        // Converter data e horários para objetos manipuláveis
+        LocalDate dataFiltro = (data != null && !data.isEmpty()) ? LocalDate.parse(data) : null;
+        LocalTime horaInicioFiltro = (horaInicio != null && !horaInicio.isEmpty()) ? LocalTime.parse(horaInicio) : null;
+        LocalTime horaFimFiltro = (horaFim != null && !horaFim.isEmpty()) ? LocalTime.parse(horaFim) : null;
+
+        return locais.stream()
+                .filter(local -> {
+                    try {
+                        if (dataFiltro == null || horaInicioFiltro == null || horaFimFiltro == null) {
+                            return true;
+                        }
+
+                        List<Evento> eventosNoDia = eventoService.obterEventosNoDiaPorLocal(local, dataFiltro);
+
+                        for (Evento evento : eventosNoDia) {
+                            LocalTime inicioEvento = evento.getHorainicio();
+                            LocalTime fimEvento = evento.getHorafim();
+
+                            if ((horaInicioFiltro.isBefore(fimEvento) && horaFimFiltro.isAfter(inicioEvento))) {
+                                return false;
+                            }
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        return false;
+                    }
+                    return true;
+                })
+                .collect(Collectors.toList());
+    }
+
 }

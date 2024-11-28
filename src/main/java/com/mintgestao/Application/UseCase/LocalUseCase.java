@@ -97,4 +97,12 @@ public class LocalUseCase extends UseCaseBase<Local> {
             throw new Exception(e.getMessage());
         }
     }
+
+    public List<Local> filtrarLocais(String nome, String data, String horaInicio, String horaFim, String estado, String cidade) throws Exception {
+        try {
+            return ((LocalService) service).filtrarLocais(nome, data, horaInicio, horaFim, estado, cidade);
+        } catch (Exception e) {
+            throw new Exception(e.getMessage());
+        }
+    }
 }

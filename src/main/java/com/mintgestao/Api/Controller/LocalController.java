@@ -34,6 +34,22 @@ public class LocalController {
         }
     }
 
+    @GetMapping("/filtrarlocais")
+    public ResponseEntity<?> filtrarLocais(
+            @RequestParam(required = false) String nome,
+            @RequestParam(required = false) String data,
+            @RequestParam(required = false) String horaInicio,
+            @RequestParam(required = false) String horaFim,
+            @RequestParam(required = false) String estado,
+            @RequestParam(required = false) String cidade) {
+        try {
+            List<Local> locais = localUseCase.filtrarLocais(nome, data, horaInicio, horaFim, estado, cidade);
+            return ResponseEntity.ok(locais);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
     @GetMapping("/buscartodos")
     public ResponseEntity obterTodosLocals() {
         try {

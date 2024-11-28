@@ -217,4 +217,12 @@ public class EventoService extends ServiceBase<Evento, EventoRepository> {
             throw new Exception("Erro ao obter resumo de eventos: " + e.getMessage());
         }
     }
+
+    public List<Evento> obterEventosNoDiaPorLocal(Local local, LocalDate data) throws Exception {
+        try {
+            return repository.obterEventosNoDia(local.getId(), data);
+        } catch (Exception e) {
+            throw new Exception(e.getMessage());
+        }
+    }
 }

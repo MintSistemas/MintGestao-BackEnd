@@ -10,4 +10,7 @@ import java.util.UUID;
 
 @Repository
 public interface LocalRepository extends JpaRepository<Local, UUID> {
+
+    @Query("SELECT l FROM Local l WHERE upper(l.nome) LIKE %?1% AND upper(l.cidade) LIKE %?2% AND upper(l.estado) LIKE %?3% AND l.status = 1")
+    List<Local> filtrarLocais(String nome, String cidade, String estado) throws Exception;
 }
