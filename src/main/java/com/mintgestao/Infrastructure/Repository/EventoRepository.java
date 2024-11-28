@@ -6,6 +6,7 @@ import jakarta.validation.constraints.Future;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
@@ -40,4 +41,21 @@ public interface EventoRepository extends JpaRepository<Evento, UUID> {
 
     @Query("SELECT e FROM Evento e WHERE e.usuario.id = ?1 and e.dataevento = ?2")
     List<Evento> buscarEventosPorData(UUID idUsuario, LocalDate data);
+
+    @Query("SELECT MONTH(e.dataevento) AS mes, SUM(e.valortotal) AS total " +
+            "FROM Evento e " +
+            "WHERE e.status = 2 " +
+            "GROUP BY MONTH(e.dataevento) " +
+            "ORDER BY MONTH(e.dataevento)")
+    List<Object[]> obterEventosPorMes();
+
+    @Query(
+    "SELECT COALESCE(COUNT(e.usuario), 0)" +
+    "FROM Evento e " +
+    "WHERE e.status = 2 " +
+      "AND e.dataevento BETWEEN ?1 AND ?2 " +
+    "GROUP BY e.usuario " +
+    "HAVING COUNT(e.usuario) > 1"
+)
+    Double obterQuantidadeEventosRecorrentes(LocalDate dataInicio, LocalDate dataFim);
 }

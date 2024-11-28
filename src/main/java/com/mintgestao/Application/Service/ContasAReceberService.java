@@ -4,7 +4,9 @@ import com.mintgestao.Application.Service.Base.ServiceBase;
 import com.mintgestao.Domain.Entity.ContasAReceber;
 import com.mintgestao.Domain.Entity.Evento;
 import com.mintgestao.Domain.Enum.EnumStatusContasAReceber;
+import com.mintgestao.Domain.Enum.EnumStatusEvento;
 import com.mintgestao.Infrastructure.Repository.ContasAReceberRepository;
+import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Service;
 
@@ -17,8 +19,11 @@ import java.util.UUID;
 @Service
 public class ContasAReceberService extends ServiceBase<ContasAReceber, ContasAReceberRepository> {
 
-    public ContasAReceberService(ContasAReceberRepository repository) {
+    private final EventoService eventoService;
+
+    public ContasAReceberService(ContasAReceberRepository repository, EventoService eventoService) {
         super(repository);
+        this.eventoService = eventoService;
     }
 
     public Long gerarProximoNumero() {
@@ -59,11 +64,18 @@ public class ContasAReceberService extends ServiceBase<ContasAReceber, ContasARe
         }
     }
 
+    @Transactional
     public ContasAReceber baixar(UUID idContasAReceber) throws Exception {
         try {
             ContasAReceber contasAReceber = repository.findById(idContasAReceber).orElseThrow(() -> new Exception("Conta a receber não encontrada"));
             contasAReceber.setStatus(EnumStatusContasAReceber.Pago);
             contasAReceber.setDatabaixa(LocalDate.now());
+            contasAReceber.setId(idContasAReceber);
+
+            Evento evento = contasAReceber.getEvento();
+            evento.setStatus(EnumStatusEvento.Pago);
+            eventoService.atualizar(evento.getId(), evento);
+
             return repository.save(contasAReceber);
         } catch (Exception e) {
             throw new Exception(e.getMessage());

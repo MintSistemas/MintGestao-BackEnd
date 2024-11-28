@@ -8,13 +8,11 @@ import com.mintgestao.Infrastructure.Repository.EventoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 public class EventoService extends ServiceBase<Evento, EventoRepository> {
@@ -133,9 +131,8 @@ public class EventoService extends ServiceBase<Evento, EventoRepository> {
         }
     }
 
-    public Integer obterQuantidadeEventosRecorrentes(LocalDate dataInicio, LocalDate dataFim) {
-        return 0;
-        /*return eventoService.obterQuantidadeEventosRecorrentes(dataInicio, dataFim);*/
+    public Double obterQuantidadeEventosRecorrentes(LocalDate dataInicio, LocalDate dataFim) {
+        return repository.obterQuantidadeEventosRecorrentes(dataInicio, dataFim);
     }
 
     public String obterEventosNoDia(Local local, LocalDate data) throws Exception {
@@ -185,8 +182,39 @@ public class EventoService extends ServiceBase<Evento, EventoRepository> {
         return String.join("; ", horariosLivres);
     }
 
-    // Método auxiliar para formatar o intervalo de tempo
     private String formatarIntervalo(LocalTime inicio, LocalTime fim) {
         return String.format("%s às %s", inicio, fim);
+    }
+
+    public List<Map<String, Object>> obterResumo() throws Exception {
+        try {
+            List<Map<String, Object>> resumo = new ArrayList<>();
+
+            // Meses do ano
+            String[] meses = {"Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"};
+
+            // Obtém a contagem de eventos agrupados por mês do repositório
+            List<Object[]> eventosPorMes = repository.obterEventosPorMes();
+
+            // Mapeia os dados do repositório para um mapa associando mês e total
+            Map<Integer, BigDecimal> contagemPorMes = new HashMap<>();
+            for (Object[] linha : eventosPorMes) {
+                Integer mes = (Integer) linha[0]; // O mês (1-12)
+                BigDecimal total = (BigDecimal) linha[1];    // Total de eventos
+                contagemPorMes.put(mes, total);
+            }
+
+            // Preenche os dados para todos os meses do ano
+            for (int i = 1; i <= 12; i++) {
+                Map<String, Object> dadosMes = new HashMap<>();
+                dadosMes.put("name", meses[i - 1]); // Nome do mês
+                dadosMes.put("total", contagemPorMes.getOrDefault(i, BigDecimal.valueOf(0L)));
+                resumo.add(dadosMes);
+            }
+
+            return resumo;
+        } catch (Exception e) {
+            throw new Exception("Erro ao obter resumo de eventos: " + e.getMessage());
+        }
     }
 }

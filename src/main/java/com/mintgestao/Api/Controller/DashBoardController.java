@@ -41,7 +41,7 @@ public class DashBoardController {
             @RequestParam("dataInicio") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dataInicio,
             @RequestParam("dataFim") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dataFim) {
         try {
-            Integer quantidadeEventosRecorrentes = dashBoardUseCase.obterQuantidadeEventosRecorrentes(dataInicio, dataFim);
+            Double quantidadeEventosRecorrentes = dashBoardUseCase.obterQuantidadeEventosRecorrentes(dataInicio, dataFim);
             return ResponseEntity.ok(quantidadeEventosRecorrentes);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
@@ -75,6 +75,15 @@ public class DashBoardController {
         try {
             List<Evento> eventosAgendadosRecentemente = dashBoardUseCase.obterEventosAgendadosRecentemente();
             return ResponseEntity.ok(eventosAgendadosRecentemente);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @GetMapping("/recuperarresumo")
+    public ResponseEntity recuperarResumo() {
+        try {
+            return ResponseEntity.ok(dashBoardUseCase.obterResumo());
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }

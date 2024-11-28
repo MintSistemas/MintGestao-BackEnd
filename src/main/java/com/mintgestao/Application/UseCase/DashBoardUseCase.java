@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 
 @Component
 public class DashBoardUseCase {
@@ -32,7 +33,7 @@ public class DashBoardUseCase {
         }
     }
 
-    public Integer obterQuantidadeEventosRecorrentes(LocalDate dataInicio, LocalDate dataFim) {
+    public Double obterQuantidadeEventosRecorrentes(LocalDate dataInicio, LocalDate dataFim) {
         try{
         return eventoService.obterQuantidadeEventosRecorrentes(dataInicio, dataFim);
         } catch (Exception e) {
@@ -64,6 +65,14 @@ public class DashBoardUseCase {
         }
     }
 
+    public List<Map<String, Object>> obterResumo() {
+        try {
+            return eventoService.obterResumo();
+        } catch (Exception e) {
+            throw new RuntimeException(e.getMessage());
+        }
+    }
+
     public DashBoardResponseDTO recuperarDashBoard(LocalDate dataInicio, LocalDate dataFim) throws Exception {
         try {
             return new DashBoardResponseDTO(
@@ -71,7 +80,8 @@ public class DashBoardUseCase {
                     obterQuantidadeEventosRecorrentes(dataInicio, dataFim),
                     obterQuantidadeEventos(dataInicio, dataFim),
                     obterQuantidadeEventosHoje(),
-                    obterEventosAgendadosRecentemente()
+                    obterEventosAgendadosRecentemente(),
+                    obterResumo()
             );
         } catch (Exception e) {
             throw new Exception(e.getMessage());
