@@ -34,6 +34,14 @@ public class AutenticacaoUseCase {
         }
     }
 
+    public Usuario alterar(Usuario usuario) throws Exception {
+        try {
+            return service.alterar(usuario);
+        } catch (Exception e) {
+            throw new Exception(e.getMessage());
+        }
+    }
+
     public Usuario registrarApp(RegistroAppDTO registroAppDTO) throws Exception {
         try {
             Usuario usuario = new Usuario();

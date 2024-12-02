@@ -14,6 +14,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class AutenticacaoService {
 
@@ -31,12 +33,12 @@ public class AutenticacaoService {
 
     public LoginResponseDTO entrar(LoginRequestDTO data) throws Exception {
         try {
-            var usernamePassword = new UsernamePasswordAuthenticationToken(data.email(), data.senha());
+            UsernamePasswordAuthenticationToken usernamePassword = new UsernamePasswordAuthenticationToken(data.email(), data.senha());
             var auth = authenticationManager.authenticate(usernamePassword);
             var token = tokenService.gerarToken((Usuario) auth.getPrincipal());
             var refreshToken = tokenService.gerarRefreshToken((Usuario) auth.getPrincipal());
 
-            Usuario usuario = (Usuario) repository.findByEmail(data.email());
+            Usuario usuario = (Usuario) repository.findByEmail(data.email()).stream().filter(Usuario::isAtivo).findFirst().get();
             Tema tema = temaService.obterTemaPorUsuario(usuario.getId());
 
             return new LoginResponseDTO(usuario, token, refreshToken, tema);
@@ -47,9 +49,32 @@ public class AutenticacaoService {
 
     public Usuario registrar(Usuario usuario) throws Exception {
         try {
-            if (this.repository.findByEmail(usuario.getEmail()) != null) throw new Exception("Usuário já cadastrado");
+            verificaUsuarioAtivo(usuario.getEmail());
+
             String senhaCriptografada = new BCryptPasswordEncoder().encode(usuario.getSenha());
             usuario.setSenha(senhaCriptografada);
+            return repository.save(usuario);
+        } catch (Exception e) {
+            throw new Exception(e.getMessage());
+        }
+    }
+
+    public Usuario alterar(Usuario usuario) throws Exception {
+        try {
+            List<Usuario> usuarios = repository.findByEmail(usuario.getEmail());
+
+            long countAtivos = usuarios.stream()
+                    .filter(u -> !u.getId().equals(usuario.getId()) && u.isAtivo())
+                    .count();
+
+            if (countAtivos > 0) {
+                throw new Exception("Já existe um usuário ativo cadastrado com este e-mail");
+            }
+
+
+            String senhaCriptografada = new BCryptPasswordEncoder().encode(usuario.getSenha());
+            usuario.setSenha(senhaCriptografada);
+
             return repository.save(usuario);
         } catch (Exception e) {
             throw new Exception(e.getMessage());
@@ -59,10 +84,21 @@ public class AutenticacaoService {
     public String atualizarToken(String refreshToken) throws Exception {
         try {
             Usuario usuario = tokenService.validarRefreshToken(refreshToken);
-            UserDetails user = repository.findByEmail(usuario.getEmail());
+            UserDetails user = repository.findByEmail(usuario.getEmail()).stream().filter(Usuario::isAtivo).findFirst().get();
             return tokenService.gerarToken((Usuario) user);
         } catch (Exception e) {
             throw new Exception(e.getMessage());
+        }
+    }
+
+    public void verificaUsuarioAtivo(String email) throws Exception {
+        List<Usuario> usuarios = repository.findByEmail(email);
+        if (usuarios.size() > 0) {
+            for (Usuario u : usuarios) {
+                if (u.isAtivo()) {
+                    throw new Exception("Ja existe um usuario com esse email ativo");
+                }
+            }
         }
     }
 }

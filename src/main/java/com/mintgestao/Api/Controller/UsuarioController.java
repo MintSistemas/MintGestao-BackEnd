@@ -21,6 +21,16 @@ public class UsuarioController {
         this.usuarioUseCase = usuarioUseCase;
     }
 
+    @GetMapping("/buscartodos/{idtenant}")
+    public ResponseEntity<List<Usuario>> obterTodosUsuariosPorTenant(@PathVariable Integer idtenant) {
+        try {
+            List<Usuario> usuarios = usuarioUseCase.buscarTodosPorTenant(idtenant);
+            return ResponseEntity.ok(usuarios);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(null);
+        }
+    }
+
     @GetMapping("/buscartodos")
     public ResponseEntity<List<Usuario>> obterTodosUsuarios() {
         try {
@@ -38,26 +48,6 @@ public class UsuarioController {
             return ResponseEntity.ok(usuario);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(null);
-        }
-    }
-
-    @PostMapping("/criar")
-    public ResponseEntity<Usuario> criarUsuario(@RequestBody Usuario usuario) {
-        try {
-            Usuario novoUsuario = usuarioUseCase.criar(usuario);
-            return ResponseEntity.created(null).body(novoUsuario);
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body(null);
-        }
-    }
-
-    @PutMapping("/atualizar/{id}")
-    public ResponseEntity<Void> atualizarUsuario(@PathVariable UUID id, @RequestBody Usuario usuario) {
-        try {
-            usuarioUseCase.atualizar(id, usuario);
-            return ResponseEntity.ok().build();
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().build();
         }
     }
 

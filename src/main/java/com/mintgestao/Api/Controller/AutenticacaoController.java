@@ -13,6 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.UUID;
+
 @RestController
 @RequestMapping("autenticacao")
 @CrossOrigin
@@ -31,6 +33,17 @@ public class AutenticacaoController {
         try {
             LoginResponseDTO loginResponseDTO = autenticacaoUseCase.entrar(data);
             return ResponseEntity.ok(loginResponseDTO);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @PutMapping("/alterar/{id}")
+    public ResponseEntity alterar(@PathVariable("id") String id, @RequestBody @Valid Usuario usuario) {
+        try {
+            usuario.setId(UUID.fromString(id));
+            Usuario usuarioAutenticado = autenticacaoUseCase.alterar(usuario);
+            return ResponseEntity.ok(usuarioAutenticado);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }

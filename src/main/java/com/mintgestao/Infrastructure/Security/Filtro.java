@@ -18,6 +18,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.util.List;
 
 @Component
 public class Filtro extends OncePerRequestFilter {
@@ -26,7 +27,7 @@ public class Filtro extends OncePerRequestFilter {
     private TokenService tokenService;
 
     @Autowired
-    private UsuarioRepository userReposirory;
+    private UsuarioRepository repository;
 
     @Autowired
     private TenantResolver TenantResolver;
@@ -37,7 +38,7 @@ public class Filtro extends OncePerRequestFilter {
         if (token != null) {
             try {
                 Usuario usuario = tokenService.validarToken(token);
-                UserDetails usuarioValidado = userReposirory.findByEmail(usuario.getEmail());
+                UserDetails usuarioValidado = repository.findByEmail(usuario.getEmail()).stream().filter(Usuario::isAtivo).findFirst().get();
 
                 var authentication = new UsernamePasswordAuthenticationToken(usuarioValidado, null, usuarioValidado.getAuthorities());
                 SecurityContextHolder.getContext().setAuthentication(authentication);

@@ -1,5 +1,6 @@
 package com.mintgestao.Application.Service;
 
+import com.mintgestao.Domain.Entity.Usuario;
 import com.mintgestao.Infrastructure.Repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -15,7 +16,7 @@ public class AutorizacaoService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         try {
-            return usuariosRepository.findByEmail(email);
+            return usuariosRepository.findByEmail(email).stream().filter(Usuario::isAtivo).findFirst().get();
         } catch (Exception e) {
             throw new UsernameNotFoundException("Usuário não encontrado");
         }
